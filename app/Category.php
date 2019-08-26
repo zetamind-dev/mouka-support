@@ -1,0 +1,18 @@
+<?php
+
+namespace ComplainDesk;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Category extends Model
+{
+    //
+    protected $fillable = [
+        'name','email'
+    ];
+
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
+    }
+}
