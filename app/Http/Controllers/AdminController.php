@@ -32,7 +32,6 @@ class AdminController extends Controller
            'email' => 'required|string|email|max:255|unique:users',
         //   'employeeno' => 'required|employeeno',
             'password' => 'required|string|min:6|confirmed',
-            'location' => 'required|string|max:255',
         ]);
         
         if ($request->input('password') == $request->input('password_confirmation')) {
@@ -43,14 +42,15 @@ class AdminController extends Controller
                 'employeeno' => $request->input('employeeno'),
                 'department_id' => $request->input('department'),
                 'password' => bcrypt($request->input('password')),
-                'is_admin' =>  $request->input('is_admin')
+                'is_admin' =>  $request->input('is_admin'),
+                'location' =>  $request->input('location')
             ]);
         }
         
         $action = "Created New User";
         $description = "User ". $admin->name . " has been Created";
         $userId = Auth::user()->id;
-        
+
         $admin->save();
 
         $log->store($action, $description, $userId);

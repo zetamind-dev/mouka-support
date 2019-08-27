@@ -132,16 +132,23 @@
                           </div>
                       </div>
                       <br>
-                         <div class="col-md-4 float-right">
-                              <label for="location">Location</label>
 
-                              <input id="location" type="text" class="form-control{{ $errors->has('location') ? ' is-invalid' : '' }}" name="location"
-                                  value="{{ old('location') }}" required> @if ($errors->has('location'))
-                              <span class="invalid-feedback">
+                           <div class="form-group{{ $errors->has('location') ? ' has-error' : '' }}">
+                          <label for="location" class="col-md-4 control-label">Location</label>
+                          <div class="col-md-6">
+                              <select name="location" class="form control">
+                                  <option value="Ikeja">Lagos</option>
+                                  <option value="Benin">Benin</option>
+                                  <option value="Kaduna">Kaduna</option>
+                              </select>
+                              @if ($errors->has('location'))
+                                  <span class="invalid-feedback">
                                   <strong>{{ $errors->first('location') }}</strong>
                               </span>
                               @endif
                           </div>
+
+                      </div>
                       <div class="form-group{{ $errors->has('is_admin') ? ' has-error' : '' }}">
                           <label for="is_admin" class="col-md-4 control-label">User Type</label>
                           <div class="col-md-6">
