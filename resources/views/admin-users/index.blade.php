@@ -137,7 +137,7 @@
                           <label for="location" class="col-md-4 control-label">Location</label>
                           <div class="col-md-6">
                               <select name="location" class="form control">
-                                  <option value="Ikeja">Lagos</option>
+                                  <option value="Lagos">Lagos</option>
                                   <option value="Benin">Benin</option>
                                   <option value="Kaduna">Kaduna</option>
                               </select>
