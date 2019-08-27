@@ -47,4 +47,9 @@ class User extends Authenticatable
         return $this->hasMany(Department::class);
     }
 
+    public function Location()
+    {
+        return $this->hasMany(Location::class);
+    }
+
 }

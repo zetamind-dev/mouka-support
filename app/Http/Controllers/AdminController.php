@@ -32,6 +32,7 @@ class AdminController extends Controller
            'email' => 'required|string|email|max:255|unique:users',
         //   'employeeno' => 'required|employeeno',
             'password' => 'required|string|min:6|confirmed',
+            'location' => 'required|string|max:255',
         ]);
         
         if ($request->input('password') == $request->input('password_confirmation')) {
