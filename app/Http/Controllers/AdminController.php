@@ -35,7 +35,7 @@ class AdminController extends Controller
         ]);
         
         if ($request->input('password') == $request->input('password_confirmation')) {
-            $admin = User::create([
+            $user = User::create([
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
                 'telephone' => $request->input('telephone'),
@@ -48,22 +48,22 @@ class AdminController extends Controller
         }
         
         $action = "Created New User";
-        $description = "User ". $admin->name . " has been Created";
+        $description = "User ". $user->name . " has been Created";
         $userId = Auth::user()->id;
 
-        $admin->save();
+        $user->save();
 
         $log->store($action, $description, $userId);
 
-        return redirect()->back()->with("status", "$admin->name has been created.");
+        return redirect()->back()->with("status", "$user->name has been created.");
     }
 
     public function create()
     {
-        $admins = User::all()->where('is_admin', 1);
+        $users = User::all();
         $departments = Department::all();
 
-        return view('admin-users.index', ['admins' => $admins,
+        return view('admin-users.index', ['users' => $users,
             'departments' => $departments]);
 
        // return view('admin-users.index', compact('admins'));
@@ -73,17 +73,17 @@ class AdminController extends Controller
     //Method to detele Category
     public function delete(Log $log, $id)
     {
-        $admin = User::where('id', $id)->firstOrFail();
+        $user = User::where('id', $id)->firstOrFail();
        // $departments = Department::all();
     
-        $action = "Deleted Admin User";
-        $description = "Admin User ". $admin->name . " has been deleted";
+        $action = "Deleted User";
+        $description = "User ". $user->name . " has been deleted";
         $userId = Auth::user()->id;
         
-        $admin->delete();
+        $user->delete();
 
         $log->store($action, $description, $userId);
 
-        return redirect()->back()->with("status", "Admin Deleted.");
+        return redirect()->back()->with("status", "User Deleted.");
     }
 }

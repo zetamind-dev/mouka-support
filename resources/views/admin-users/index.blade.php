@@ -8,7 +8,7 @@
   <div class="container">
 
       <div class="card">
-          <div class="card-header" style="background:#2737A6;color:white; font-size:17px; font-weight:bold;">Add New admin</div>
+          <div class="card-header" style="background:#2737A6;color:white; font-size:17px; font-weight:bold;">Add New User</div>
           <div class="card-body">
               <div class="container">
                   @include('includes.flash')
@@ -190,21 +190,26 @@
                       <thead style="background:#2737A6;color:white; font-size:17px; font-weight:bold;">
                           <tr>
                               <th>Fullname</th>
+                              <th>User Type</th>
                               <th>Email</th>
-                              <th>Telephone</th>
                               <th>Registered On</th>
                               <th>Action</th>
                           </tr>
                       </thead>
                       <tbody>
-                          @foreach ($admins as $admin)
+                          @foreach ($users as $user)
                           <tr>
-                              <td>{{ $admin->name }}</td>
-                              <td>{{ $admin->email }}</td>
-                              <td>{{ $admin->telephone }}</td>
-                              <td>{{ $admin->created_at->format('F d, Y H:i') }}</td>
+                              <td>{{ $user->name }}</td>
+                              @if ($user->is_admin == 1)
+                                <td>Admin</td>
+                              @else
+                                  <td>User</td>
+                              @endif
+                              
+                              <td>{{ $user->email }}</td>
+                              <td>{{ $user->created_at->format('F d, Y H:i') }}</td>
                               <td>
-                                  <form action="{{ url('admin/users/' . $admin->id) }}" method="POST">
+                                  <form action="{{ url('admin/users/' . $user->id) }}" method="POST">
                                       @csrf
                                       <button type="submit" class="btn btn-danger">Delete</button>
                                   </form>
