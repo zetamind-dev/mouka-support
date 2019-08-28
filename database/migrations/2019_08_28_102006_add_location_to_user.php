@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddLocationColumnToUser extends Migration
+class AddLocationToUser extends Migration
 {
     /**
      * Run the migrations.
@@ -14,10 +14,9 @@ class AddLocationColumnToUser extends Migration
     public function up()
     {
         Schema::table('users', function($table){
-            $table->string('location');
+            $table->string('location')->default('lagos');
         });
     }
-
     /**
      * Reverse the migrations.
      *

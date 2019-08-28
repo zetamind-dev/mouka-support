@@ -2,6 +2,7 @@
     <a class="navbar-brand" href="{{ url('/home') }}">
         <img class="img-responsive2" src="{{ asset('img/mouka-logo-new.png') }}" style="width:70px;">
     </a>
+    <span>{{ Auth::user()->location }}</span>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02"
         aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -9,15 +10,17 @@
 
     <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-
+           
         </ul>
         <span>Hello, {{ Auth::user()->name }}</span> &nbsp&nbsp
-
+         
         <form id="logout-form" method="POST" action="{{ route('logout') }}" class="form-inline my-2 my-lg-0">
             @csrf
             <button type="submit" class="btn btn-outline-primary text-white">Log out</button>
+            
         </form>
     </div>
+
 </nav>
 <div class="nav-scroller bg-white box-shadow">
     <nav class="nav nav-underline">
@@ -38,7 +41,6 @@
         @endif
         <a class="nav-link {{ Request::is('faq*') ? 'active' : '' }}" href="{{ url( '/faq') }} ">FAQ</a>
         <a class="nav-link {{ Request::is('settings*') ? 'active' : '' }}" href="{{ url( '/settings') }} ">Settings</a>
-        <a class="nav-link {{ Request::is('assets*') ? 'active' : '' }}" href="{{ url( '/assets') }} ">Asset</a>
 
 
     </nav>

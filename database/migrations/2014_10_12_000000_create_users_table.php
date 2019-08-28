@@ -22,7 +22,6 @@ class CreateUsersTable extends Migration
             $table->string('employeeno',10);
             $table->integer('department_id')->unsigned();
             $table->smallInteger('is_admin')->unsigned()->default(0);
-            $table->string('location')->unsigned()->default('Lagos');
             $table->rememberToken();
             $table->timestamps();
         });
