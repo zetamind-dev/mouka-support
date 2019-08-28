@@ -48,7 +48,7 @@ class AdminController extends Controller
         }
         
         $action = "Created New User";
-        $description = "User ". $user->name . " has been Created";
+        $description = "User " . $user->name . " has been Created";
         $userId = Auth::user()->id;
 
         $user->save();
