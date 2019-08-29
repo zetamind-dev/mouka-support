@@ -42,7 +42,7 @@ class AdminController extends Controller
                 'employeeno' => $request->input('employeeno'),
                 'department_id' => $request->input('department'),
                 'password' => bcrypt($request->input('password')),
-                'is_admin' =>  $request->input('is_admin'),
+                'user_type' =>  $request->input('user_type'),
                 'location' =>  $request->input('location')
             ]);
         }
