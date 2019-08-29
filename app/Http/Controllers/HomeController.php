@@ -28,7 +28,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        if (Auth::user()->is_admin) {
+        if (Auth::user()->user_type > 0) {
             $tickets = Ticket::orderBy('id', 'desc')->paginate(10);
             $categories = Category::all();
 
@@ -38,13 +38,16 @@ class HomeController extends Controller
             $totalTicketsOpen = Ticket::all()->where('status', 'Open');
             $totalTicketsOpen = count($totalTicketsOpen);
             
-            $totalAdmins = User::all()->where('is_admin', 1);
-            $totalAdmins = count($totalAdmins);
+            $totalUsers = User::all();
+            $totalUsers = count($totalUsers);
 
             $totalTickets = Ticket::all();
             $totalTickets = count($totalTickets);
 
             $totalComments = null;
+
+        return view('home', compact('tickets', 'categories', 'totalTicketsClosed', 'totalTicketsOpen', 'totalTickets', 'totalUsers', 'totalComments'));
+        
         } else {
             $tickets = Ticket::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->paginate(10);
             $categories = Category::all();
@@ -64,6 +67,6 @@ class HomeController extends Controller
             $totalAdmins = null;
         }
 
-        return view('home', compact('tickets', 'categories', 'totalTicketsClosed', 'totalTicketsOpen', 'totalTickets', 'totalAdmins', 'totalComments'));
+        return view('home', compact('tickets', 'categories', 'totalTicketsClosed', 'totalTicketsOpen', 'totalTickets','totalComments'));
     }
 }

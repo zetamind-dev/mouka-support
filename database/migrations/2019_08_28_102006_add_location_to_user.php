@@ -14,7 +14,7 @@ class AddLocationToUser extends Migration
     public function up()
     {
         Schema::table('users', function($table){
-            $table->string('location')->default('lagos');
+            $table->string('location')->default('Lagos');
         });
     }
     /**

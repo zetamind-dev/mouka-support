@@ -1,22 +1,11 @@
 @extends('layouts.app') @section('external-css')
-<link href="{{ asset('css/userdashboard.css') }}" rel="stylesheet"> @endsection @include('layouts.user-dashboard-nav') @section('content')
+<link href="{{ asset('css/userdashboard.css') }}" rel="stylesheet"> @endsection @include('layouts.user-dashboard-nav')
+@section('content')
 
 <body class="bg-light">
 
     <main role="main" class="container">
         <div id="page-wrapper" class="col-md-12">
-            <div class="row justify-content-end">
-                <div class="col-sm-2">
-                    <h1 class="page-header">
-                        @if (!Auth::user()->is_admin)
-                        <a href="{{ url('/tickets') }}" class="btn btn-md" role="button" style="background:#443FFF;color:white;font-size:16px; font-weight:bold"
-                            aria-pressed="true">
-                            <span class="fa fa-ticket"></span> Open New Ticket
-                        </a>
-                        @endif
-                    </h1>
-                </div>
-            </div>
             <br>
 
             <br>
@@ -49,7 +38,8 @@
                                 {{ $ticket->title }}
                             </td>
                             <td>
-                                @foreach ($categories as $category) @if ($category->id === $ticket->category_id) {{ $category->name }} @endif @endforeach
+                                @foreach ($categories as $category) @if ($category->id === $ticket->category_id)
+                                {{ $category->name }} @endif @endforeach
                             </td>
                             <td>
                                 @if ($ticket->status === 'Open')
@@ -62,7 +52,8 @@
                             <td>{{ $ticket->updated_at->format('F d, Y') }}</td>
                             <td>
                                 <form action="{{ url('tickets/'. $ticket->ticket_id) }}" method="GET">
-                                    <button type="submit" class="btn btn-sm" style="background:#2737A6;color:white;font-weight:bold">More Details</button>
+                                    <button type="submit" class="btn btn-sm"
+                                        style="background:#2737A6;color:white;font-weight:bold">More Details</button>
                                 </form>
                             </td>
                         </tr>

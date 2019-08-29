@@ -5,17 +5,13 @@
 <body class="bg-light">
 
 	<main role="main" class="container col-lg-6">
-
 		<div class="container">
-
 			<div class="card">
-				@if (Auth::user()->user_type > 0)
 				<div class="card-header" style="background:#2737A6;color:white; font-size:17px; font-weight:bold;">Add New User
 				</div>
 				<div class="card-body">
 					<div class="container">
 						@include('includes.flash')
-
 						<form method="POST" action="{{ url('/admin/users') }}">
 							@csrf
 
@@ -49,8 +45,8 @@
 								<div class="col-md-8">
 									<label for="department">Department</label>
 
-									<select id="department" type="department" class="form-control" name="department"
-										style="height: 55px;">
+									<select id="department" type="department" class="form-control" name="department" style="height: 55px;"
+										required>
 										<option value="">Select Category</option>
 										@foreach ($departments as $department)
 										<option value="{{ $department->id }}">{{ $department->name }}</option>
@@ -131,6 +127,7 @@
 								</div>
 
 							</div>
+							@if(Auth::user()->user_type === 2)
 							<div class="form-group{{ $errors->has('user_type') ? ' has-error' : '' }}">
 								<label for="user_type" class="col-md-4 control-label">User Type</label>
 								<div class="col-md-6">
@@ -145,8 +142,8 @@
 									</span>
 									@endif
 								</div>
-
 							</div>
+							@endif
 							<br>
 
 							<div>
@@ -175,7 +172,7 @@
 									<th>Fullname</th>
 									<th>User Type</th>
 									<th>Email</th>
-									<th>Registered On</th>
+									<th>Location</th>
 									<th>Action</th>
 								</tr>
 							</thead>
@@ -192,7 +189,7 @@
 									@endif
 
 									<td>{{ $user->email }}</td>
-									<td>{{ $user->created_at->format('F d, Y H:i') }}</td>
+									<td>{{ $user->location }}</td>
 									<td>
 										<form action="{{ url('admin/users/' . $user->id) }}" method="POST">
 											@csrf
@@ -206,9 +203,8 @@
 					</div>
 
 				</div>
-				@endif
 			</div>
 		</div>
-
 	</main>
-	@endsection
+</body>
+@endsection

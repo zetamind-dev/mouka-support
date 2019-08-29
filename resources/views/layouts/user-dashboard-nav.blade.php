@@ -25,14 +25,16 @@
 <div class="nav-scroller bg-white box-shadow">
     <nav class="nav nav-underline">
 
-        @if (Auth::user()->user_type > 0) <a class="nav-link {{ Request::is('home*') ? 'active' : '' }}"
-            href="{{ url( '/home') }} ">Dashboard</a>
+        @if (Auth::user()->user_type > 0)
+        <a class="nav-link {{ Request::is('home*') ? 'active' : '' }}" href="{{ url( '/home') }} ">Dashboard</a>
         <a class="nav-link {{ Request::is('admin/tickets*') ? 'active' : '' }}" href="{{ url( '/admin/tickets') }} ">All
             Tickets</a>
+        @if (Auth::user()->user_type === 2)
         <a class="nav-link {{ Request::is('admin/category*') ? 'active' : '' }}"
             href="{{ url( '/admin/category') }} ">Category</a>
         <a class="nav-link {{ Request::is('admin/department*') ? 'active' : '' }}"
             href="{{ url( '/admin/department') }} ">Department</a>
+        @endif
         <a class="nav-link {{ Request::is('admin/users*') ? 'active' : '' }}" href="{{ url( '/admin/users') }} ">New
             Users</a>
 
@@ -41,13 +43,12 @@
             href="{{ url( '/admin/reports') }} ">Reports</a>
         @else
         <a class="nav-link {{ Request::is('home*') ? 'active' : '' }}" href="{{ url( '/home') }} ">Dashboard</a>
-        <a class="nav-link {{ Request::is('tickets*') ? 'active' : '' }}" href="{{ url( '/tickets') }} ">Open
-            Ticket</a>
+        <a class="nav-link {{ Request::is('tickets*') ? 'active' : '' }}" href="{{ url( '/tickets') }} ">Open Ticket</a>
         <a class="nav-link {{ Request::is('mytickets*') ? 'active' : '' }}" href="{{ url( '/mytickets') }} ">My
             Tickets</a>
         @endif
         <a class="nav-link {{ Request::is('faq*') ? 'active' : '' }}" href="{{ url( '/faq') }} ">FAQ</a>
-        <a class="nav-link {{ Request::is('settings*') ? 'active' : '' }}" href="{{ url( '/settings') }} ">Settings</a>
+        <a class="nav-link {{ Request::is('settings*') ? 'active' : '' }}" href="{{ url( '/settings') }} ">Profile</a>
 
 
     </nav>

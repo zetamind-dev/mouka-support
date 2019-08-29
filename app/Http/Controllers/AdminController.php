@@ -33,7 +33,13 @@ class AdminController extends Controller
         //   'employeeno' => 'required|employeeno',
             'password' => 'required|string|min:6|confirmed',
         ]);
-        
+          
+        // Check to see if user_type is null
+        $user_type = $request->input('user_type');
+        if($user_type === null){
+            $user_type = 0;
+        }
+
         if ($request->input('password') == $request->input('password_confirmation')) {
             $user = User::create([
                 'name' => $request->input('name'),
@@ -42,7 +48,7 @@ class AdminController extends Controller
                 'employeeno' => $request->input('employeeno'),
                 'department_id' => $request->input('department'),
                 'password' => bcrypt($request->input('password')),
-                'user_type' =>  $request->input('user_type'),
+                'user_type' =>  $user_type,
                 'location' =>  $request->input('location')
             ]);
         }
@@ -60,11 +66,12 @@ class AdminController extends Controller
 
     public function create()
     {
-        $users = User::all();
-        $departments = Department::all();
+        if(Auth::user()->user_type > 0){
+            $users = User::all();
+            $departments = Department::all();
 
-        return view('admin-users.index', ['users' => $users,
-            'departments' => $departments]);
+           return view('admin-users.index', ['users' => $users,'departments' => $departments]);
+        }
 
        // return view('admin-users.index', compact('admins'));
        // return view('admin-users.index', compact('departments'));
