@@ -48,14 +48,14 @@ class AdminController extends Controller
         }
         
         $action = "Created New User";
-        $description = "User " . $user->name . " has been Created";
+        $description = $user->name . " has been Created";
         $userId = Auth::user()->id;
 
         $user->save();
 
         $log->store($action, $description, $userId);
 
-        return redirect()->back()->with("status", "$user->name has been created.");
+        return redirect()->back()->with("status", "User $user->name has been created!");
     }
 
     public function create()
