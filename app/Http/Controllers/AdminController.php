@@ -67,7 +67,7 @@ class AdminController extends Controller
     public function create()
     {
         if(Auth::user()->user_type > 0){
-            $users = User::all();
+            $users = User::all()->where('location', Auth::user()->location);
             $departments = Department::all();
 
            return view('admin-users.index', ['users' => $users,'departments' => $departments]);
