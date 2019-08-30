@@ -47,7 +47,7 @@
 
                   <select id="department" type="department" class="form-control" name="department" style="height: 55px;"
                     required>
-                    <option value="">Select Category</option>
+                    <option value="">Select Department</option>
                     @foreach ($departments as $department)
                     <option value="{{ $department->id }}">{{ $department->name }}</option>
                     @endforeach
@@ -115,7 +115,8 @@
                 <label for="location" class="col-md-4 control-label">Location</label>
                 <div class="col-md-6">
                   <select name="location" class="form control">
-                    <option value="Lagos">Lagos</option>
+                    <option value="Head Office">Head Office</option>
+                    <option value="Ikeja">Ikeja</option>
                     <option value="Benin">Benin</option>
                     <option value="Kaduna">Kaduna</option>
                   </select>
@@ -169,9 +170,10 @@
             <table class="table table-responsive">
               <thead style="background:#2737A6;color:white; font-size:17px; font-weight:bold;">
                 <tr>
-                  <th>Fullname</th>
+                  <th>Name</th>
                   <th>User Type</th>
                   <th>Email</th>
+                  <th>Registered On</th>
                   <th>Location</th>
                   <th>Action</th>
                 </tr>

@@ -2,6 +2,7 @@
 
 namespace ComplainDesk\Http\Controllers;
 
+
 use Illuminate\Http\Request;
 use ComplainDesk\Log;
 

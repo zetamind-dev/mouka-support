@@ -10,87 +10,93 @@ Use ComplainDesk\Department;
 
 class AdminController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+  public function __construct()
+  {
+      $this->middleware('auth');
+  }
 
-    public function index()
-    {
-      //  $tickets = Ticket::orderBy('id', 'desc')->paginate(10);
-        $departments = Department::all();
+  public function index()
+  {
+    //  $tickets = Ticket::orderBy('id', 'desc')->paginate(10);
+      $departments = Department::all();
 
-        return view('admin-users.index', compact('users', 'departments'));
-    }
+      return view('admin-users.index', compact('users', 'departments'));
+  }
 
 
-    public function store(Log $log, Request $request)
-    {
-        $this->validate($request, [
-            'name' => 'required|string|max:255',
-            'telephone' => 'required|max:15',
-           'email' => 'required|string|email|max:255|unique:users',
-        //   'employeeno' => 'required|employeeno',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
-          
-        // Check to see if user_type is null
-        $user_type = $request->input('user_type');
-        if($user_type === null){
-            $user_type = 0;
-        }
-
-        if ($request->input('password') == $request->input('password_confirmation')) {
-            $user = User::create([
-                'name' => $request->input('name'),
-                'email' => $request->input('email'),
-                'telephone' => $request->input('telephone'),
-                'employeeno' => $request->input('employeeno'),
-                'department_id' => $request->input('department'),
-                'password' => bcrypt($request->input('password')),
-                'user_type' =>  $user_type,
-                'location' =>  $request->input('location')
-            ]);
-        }
+  public function store(Log $log, Request $request)
+  {
+      $this->validate($request, [
+          'name' => 'required|string|max:255',
+          'telephone' => 'required|max:15',
+          'email' => 'required|string|email|max:255|unique:users',
+      //   'employeeno' => 'required|employeeno',
+          'password' => 'required|string|min:6|confirmed',
+      ]);
         
-        $action = "Created New User";
-        $description = $user->name . " has been Created";
-        $userId = Auth::user()->id;
+      // Check to see if user_type is null
+      $user_type = $request->input('user_type');
+      if($user_type === null){
+          $user_type = 0;
+      }
 
-        $user->save();
+      // Check to see if location is null
+      $location = $request->input('location');
+      if($location === null){
+          $location = Auth::user()->location;
+      }
 
-        $log->store($action, $description, $userId);
+      if ($request->input('password') == $request->input('password_confirmation')) {
+          $user = User::create([
+              'name' => $request->input('name'),
+              'email' => $request->input('email'),
+              'telephone' => $request->input('telephone'),
+              'employeeno' => $request->input('employeeno'),
+              'department_id' => $request->input('department'),
+              'password' => bcrypt($request->input('password')),
+              'user_type' =>  $user_type,
+              'location' =>  $location
+          ]);
+      }
+      
+      $action = "Created New User";
+      $description = $user->name . " has been Created";
+      $userId = Auth::user()->id;
 
-        return redirect()->back()->with("status", "User $user->name has been created!");
-    }
+      $user->save();
 
-    public function create()
-    {
-        if(Auth::user()->user_type > 0){
-            $users = User::all()->where('location', Auth::user()->location);
-            $departments = Department::all();
+      $log->store($action, $description, $userId);
 
-           return view('admin-users.index', ['users' => $users,'departments' => $departments]);
-        }
+      return redirect()->back()->with("status", "User $user->name has been created!");
+  }
 
-       // return view('admin-users.index', compact('admins'));
-       // return view('admin-users.index', compact('departments'));
-    }
+  public function create()
+  {
+      if(Auth::user()->user_type > 0){
+          $users = User::all()->where('location', Auth::user()->location);
+          $departments = Department::all();
 
-    //Method to detele Category
-    public function delete(Log $log, $id)
-    {
-        $user = User::where('id', $id)->firstOrFail();
-       // $departments = Department::all();
-    
-        $action = "Deleted User";
-        $description = "User ". $user->name . " has been deleted";
-        $userId = Auth::user()->id;
-        
-        $user->delete();
+          return view('admin-users.index', ['users' => $users,'departments' => $departments]);
+      }
 
-        $log->store($action, $description, $userId);
+      // return view('admin-users.index', compact('admins'));
+      // return view('admin-users.index', compact('departments'));
+  }
 
-        return redirect()->back()->with("status", "User Deleted.");
-    }
+  //Method to detele Category
+  public function delete(Log $log, $id)
+  {
+      $user = User::where('id', $id)->firstOrFail();
+      // $departments = Department::all();
+  
+      $action = "Deleted User";
+      $description = "User ". $user->name . " has been deleted";
+      $userId = Auth::user()->id;
+      
+      $user->delete();
+
+      $log->store($action, $description, $userId);
+
+      return redirect()->back()->with("status", "User Deleted.");
+  }
 }

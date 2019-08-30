@@ -58,38 +58,49 @@ class TicketsController extends Controller
         } else {
             $fileNameToStore = 'noimage.jpg';
         }
+         
+
+        // If Loggedin user location is not Head Office, make ticket_id from first two letters of user's loaction and a random int
+        if(Auth::user()->location != 'Head Office'){
+           $ticket_id = '#' . strtoupper(mb_substr(Auth::user()->location, 0, 2) . random_int(0, 10000000));
+        }else{
+           $ticket_id = '#' . 'HO' . strtoupper(random_int(0, 10000000));
+        }
+
+
        //dd($request);
         $ticket = new Ticket([
             'title'     => $request->input('title'),
             'user_id'   => Auth::user()->id,
-            'ticket_id' => strtoupper(random_int(0, 1000000)),
+            'ticket_id' => $ticket_id,
             'category_id'  => $request->input('category'),
             'priority'  => $request->input('priority'),
             'message'   => $request->input('message'),
             'status'    => "Open",
             'picture'   => $fileNameToStore,
+            'location' => Auth::user()->location
            
         ]);
 
         $ticket->save();
 
-        $smsMessage = "You just created a Ticket with an ID: $ticket->ticket_id";
-        $userTelephone = Auth::user()->telephone;
-        
+        //$smsMessage = "You just created a Ticket with an ID: $ticket->ticket_id";
+        //$userTelephone = Auth::user()->telephone;
+        /*
         if (substr($userTelephone, 0, 1) == '0') {
             $userTelephone= substr($userTelephone, 1);
             $telephone = '+233' . $userTelephone;
-        }
+        }*/
         
 
 
         $mailer->sendTicketInformation(Auth::user(), $ticket);
-        $mailer->SendToCategory($ticket->category->email,$ticket);
+        $mailer->SendToCategory($ticket->category->email, $ticket);
 
             
-        return redirect()->back()->with("status", "A ticket with ID: #$ticket->ticket_id has been opened.");
-        /*
-        $smsResponse = $sms->sendSMS($smsMessage, $telephone);
+        return redirect()->back()->with("status", "A ticket with ID: $ticket->ticket_id has been opened.");
+        
+        /*$smsResponse = $sms->sendSMS($smsMessage, $telephone);
 
         if ($smsResponse == "200") {
             $mailer->sendTicketInformation(Auth::user(), $ticket);
@@ -115,7 +126,7 @@ class TicketsController extends Controller
 
     public function show($ticket_id)
     {
-        $ticket = Ticket::where('ticket_id', $ticket_id)->firstOrFail();
+        $ticket = Ticket::where('ticket_id', $ticket_id);
         $comments = $ticket->comments;
         $category = $ticket->category;
 

@@ -25,7 +25,7 @@ class AppMailer
         $this->to = $user->email;
         //dd($user->email);
         $this->cc = $ticket->copy_email;
-        $this->subject = "[Ticket ID: #$ticket->ticket_id] $ticket->title";
+        $this->subject = "[Ticket ID: $ticket->ticket_id] $ticket->title";
         $this->view = 'emails.ticket_info';
         $this->data = compact('user', 'ticket');
     //dd($this->cc);
@@ -35,7 +35,7 @@ class AppMailer
 
     public  function SendToCategory($categoryemail, Ticket $ticket){
         $this->to = $categoryemail;
-        $this->subject = "[Ticket ID: #$ticket->ticket_id] $ticket->title";
+        $this->subject = "[Ticket ID: $ticket->ticket_id] $ticket->title";
         $this->view = 'emails.ticket_info3';
         $this->data = compact('ticket');
 
@@ -53,7 +53,7 @@ class AppMailer
     {
       // $this->to = $ticketOwner->email;
         $this->to = $ticket->category->email;
-        $this->subject = "RE: $ticket->title (Ticket ID: #$ticket->ticket_id)";
+        $this->subject = "RE: $ticket->title (Ticket ID: $ticket->ticket_id)";
         $this->view = 'emails.ticket_comments';
         $this->data = compact('ticketOwner', 'user', 'ticket', 'comment');
 
@@ -68,7 +68,7 @@ class AppMailer
     {
        // dd($ticket->category);
         $this->to = $ticket->category->email;
-        $this->subject = "RE: $ticket->title (Ticket ID: #$ticket->ticket_id)";
+        $this->subject = "RE: $ticket->title (Ticket ID: $ticket->ticket_id)";
         $this->view = 'emails.ticket_comments';
         $this->data = compact('ticketOwner', 'user', 'ticket', 'comment');
 
@@ -79,7 +79,7 @@ class AppMailer
     {
         $this->to = $ticketOwner->email;
         $this->cc = $ticket->copy_email2;
-        $this->subject = "RE: $ticket->title (Ticket ID: #$ticket->ticket_id)";
+        $this->subject = "RE: $ticket->title (Ticket ID: $ticket->ticket_id)";
         $this->view = 'emails.ticket_status';
         $this->data = compact('ticketOwner', 'ticket');
 

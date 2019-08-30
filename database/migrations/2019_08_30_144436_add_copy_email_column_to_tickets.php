@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddLocationToUser extends Migration
+class AddCopyEmailColumnToTickets extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class AddLocationToUser extends Migration
      */
     public function up()
     {
-        Schema::table('users', function($table){
-            $table->string('location')->default('Head Office');
+             Schema::table('tickets', function($table){
+            $table->string('copy_email');
         });
     }
+
     /**
      * Reverse the migrations.
      *
@@ -24,8 +25,8 @@ class AddLocationToUser extends Migration
      */
     public function down()
     {
-        Schema::table('users', function($table){
-            $table->dropColumn('location');
+            Schema::table('tickets', function($table){
+            $table->dropColumn('copy_email');
         });
     }
 }
