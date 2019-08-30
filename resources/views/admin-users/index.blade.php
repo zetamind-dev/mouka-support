@@ -189,6 +189,7 @@
                   @endif
 
                   <td>{{ $user->email }}</td>
+                  <td>{{ $user->created_at->format('F d, Y H:i') }}</td>
                   <td>{{ $user->location }}</td>
                   <td>
                     <form action="{{ url('admin/users/' . $user->id) }}" method="POST">
