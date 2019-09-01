@@ -99,7 +99,7 @@
       <label for="message" class="col-md-4 control-label">Message</label>
 
       <div class="col-md-12">
-        <textarea rows="5" id="message" class="form-control" name="message"></textarea>
+        <textarea rows="5" id="article-ckeditor" class="form-control" name="message"></textarea>
         @if($errors->has('message'))
         <span class="help-block">
           <strong>{{ $errors->first('message') }}</strong>
