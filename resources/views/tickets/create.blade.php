@@ -29,16 +29,6 @@
       </div>
     </div>
 
-    <div style="display: none;">
-      <div class="col-md-12">
-        <input id="location" type="text" class="form-control" style="line-height: 40px;" name="location"
-          value="{{ old('llcation') }}" maxlength="30"> @if ($errors->has('location'))
-        <span class="help-block">
-          <strong>{{ $errors->first('location') }}</strong>
-        </span>
-        @endif
-      </div>
-    </div>
 
     <div class="form-group{{ $errors->has('category') ? ' has-error' : '' }}">
       <label for="category" class="col-md-4 control-label">Category</label>
@@ -59,14 +49,14 @@
       </div>
     </div>
 
-    <div class="form-group{{ $errors->has('copy_email') ? ' has-error' : '' }}">
-      <label for="copy_email" class="col-md-2 control-label">CopyEmail</label>
+    <div class="form-group{{ $errors->has('copy_email2') ? ' has-error' : '' }}">
+      <label for="copy_email2" class="col-md-2 control-label">CopyEmail</label>
 
       <div class="col-md-12">
-        <input id="copy_email" type="text" class="form-control" style="line-height: 40px;" name="copy_email"
-          value="{{ old('copy_email') }}" maxlength="50"> @if ($errors->has('copy_email'))
+        <input id="copy_email" type="text" class="form-control" style="line-height: 40px;" name="copy_email2"
+          value="{{ old('copy_email2') }}" maxlength="50"> @if ($errors->has('copy_email2'))
         <span class="help-block">
-          <strong>{{ $errors->first('copy_email') }}</strong>
+          <strong>{{ $errors->first('copy_email2') }}</strong>
         </span>
         @endif
       </div>
@@ -94,6 +84,16 @@
       </div>
     </div>
 
+
+    <div class="form-group{{ $errors->has('location') ? ' has-error' : '' }}">
+      <label for="location" class="col-md-4 control-label">Ticket Location</label>
+
+      <div class="col-sm-4">
+        <select id="location" type="" class="form-control" name="location" style="height: 30px;">
+          <option value="{{Auth::user()->location}}"> {{Auth::user()->location}} </option>
+        </select>
+      </div>
+    </div>
 
     <div class="form-group{{ $errors->has('message') ? ' has-error' : '' }}">
       <label for="message" class="col-md-4 control-label">Message</label>

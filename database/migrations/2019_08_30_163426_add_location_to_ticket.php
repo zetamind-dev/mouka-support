@@ -14,7 +14,7 @@ class AddLocationToTicket extends Migration
     public function up()
     {
             Schema::table('tickets', function($table){
-            $table->string('location')->default('Head Office');
+            $table->string('location');
         });
     }
 

@@ -28,20 +28,21 @@ class HomeController extends Controller
      */
     public function index()
     {
+        
         if (Auth::user()->user_type > 0) {
-            $tickets = Ticket::orderBy('id', 'desc')->paginate(10);
+            $tickets = Ticket::orderBy('id', 'desc')->where('location', Auth::user()->location)->paginate(10);
             $categories = Category::all();
 
-            $totalTicketsClosed = Ticket::all()->where('status', 'Closed');
+            $totalTicketsClosed = Ticket::all()->where('status', 'Closed')->where('location', Auth::user()->location);
             $totalTicketsClosed = count($totalTicketsClosed);
 
-            $totalTicketsOpen = Ticket::all()->where('status', 'Open');
+            $totalTicketsOpen = Ticket::all()->where('status', 'Open')->where('location', Auth::user()->location);
             $totalTicketsOpen = count($totalTicketsOpen);
             
             $totalUsers = User::all();
             $totalUsers = count($totalUsers);
 
-            $totalTickets = Ticket::all();
+            $totalTickets = Ticket::all()->where('location', Auth::user()->location);
             $totalTickets = count($totalTickets);
 
             $totalComments = null;
