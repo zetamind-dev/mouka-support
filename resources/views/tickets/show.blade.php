@@ -1,14 +1,16 @@
- @extends('layouts.app') @section('title', $ticket->title) @section('external-css')
+@extends('layouts.app') @section('title', $ticket->title) @section('external-css')
 
 
-<link href="{{ asset('css/userdashboard.css') }}" rel="stylesheet"> @endsection @include('layouts.user-dashboard-nav') @section('content')
+<link href="{{ asset('css/userdashboard.css') }}" rel="stylesheet"> @endsection @include('layouts.user-dashboard-nav')
+@section('content')
 
 <div class="col-md-8 col-lg-6" style="margin:auto">
     <div class="card">
 
         @include('includes.flash')
 
-        <div class="card-header" style="background:#2737A6;color:white; font-size:17px; font-weight:bold;">Ticket ID : {{ $ticket->ticket_id }}</div>
+        <div class="card-header" style="background:#2737A6;color:white; font-size:17px; font-weight:bold;">Ticket ID :
+            {{ $ticket->ticket_id }}</div>
         <div class="container">
 
             <div class="card-body">
@@ -26,47 +28,51 @@
                             <label for="category">Status</label>
                             <input type="text" class="form-control" id="status" value="{{ $ticket->status }}" readonly>
                         </div>
-
                         <div class="col-md-4">
                             <label for="category">Date Opened</label>
-                            <input type="text" class="form-control" id="opened" value="{{ $ticket->created_at->format('F d, Y H:i') }}" readonly>
+                            <input type="text" class="form-control" id="opened"
+                                value="{{ $ticket->created_at->format('F d, Y H:i') }}" readonly>
                         </div>
-
+                        @if($ticket->status != "Open")
                         <div class="col-md-4">
                             <label for="category">Date Closed</label>
-                            <input type="text" class="form-control" id="closed" value="{{ $ticket->updated_at->format('F d, Y H:i') }}" readonly>
+                            <input type="text" class="form-control" id="closed"
+                                value="{{ $ticket->updated_at->format('F d, Y H:i') }}" readonly>
                         </div>
+                        @endif
                     </div>
                     <div class="form-group">
                         <div class="form-group">
                             <label for="category">Ticket Duration</label>
-                            <input type="text" class="form-control" id="closed" value="{{ $ticket->created_at->diffInHours($ticket->updated_at) }} hour(s)"
-                                readonly>
+                            <input type="text" class="form-control" id="closed"
+                                value="{{ $ticket->created_at->diffInHours($ticket->updated_at) }} hour(s)" readonly>
                         </div>
                     </div>
 
 
 
-                    @if(Auth::user()->is_admin)
+                    @if(Auth::user()->user_type > 0)
                     <div class="form-group">
                         <div class="form-group">
                             <label for="category">Ticket By</label>
-                            <input type="text" class="form-control" id="closed" value="{{ ucfirst($ticket->user->name) }} " readonly>
+                            <input type="text" class="form-control" id="closed"
+                                value="{{ ucfirst($ticket->user->name) }} " readonly>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="form-group">
-                            <label for="category">Ticket Visibility</label>
-                            <input type="text" class="form-control" id="closed" value="{{ ucfirst($ticket->visibility) }} " readonly>
+                            <label for="category">Ticket Priority</label>
+                            <input type="text" class="form-control" id="closed"
+                                value="{{ ucfirst($ticket->priority) }} " readonly>
                         </div>
                     </div>
 
+                    <div class="form-group">
                         <div class="form-group">
-                            <div class="form-group">
-                                <label for="picture">Images</label>
-                                <img style="width: 100%" src="/storage/picture/{{ $ticket->picture }}">
-                            </div>
+                            <label for="picture">Images</label>
+                            <img style="width: 100%" src="/storage/picture/{{ $ticket->picture }}">
                         </div>
+                    </div>
 
 
                     <br>
@@ -74,14 +80,15 @@
                     <div style="float:right">
                         <form action="{{ url('admin/public_ticket/' . $ticket->ticket_id) }}" method="POST">
                             @csrf
-                       <!--     <button type="submit" class="btn btn-danger btn-md" style="font-weight:bold">Make Ticket Public</button> -->
+                            <!--     <button type="submit" class="btn btn-danger btn-md" style="font-weight:bold">Make Ticket Public</button> -->
                         </form>
                     </div>
                     @else
                     <div style="float:right">
                         <form action="{{ url('admin/private_ticket/' . $ticket->ticket_id) }}" method="POST">
                             @csrf
-                            <button type="submit" class="btn btn-primary btn-md" style="background:#2737A6;color:white;font-weight:bold;">Make Ticket Private</button>
+                            <button type="submit" class="btn btn-primary btn-md"
+                                style="background:#2737A6;color:white;font-weight:bold;">Make Ticket Private</button>
                         </form>
                     </div>
                     @endif
@@ -98,7 +105,8 @@
             <div class="container">
                 <blockquote class="blockquote mb-0">
                     <p>{{ $comment->comment }} </p>
-                    <footer class="blockquote-footer">By {{ $comment->user->name }} on {{ $comment->created_at->diffForHumans() }}</footer>
+                    <footer class="blockquote-footer">By {{ $comment->user->name }} on
+                        {{ $comment->created_at->diffForHumans() }}</footer>
                 </blockquote>
             </div>
         </div>
@@ -114,7 +122,8 @@
             <input type="hidden" name="ticket_id" value="{{ $ticket->id }}">
 
             <div class="form-group{{ $errors->has('comment') ? ' has-error' : '' }}">
-                <textarea rows="5" id="comment" class="form-control" name="comment"></textarea> @if ($errors->has('comment'))
+                <textarea rows="5" id="article-ckeditor" class="form-control" name="comment"></textarea>
+                @if($errors->has('comment'))
                 <span class="help-block">
                     <strong>{{ $errors->first('comment') }}</strong>
                 </span>
