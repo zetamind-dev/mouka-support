@@ -2,6 +2,7 @@
 
 namespace ComplainDesk\Http\Controllers;
 
+
 use Illuminate\Http\Request;
 use ComplainDesk\Log;
 
@@ -20,7 +21,7 @@ class LogsController extends Controller
     public function index()
     {
         //
-        $logs = Log::orderBy('id', 'asc')->paginate(20);
+        $logs = Log::orderBy('id', 'desc')->paginate(20);
 
         return view('logs.index', compact('logs'));
     }

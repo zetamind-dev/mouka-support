@@ -29,7 +29,7 @@ Route::get('/', 'LoginPageController@index');
 Auth::routes();
 
 //Route to User's Dashboard
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index');
 
 //Route to display Frequently asked Questions
 Route::get('/faq', 'FaqsController@index');
