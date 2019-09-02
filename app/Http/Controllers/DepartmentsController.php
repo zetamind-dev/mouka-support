@@ -43,4 +43,20 @@ class DepartmentsController extends Controller
         return redirect()->back()->with("status", "$department->name Department has been created.");
     }
 
+    //Method to detele Category
+public function delete(Log $log, $id)
+{
+    $department = Department::where('id', $id)->firstOrFail();
+
+    $action = "Deleted Department";
+    $description = "Category ". $department ->name . " has been Deleted";
+    $userId = Auth::user()->id;
+
+    $department->delete();
+
+    $log->store($action, $description, $userId);
+
+    return redirect()->back()->with("status", "Department Deleted.");
+}
+
 }
