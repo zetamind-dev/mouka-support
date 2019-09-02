@@ -65,9 +65,9 @@ class HomeController extends Controller
             $totalComments = Comment::where('user_id', Auth::user()->id)->paginate(10);
             $totalComments = count($totalComments);
 
-            $totalAdmins = null;
+            $moderators = User::all()->where('location', Auth::user()->location);
         }
 
-        return view('home', compact('tickets', 'categories', 'totalTicketsClosed', 'totalTicketsOpen', 'totalTickets','totalComments'));
+        return view('home', compact('tickets', 'categories', 'totalTicketsClosed', 'totalTicketsOpen', 'totalTickets','totalComments', 'moderators'));
     }
 }

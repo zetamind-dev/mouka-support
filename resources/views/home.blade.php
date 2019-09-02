@@ -41,10 +41,10 @@
                 </div>
               </div>
               <!--
-                      <div style="clear:both ">
-                          <a href="#" class="btn btn-outline-primary btn-sm">View details</a>
-                      </div>
-                      -->
+                    <div style="clear:both ">
+                        <a href="#" class="btn btn-outline-primary btn-sm">View details</a>
+                    </div>
+                    -->
             </div>
           </div>
         </div>
@@ -69,10 +69,10 @@
                 </div>
               </div>
               <!--
-                      <div style="clear:both;">
-                          <a href="# " class="btn btn-outline-primary btn-sm ">View details</a>
-                      </div>
-                      -->
+                    <div style="clear:both;">
+                        <a href="# " class="btn btn-outline-primary btn-sm ">View details</a>
+                    </div>
+                    -->
             </div>
           </div>
         </div>
@@ -96,10 +96,10 @@
                 </div>
               </div>
               <!--
-                      <div style="clear:both ">
-                          <a href="# " class="btn btn-outline-primary btn-sm">View details</a>
-                      </div>
-                      -->
+                    <div style="clear:both ">
+                        <a href="# " class="btn btn-outline-primary btn-sm">View details</a>
+                    </div>
+                    -->
             </div>
           </div>
         </div>
@@ -137,9 +137,10 @@
               <td>
                 {{ $ticket->title }}
               </td>
-              @if (Auth::user()->user_type < 1) <td>{{ $ticket->copy_email }}</td>
-                @else
-                <td>{{ $ticket->ticket_owner }}</td>
+              @if (Auth::user()->user_type < 1) <td>
+                @foreach ($moderators as $moderator)
+                @if ($moderator->user_type > 0) {{ $moderator->email }} @endif @endforeach </td> @else <td>
+                  {{ $ticket->ticket_owner }}</td>
                 @endif
 
                 <td>
