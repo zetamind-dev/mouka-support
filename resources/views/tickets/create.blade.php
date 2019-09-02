@@ -50,7 +50,7 @@
     </div>
 
     <div class="form-group{{ $errors->has('copy_email') ? ' has-error' : '' }}">
-      <label for="copy_email" class="col-md-2 control-label">CopyEmail</label>
+      <label for="copy_email" class="col-md-2 control-label">Copy Email</label>
 
       <div class="col-md-12">
         <input id="copy_email" type="text" class="form-control" style="line-height: 40px;" name="copy_email"
