@@ -157,7 +157,7 @@ return [
          */
         ComplainDesk\Providers\AppServiceProvider::class,
         ComplainDesk\Providers\AuthServiceProvider::class,
-        // ComplainDesk\Providers\BroadcastServiceProvider::class,
+        ComplainDesk\Providers\BroadcastServiceProvider::class,
         ComplainDesk\Providers\EventServiceProvider::class,
         ComplainDesk\Providers\RouteServiceProvider::class,
 

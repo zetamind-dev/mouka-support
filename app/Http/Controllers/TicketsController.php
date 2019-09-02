@@ -100,7 +100,7 @@ $location = $request->input('location');
     //$mailer->SendToCategory($ticket->category->email, $ticket);
 
         
-    return redirect()->back()->with("status", "A ticket with ID: #$ticket->ticket_id has been opened.");
+    return redirect()->back()->with("status", "A ticket with ID: $ticket->ticket_id has been opened.");
     
     /*$smsResponse = $sms->sendSMS($smsMessage, $telephone);
 
