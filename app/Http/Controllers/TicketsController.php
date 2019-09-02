@@ -5,6 +5,7 @@ namespace ComplainDesk\Http\Controllers;
 use Illuminate\Http\Request;
 use ComplainDesk\Category;
 use ComplainDesk\Ticket;
+use ComplainDesk\User;
 use ComplainDesk\Mailers\AppMailer;
 use ComplainDesk\Http\Controllers\SMSController;
 use Illuminate\Support\Facades\Auth;
@@ -68,6 +69,7 @@ $location = $request->input('location');
     }else{
         $ticket_id = 'HO' . strtoupper(random_int(0, 10000000));
     }
+  
 
 
     //dd($request);
@@ -80,7 +82,9 @@ $location = $request->input('location');
         'message'   => strip_tags($request->input('message')),
         'status'    => "Open",
         'picture'   => $fileNameToStore,
-        'location' => $location
+        'location' => $location,
+        'copy_email' => $request->input('copy_email'),
+        'ticket_owner' => Auth::user()->email
         
     ]);
 
@@ -120,6 +124,7 @@ public function userTickets()
 {
     $tickets = Ticket::where('user_id', Auth::user()->id)->paginate(10);
     $categories = Category::all();
+    //$users = User::all()->where('location', Auth::user()->location);
 
     return view('tickets.user_tickets', compact('tickets', 'categories'));
 }
@@ -131,6 +136,7 @@ public function show($ticket_id)
     $ticket = Ticket::where('ticket_id', $ticket_id)->firstOrFail();
     $comments = $ticket->comments;
     $category = $ticket->category;
+    //$users = User::all()->where('location', Auth::user()->location);
 
     return view('tickets.show', compact('ticket', 'category', 'comments'));
 }

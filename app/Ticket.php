@@ -8,7 +8,7 @@ class Ticket extends Model
 {
     //
     protected $fillable = [
-        'user_id', 'category_id', 'ticket_id', 'title', 'priority', 'message', 'status','picture','copy_email2','location'
+        'user_id', 'category_id', 'ticket_id', 'title', 'priority', 'message', 'status','picture','location','copy_email', 'ticket_owner'
     ];
 
     public function category()

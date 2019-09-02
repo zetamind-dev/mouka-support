@@ -95,6 +95,7 @@
       </div>
     </div>
 
+
     <div class="form-group{{ $errors->has('message') ? ' has-error' : '' }}">
       <label for="message" class="col-md-4 control-label">Message</label>
 

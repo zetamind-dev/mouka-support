@@ -4,8 +4,8 @@
 
 <body class="bg-light">
 
-  <main role="main" class="container">
-    <div id="page-wrapper" class="col-md-12">
+  <main role="main" class="container col-md-10">
+    <div id="page-wrapper">
       <div class="row justify-content-end">
         <div class="col-sm-2">
           <h1 class="page-header">
@@ -41,10 +41,10 @@
                 </div>
               </div>
               <!--
-                            <div style="clear:both ">
-                                <a href="#" class="btn btn-outline-primary btn-sm">View details</a>
-                            </div>
-                            -->
+                      <div style="clear:both ">
+                          <a href="#" class="btn btn-outline-primary btn-sm">View details</a>
+                      </div>
+                      -->
             </div>
           </div>
         </div>
@@ -69,10 +69,10 @@
                 </div>
               </div>
               <!--
-                            <div style="clear:both;">
-                                <a href="# " class="btn btn-outline-primary btn-sm ">View details</a>
-                            </div>
-                            -->
+                      <div style="clear:both;">
+                          <a href="# " class="btn btn-outline-primary btn-sm ">View details</a>
+                      </div>
+                      -->
             </div>
           </div>
         </div>
@@ -96,10 +96,10 @@
                 </div>
               </div>
               <!--
-                            <div style="clear:both ">
-                                <a href="# " class="btn btn-outline-primary btn-sm">View details</a>
-                            </div>
-                            -->
+                      <div style="clear:both ">
+                          <a href="# " class="btn btn-outline-primary btn-sm">View details</a>
+                      </div>
+                      -->
             </div>
           </div>
         </div>
@@ -109,17 +109,21 @@
       <br> @if ($tickets->isEmpty())
       <p>No Tickets have been created.</p>
       @else
-      <div class="card-body">
+      <div class="card-body col-lg-12">
         <table class="table table-responsive-md table-hover">
           <thead style="background:#2737A6;color:white; font-size:17px; font-weight:bold;">
             <tr>
               <th>Ticket ID</th>
-              <th> Title</th>
-              <th> Category</th>
-              <th> Status</th>
-              <th> Date Opened</th>
-              <th>Ticket Duration</th>
-              <th> Action</th>
+              <th>Title</th>
+              @if (Auth::user()->user_type < 1) <th>Ticket Moderator</th>
+                @else
+                <th>Ticket Owner</th>
+                @endif
+                <th>Category</th>
+                <th>Status</th>
+                <th>Date Opened</th>
+                <th>Ticket Duration</th>
+                <th> Action</th>
             </tr>
           </thead>
           <tbody>
@@ -133,25 +137,31 @@
               <td>
                 {{ $ticket->title }}
               </td>
-              <td>
-                @foreach ($categories as $category) @if ($category->id === $ticket->category_id)
-                {{ $category->name }} @endif @endforeach
-              </td>
-              <td>
-                @if ($ticket->status === 'Open')
-                <span class="label label-success text-success">{{ $ticket->status }}</span>
+              @if (Auth::user()->user_type < 1) <td>{{ $ticket->copy_email }}</td>
                 @else
-                <span class="label label-danger text-danger">{{ $ticket->status }}</span>
+                <td>{{ $ticket->ticket_owner }}</td>
                 @endif
-              </td>
-              <td>{{ $ticket->created_at->format('F d, Y H:i') }}</td>
-              <td>{{ $ticket->created_at->diffInHours($ticket->updated_at) }} hour (s)</td>
-              <td>
-                <form action="{{ url('tickets/'. $ticket->ticket_id) }}" method="GET">
-                  <button type="submit" class="btn btn-sm" style="background:#2737A6;color:white;font-weight:bold">More
-                    Details</button>
-                </form>
-              </td>
+
+                <td>
+                  @foreach ($categories as $category) @if ($category->id === $ticket->category_id)
+                  {{ $category->name }} @endif @endforeach
+                </td>
+                <td>
+                  @if ($ticket->status === 'Open')
+                  <span class="label label-success text-success">{{ $ticket->status }}</span>
+                  @else
+                  <span class="label label-danger text-danger">{{ $ticket->status }}</span>
+                  @endif
+                </td>
+                <td>{{ $ticket->created_at->format('F d, Y H:i') }}</td>
+                <td>{{ $ticket->created_at->diffInHours($ticket->updated_at) }} hour (s)</td>
+                <td>
+                  <form action="{{ url('tickets/'. $ticket->ticket_id) }}" method="GET">
+                    <button type="submit" class="btn btn-sm"
+                      style="background:#2737A6;color:white;font-weight:bold">More
+                      Details</button>
+                  </form>
+                </td>
             </tr>
             @endforeach
 
