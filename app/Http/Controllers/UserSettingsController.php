@@ -30,6 +30,15 @@ class UserSettingsController extends Controller
 
         $user->telephone = $request->input('telephone');
         $user->employeeno = $request->input('employeeno');
+        $password = $user->password;
+        $new_passowrd = $request->input('new-password');
+        $confirm_password = $request->input('new-password');
+
+        // Compare passwords before updating user's table
+        if($new_passowrd === $confirm_password){
+            $password = bcrypt($$new_password);
+            $user->password = $password;
+        }
 
         $user->save();
 

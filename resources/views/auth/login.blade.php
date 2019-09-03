@@ -5,8 +5,8 @@
         <a class="navbar-brand" href="{{ url('/') }}">
             {{ config('app.name', 'Laravel') }}
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-            aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -28,8 +28,8 @@
                 </li>
                 @else
                 <li class="nav-item dropdown">
-                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false">
+                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {{ Auth::user()->name }}
                         <span class="caret"></span>
                     </a>
@@ -70,8 +70,9 @@
                         <label for="email" class="col-sm-4 col-form-label text-md-right">E-Mail</label>
 
                         <div class="col-md-6">
-                            <input id="email" type="text" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}"
-                                 required autofocus> @if ($errors->has('email'))
+                            <input id="email" type="text"
+                                class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email"
+                                value="{{ old('email') }}" required autofocus> @if ($errors->has('email'))
                             <span class="invalid-feedback">
                                 <strong>{{ $errors->first('email') }}</strong>
                             </span>
@@ -83,7 +84,8 @@
                         <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
 
                         <div class="col-md-6">
-                            <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password"
+                            <input id="password" type="password"
+                                class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password"
                                 required> @if ($errors->has('password'))
                             <span class=h eight="100px" "invalid-feedback">
                                 <strong>{{ $errors->first('password') }}</strong>
@@ -96,7 +98,8 @@
                         <div class="col-md-6 offset-md-4">
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" name="remember" {{ old( 'remember') ? 'checked' : '' }}> Remember Me
+                                    <input type="checkbox" name="remember" {{ old( 'remember') ? 'checked' : '' }}>
+                                    Remember Me
                                 </label>
                             </div>
                         </div>
@@ -108,7 +111,7 @@
                                 Login
                             </button>
 
-                            <a class="btn btn-link" href="{{ route('password.request') }}">
+                            <a class="btn btn-link" href="#">
                                 Forgot Your Password?
                             </a>
                         </div>
