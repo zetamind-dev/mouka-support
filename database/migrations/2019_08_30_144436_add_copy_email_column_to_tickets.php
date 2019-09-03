@@ -14,7 +14,7 @@ class AddCopyEmailColumnToTickets extends Migration
     public function up()
     {
              Schema::table('tickets', function($table){
-            $table->string('copy_email');
+            $table->string('copy_email2');
         });
     }
 
@@ -26,7 +26,7 @@ class AddCopyEmailColumnToTickets extends Migration
     public function down()
     {
             Schema::table('tickets', function($table){
-            $table->dropColumn('copy_email');
+            $table->dropColumn('copy_email2');
         });
     }
 }

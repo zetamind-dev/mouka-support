@@ -21,10 +21,20 @@ public function __construct()
 
 public function index()
 {
-    $tickets = Ticket::orderBy('id', 'desc')->paginate(10);
-    $categories = Category::all();
 
-    return view('tickets.index', compact('tickets', 'categories'));
+    if(Auth::user()->user_type === 2){
+         $tickets = Ticket::orderBy('id', 'desc')->whereNotIn('location', ['Benin', 'Kaduna'])->paginate(10);
+         $categories = Category::all();
+
+         return view('tickets.index', compact('tickets', 'categories'));
+         
+    }elseif(Auth::user()->user_type === 1){
+        $tickets = Ticket::orderBy('id', 'desc')->where('location', Auth::user()->location)->paginate(10);
+        $categories = Category::all();
+
+         return view('tickets.index', compact('tickets', 'categories'));
+    }
+
 }
 
 public function create()
@@ -85,7 +95,7 @@ $location = $request->input('location');
         'status'    => "Open",
         'picture'   => $fileNameToStore,
         'location' => $location,
-        'copy_email' => $request->input('copy_email'),
+        'copy_email2' => $request->input('copy_email2'),
         'ticket_owner' => Auth::user()->email
         
     ]);
@@ -102,8 +112,8 @@ $location = $request->input('location');
     
 
 
-    //$mailer->sendTicketInformation(Auth::user(), $ticket);
-    //$mailer->SendToCategory($ticket->category->email, $ticket);
+    $mailer->sendTicketInformation(Auth::user(), $ticket);
+    $mailer->SendToCategory($ticket->category->email, $ticket);
 
         
     return redirect()->back()->with("status", "A ticket with ID: $ticket->ticket_id has been opened.");
@@ -124,7 +134,7 @@ $location = $request->input('location');
 
 public function userTickets()
 {
-    $tickets = Ticket::where('user_id', Auth::user()->id)->paginate(10);
+    $tickets = Ticket::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->paginate(10);
     $categories = Category::all();
     //$users = User::all()->where('location', Auth::user()->location);
 

@@ -137,10 +137,16 @@
               <td>
                 {{ $ticket->title }}
               </td>
-              @if (Auth::user()->user_type < 1) <td>
-                @foreach ($moderators as $moderator)
-                @if ($moderator->user_type > 0) {{ $moderator->email }} @endif @endforeach </td> @else <td>
-                  {{ $ticket->ticket_owner }}</td>
+              @if (Auth::user()->user_type < 1) @foreach ($moderators as $moderator) @if ($moderator->user_type > 0)
+                @if ((Auth::user()->location === "Head Office") && ($moderator->location === "Ikeja"))
+                <td>{{ $moderator->email }} </td>
+                @elseif(Auth::user()->location === $moderator->location)
+                <td>{{ $moderator->email }} </td>
+                @endif
+                @endif
+                @endforeach
+                @else
+                <td> {{ $ticket->ticket_owner }}</td>
                 @endif
 
                 <td>

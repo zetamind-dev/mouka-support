@@ -49,14 +49,15 @@
       </div>
     </div>
 
-    <div class="form-group{{ $errors->has('copy_email') ? ' has-error' : '' }}">
-      <label for="copy_email" class="col-md-2 control-label">Copy Email</label>
+    <div class="form-group{{ $errors->has('copy_email2') ? ' has-error' : '' }}">
+      <label for="copy_email2" class="col-md-2 control-label">Copy Email</label>
 
       <div class="col-md-12">
-        <input id="copy_email" type="text" class="form-control" style="line-height: 40px;" name="copy_email"
-          value="{{ old('copy_email') }}" maxlength="50"> @if ($errors->has('copy_email'))
+        <input id="copy_email2" type="text" class="form-control" style="line-height: 40px;" name="copy_email2"
+          value="{{ old('copy_email2') }}" maxlength="50" placeholder="Enter moderator's email address">
+        @if($errors->has('copy_email2'))
         <span class="help-block">
-          <strong>{{ $errors->first('copy_email') }}</strong>
+          <strong>{{ $errors->first('copy_email2') }}</strong>
         </span>
         @endif
       </div>
