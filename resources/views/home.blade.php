@@ -41,10 +41,10 @@
                 </div>
               </div>
               <!--
-                    <div style="clear:both ">
-                        <a href="#" class="btn btn-outline-primary btn-sm">View details</a>
-                    </div>
-                    -->
+                  <div style="clear:both ">
+                      <a href="#" class="btn btn-outline-primary btn-sm">View details</a>
+                  </div>
+                  -->
             </div>
           </div>
         </div>
@@ -69,10 +69,10 @@
                 </div>
               </div>
               <!--
-                    <div style="clear:both;">
-                        <a href="# " class="btn btn-outline-primary btn-sm ">View details</a>
-                    </div>
-                    -->
+                  <div style="clear:both;">
+                      <a href="# " class="btn btn-outline-primary btn-sm ">View details</a>
+                  </div>
+                  -->
             </div>
           </div>
         </div>
@@ -96,10 +96,10 @@
                 </div>
               </div>
               <!--
-                    <div style="clear:both ">
-                        <a href="# " class="btn btn-outline-primary btn-sm">View details</a>
-                    </div>
-                    -->
+                  <div style="clear:both ">
+                      <a href="# " class="btn btn-outline-primary btn-sm">View details</a>
+                  </div>
+                  -->
             </div>
           </div>
         </div>
@@ -137,14 +137,7 @@
               <td>
                 {{ $ticket->title }}
               </td>
-              @if (Auth::user()->user_type < 1) @foreach ($moderators as $moderator) @if ($moderator->user_type > 0)
-                @if ((Auth::user()->location === "Head Office") && ($moderator->location === "Ikeja"))
-                <td>{{ $moderator->email }} </td>
-                @elseif(Auth::user()->location === $moderator->location)
-                <td>{{ $moderator->email }} </td>
-                @endif
-                @endif
-                @endforeach
+              @if (Auth::user()->user_type < 1) <td> {{ $ticket->copy_email2 }}</td>
                 @else
                 <td> {{ $ticket->ticket_owner }}</td>
                 @endif

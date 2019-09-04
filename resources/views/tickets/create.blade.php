@@ -50,20 +50,24 @@
     </div>
 
     <div class="form-group{{ $errors->has('copy_email2') ? ' has-error' : '' }}">
-      <label for="copy_email2" class="col-md-2 control-label">Copy Email</label>
+      <label for="copy_email2" class="col-md-4 control-label">Copy Moderator's Email</label>
 
-      <div class="col-md-12">
-        <input id="copy_email2" type="text" class="form-control" style="line-height: 40px;" name="copy_email2"
-          value="{{ old('copy_email2') }}" maxlength="50" placeholder="Enter moderator's email address">
-        @if($errors->has('copy_email2'))
-        <span class="help-block">
-          <strong>{{ $errors->first('copy_email2') }}</strong>
-        </span>
-        @endif
+      <div class="col-sm-6">
+        @if (Auth::user()->user_type < 1) @foreach ($moderators as $moderator) @if($moderator->user_type > 0)
+          @if ((Auth::user()->location === "Lagos") && ($moderator->location === "Head Office"))
+          <select id="copy_email2" type="" class="form-control" name="copy_email2" style="height: 35px;">
+            <option value="{{$moderator->email}}"> {{$moderator->email}} </option>
+          </select>
+          @elseif(Auth::user()->location === $moderator->location)
+          <select id="copy_email2" type="" class="form-control" name="copy_email2" style="height: 35px;">
+            <option value="{{$moderator->email}}"> {{$moderator->email}}</option>
+          </select>
+          @endif
+          @endif
+          @endforeach
+          @endif
       </div>
     </div>
-
-
 
 
     <div class="form-group{{ $errors->has('priority') ? ' has-error' : '' }}">
@@ -90,7 +94,7 @@
       <label for="location" class="col-md-4 control-label">Ticket Location</label>
 
       <div class="col-sm-4">
-        <select id="location" type="" class="form-control" name="location" style="height: 30px;">
+        <select id="location" type="" class="form-control" name="location" style="height: 35px;">
           <option value="{{Auth::user()->location}}"> {{Auth::user()->location}} </option>
         </select>
       </div>

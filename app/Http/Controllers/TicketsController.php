@@ -40,8 +40,9 @@ public function index()
 public function create()
 {
     $categories = Category::all();
+    $moderators = User::all();
 
-    return view('tickets.create', compact('categories'));
+    return view('tickets.create', compact('categories', 'moderators'));
 }
 
 public function store(Request $request, AppMailer $mailer, SMSController $sms)

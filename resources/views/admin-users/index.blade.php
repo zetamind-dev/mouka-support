@@ -116,7 +116,7 @@
                 <div class="col-md-6">
                   <select name="location" class="form control">
                     <option value="Head Office">Head Office</option>
-                    <option value="Ikeja">Ikeja</option>
+                    <option value="Lagos">Lagos</option>
                     <option value="Benin">Benin</option>
                     <option value="Kaduna">Kaduna</option>
                   </select>

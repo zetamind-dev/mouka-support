@@ -28,29 +28,44 @@ $this->middleware('auth');
  */
 public function index()
 {
+/**
+ *  This logic enables an admin user to handle tickets from two different location
+ *  Based on request this logic can be remove later in the future 
+ * 
+ *  There are three access level based on the user_type value
+ *  user_type 2: admin 
+ *  user_type 1: modeartor
+ *  user_type 0: user
+ * 
+ *  user_type 2 should moderate all tickets in Lagos which includes Ikeja and Head Office
+ */
 
-if (Auth::user()->user_type === 2) {
+ // Check if logged in user is an admin
+if (Auth::user()->user_type === 2) {// If logged in user is admin user
+// Then select all tickets from the tickets table where location is not Benin and Kaduna
 $tickets = Ticket::orderBy('id', 'desc')
-                ->whereNotIn('location', ['Benin', 'Kaduna'])
-                ->paginate(10);
+              ->whereNotIn('location', ['Benin', 'Kaduna'])
+              ->paginate(10);
+// Retrieve all categories in the categories table
 $categories = Category::all();
 
+// Retrieve
 $totalTicketsClosed = Ticket::where('status', 'Closed')
-                            ->whereNotIn('location', ['Benin', 'Kaduna'])
-                            ->get();
+                          ->whereNotIn('location', ['Benin', 'Kaduna'])
+                          ->get();
 $totalTicketsClosed = count($totalTicketsClosed);
 
 $totalTicketsOpen = Ticket::where('status', 'Open')
-                            ->whereNotIn('location', ['Benin', 'Kaduna'])
-                            ->get();
+                          ->whereNotIn('location', ['Benin', 'Kaduna'])
+                          ->get();
 $totalTicketsOpen = count($totalTicketsOpen);
 
 $totalUsers = User::whereNotIn('location', ['Benin', 'Kaduna'])
-                  ->get();
+                ->get();
 $totalUsers = count($totalUsers);
 
 $totalTickets = Ticket::whereNotIn('location', ['Benin', 'Kaduna'])
-                      ->get();
+                    ->get();
 $totalTickets = count($totalTickets);
 
 $totalComments = null;
