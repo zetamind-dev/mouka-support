@@ -28,6 +28,7 @@
                         <input type="text" class="form-control" id="new" name="employeeno" required>
                     </div>
 
+
                     <div class="form-group">
                         <label for="new">New Password</label>
                         <input type="password" class="form-control" id="new" name="new-password" required>
