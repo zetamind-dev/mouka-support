@@ -71,14 +71,36 @@ public function store(Request $request, AppMailer $mailer, SMSController $sms)
         $fileNameToStore = 'noimage.jpg';
     }
     
+    /**
+     *  Format ticket_id string 
+    */
     
-// Check to see if location is null
-$location = $request->input('location');
-    // If Loggedin user location is not Head Office, make ticket_id from first two letters of user's loaction and a random int
+
+    // Retrieve tickets from tickets table 
+    $tickets = Ticket::all()->where('location', Auth::user()->location);
+    $count = count($tickets);
+
+    // Check if count is less than 10
+    if($count < 10){// if true
+        // increment count variable by 1 and assign the value to new_id variable
+        $new_id = $count + 1;
+        // concat ticket number with 000
+        $ticket_num = "000" . $new_id;
+         
+    }else{// ticket numbering should begin with zeros
+        $new_id = $count + 1;
+        // concat ticket number with 000
+        $ticket_num = "00" . $new_id;
+    }
+
+
+    // Check to see if location is null
+     $location = $request->input('location');
+    // If Loggedin user location is not Head Office, make ticket_id from first two letters of user's loaction and a random integer number
     if($location != 'Head Office'){
-        $ticket_id = strtoupper(mb_substr($location, 0, 2) . random_int(0, 10000000));
+        $ticket_id = strtoupper(mb_substr($location, 0, 2) . $ticket_num);
     }else{
-        $ticket_id = 'HO' . strtoupper(random_int(0, 10000000));
+        $ticket_id = 'HO' . strtoupper($ticket_num);
     }
   
 
@@ -102,6 +124,7 @@ $location = $request->input('location');
     ]);
 
     $ticket->save();
+    
 
     //$smsMessage = "You just created a Ticket with an ID: $ticket->ticket_id";
     //$userTelephone = Auth::user()->telephone;
@@ -115,9 +138,11 @@ $location = $request->input('location');
 
     $mailer->sendTicketInformation(Auth::user(), $ticket);
     $mailer->SendToCategory($ticket->category->email, $ticket);
-
+    
+    // Create link for rating IT department
+   
         
-    return redirect()->back()->with("status", "A ticket with ID: $ticket->ticket_id has been opened.");
+    return redirect()->back()->with("status", "A ticket with ID: $ticket->ticket_id has been opened. link");
     
     /*$smsResponse = $sms->sendSMS($smsMessage, $telephone);
 
