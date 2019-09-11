@@ -7,7 +7,7 @@ use Illuminate\Contracts\Mail\Mailer;
 class AppMailer
 {
     protected $mailer;
-    protected $fromAddress = 'itsupport@mouka.com';
+    protected $fromAddress = 'workflow@mouka.com';
     protected $fromName = 'Mouka Help Desk';
     protected $to;
     protected $cc ;

@@ -42,6 +42,11 @@ Route::post('/tickets', 'TicketsController@store');
 Route::get('/mytickets', 'TicketsController@userTickets');
 //Route to display more information on a single ticket
 Route::get('/tickets/{ticket_id}', 'TicketsController@show');
+//Route to display edit page for a single ticket
+Route::get('/tickets/edit/{ticket_id}', 'TicketsController@edit');
+//Route to handle update for a single ticket
+Route::post('/tickets/{ticket_id}/update', 'TicketsController@update');
+Route::post('/tickets/{ticket_id}/delete', 'TicketsController@delete');
 
 //Route to Handle new comments storage
 Route::post('/comment', 'CommentsController@store');
