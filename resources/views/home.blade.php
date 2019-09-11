@@ -122,7 +122,7 @@
                 <th>Category</th>
                 <th>Status</th>
                 <th>Date Opened</th>
-                <th>Ticket Duration</th>
+                <th>Last Updated</th>
                 <th> Action</th>
             </tr>
           </thead>
@@ -154,7 +154,7 @@
                   @endif
                 </td>
                 <td>{{ $ticket->created_at->format('F d, Y H:i') }}</td>
-                <td>{{ $ticket->created_at->diffInHours($ticket->updated_at) }} hour (s)</td>
+                <td>{{ $ticket->updated_at->format('F d, Y H:i')}}</td>
                 <td>
                   <form action="{{ url('tickets/'. $ticket->ticket_id) }}" method="GET">
                     <button type="submit" class="btn btn-sm"
