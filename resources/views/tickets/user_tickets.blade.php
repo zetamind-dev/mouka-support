@@ -17,8 +17,8 @@
                 <th> Last Updated</th>
                 @foreach ($tickets as $ticket)
                 @if ($ticket->status === 'Open')
-                <th> Update</th>
-                <th> Drop</th>
+                <th> Update Ticket</th>
+                <th> Drop Ticket</th>
                 @else
                 <th> Action</th>
                 @endif
@@ -56,10 +56,10 @@
                     </form>
                 </td>
                 <td>
-                    <form action="{{ url('tickets/'. $ticket->id . '/delete') }}" method="POST">
+                    <form action="{{ url('tickets/'. $ticket->id . '/drop') }}" method="POST">
                         @csrf
                         <button type="submit" class="btn btn-danger btn-sm"
-                            style="color:white;font-weight:bold">Delete</button>
+                            style="color:white;font-weight:bold">Drop</button>
                     </form>
                 </td>
                 @else

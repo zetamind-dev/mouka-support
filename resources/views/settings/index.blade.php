@@ -10,6 +10,12 @@
                 @include('includes.flash')
                 <form action="{{ url('/settings') }}" method="POST">
                     @csrf
+                    @if ($oldTelephone === "")
+                    <div class="form-group">
+                        <label for="new">Phone Number:</label>
+                        <input type="number" class="form-control" id="new" name="telephone" required>
+                    </div>
+                    @else
                     <div class="form-group">
                         <label for="current">Current Phone Number</label>
                         <input class="form-control" id="current" value="{{ $oldTelephone }}" readonly>
@@ -18,7 +24,13 @@
                         <label for="new">New Phone Number:</label>
                         <input type="number" class="form-control" id="new" name="telephone" required>
                     </div>
-
+                    @endif
+                    @if ($oldEmployeeno === "")
+                    <div class="form-group">
+                        <label for="new">Employee No.:</label>
+                        <input type="text" class="form-control" id="new" name="employeeno" required>
+                    </div>
+                    @else
                     <div class="form-group">
                         <label for="current">Current Employee No</label>
                         <input class="form-control" id="current" value="{{ $oldEmployeeno }}" readonly>
@@ -27,7 +39,7 @@
                         <label for="new">Employee No.:</label>
                         <input type="text" class="form-control" id="new" name="employeeno" required>
                     </div>
-
+                    @endif
 
                     <div class="form-group">
                         <label for="new">New Password</label>
@@ -36,7 +48,7 @@
 
                     <div class="form-group">
                         <label for="new">Confirm New Password</label>
-                        <input type="password" class="form-control" id="new" name="confirmed-password" required>
+                        <input type="password" class="form-control" id="new" name="Cpassword" required>
                     </div>
 
 

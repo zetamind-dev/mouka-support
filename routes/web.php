@@ -46,7 +46,7 @@ Route::get('/tickets/{ticket_id}', 'TicketsController@show');
 Route::get('/tickets/edit/{ticket_id}', 'TicketsController@edit');
 //Route to handle update for a single ticket
 Route::post('/tickets/{ticket_id}/update', 'TicketsController@update');
-Route::post('/tickets/{ticket_id}/delete', 'TicketsController@delete');
+Route::post('/tickets/{ticket_id}/drop', 'TicketsController@drop');
 
 //Route to Handle new comments storage
 Route::post('/comment', 'CommentsController@store');

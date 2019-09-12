@@ -43,7 +43,7 @@ public function index()
  // Check if logged in user is an admin
 if (Auth::user()->user_type === 2) {// If logged in user is admin user
 // Then select all tickets from the tickets table where location is not Benin and Kaduna
-$tickets = Ticket::orderBy('id', 'desc')
+$tickets = Ticket::orderBy('id', 'desc')->where('drop_ticket', 0)
               ->whereNotIn('location', ['Benin', 'Kaduna'])
               ->paginate(10);
 // Retrieve all categories in the categories table
@@ -51,12 +51,12 @@ $categories = Category::all();
 
 // Retrieve
 $totalTicketsClosed = Ticket::where('status', 'Closed')
-                          ->whereNotIn('location', ['Benin', 'Kaduna'])
+                          ->whereNotIn('location', ['Benin', 'Kaduna'])->where('drop_ticket', 0)
                           ->get();
 $totalTicketsClosed = count($totalTicketsClosed);
 
 $totalTicketsOpen = Ticket::where('status', 'Open')
-                          ->whereNotIn('location', ['Benin', 'Kaduna'])
+                          ->whereNotIn('location', ['Benin', 'Kaduna'])->where('drop_ticket', 0)
                           ->get();
 $totalTicketsOpen = count($totalTicketsOpen);
 
@@ -64,7 +64,7 @@ $totalUsers = User::whereNotIn('location', ['Benin', 'Kaduna'])
                 ->get();
 $totalUsers = count($totalUsers);
 
-$totalTickets = Ticket::whereNotIn('location', ['Benin', 'Kaduna'])
+$totalTickets = Ticket::whereNotIn('location', ['Benin', 'Kaduna'])->where('drop_ticket', 0)
                     ->get();
 $totalTickets = count($totalTickets);
 
@@ -74,19 +74,19 @@ return view('home', compact('tickets', 'categories', 'totalTicketsClosed', 'tota
 
 }
 elseif (Auth::user()->user_type === 1) {
-$tickets = Ticket::orderBy('id', 'desc')->where('location', Auth::user()->location)->paginate(10);
+$tickets = Ticket::orderBy('id', 'desc')->where('location', Auth::user()->location)->paginate(10)->where('drop_ticket', 0);
 $categories = Category::all();
 
-$totalTicketsClosed = Ticket::all()->where('status', 'Closed')->where('location', Auth::user()->location);
+$totalTicketsClosed = Ticket::all()->where('status', 'Closed')->where('location', Auth::user()->location)->where('drop_ticket', 0);
 $totalTicketsClosed = count($totalTicketsClosed);
 
-$totalTicketsOpen = Ticket::all()->where('status', 'Open')->where('location', Auth::user()->location);
+$totalTicketsOpen = Ticket::all()->where('status', 'Open')->where('location', Auth::user()->location)->where('drop_ticket', 0);
 $totalTicketsOpen = count($totalTicketsOpen);
 
-$totalUsers = User::all()->where('location', Auth::user()->location);;
+$totalUsers = User::all()->where('location', Auth::user()->location);
 $totalUsers = count($totalUsers);
 
-$totalTickets = Ticket::all()->where('location', Auth::user()->location);
+$totalTickets = Ticket::all()->where('location', Auth::user()->location)->where('drop_ticket', 0);
 $totalTickets = count($totalTickets);
 
 $totalComments = null;
@@ -94,19 +94,19 @@ $totalComments = null;
 return view('home', compact('tickets', 'categories', 'totalTicketsClosed', 'totalTicketsOpen', 'totalTickets', 'totalUsers', 'totalComments'));
 
 } else {
-$tickets = Ticket::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->paginate(10);
+$tickets = Ticket::where('user_id', Auth::user()->id)->where('drop_ticket', 0)->orderBy('id', 'desc')->paginate(10);
 $categories = Category::all();
 
-$totalTicketsClosed = Ticket::all()->where('user_id', Auth::user()->id)->where('status', 'Closed');
+$totalTicketsClosed = Ticket::all()->where('user_id', Auth::user()->id)->where('status', 'Closed')->where('drop_ticket', 0);
 $totalTicketsClosed = count($totalTicketsClosed);
 
-$totalTicketsOpen = Ticket::all()->where('user_id', Auth::user()->id)->where('status', 'Open');
+$totalTicketsOpen = Ticket::all()->where('user_id', Auth::user()->id)->where('status', 'Open')->where('drop_ticket', 0);
 $totalTicketsOpen = count($totalTicketsOpen);
 
-$totalTickets = Ticket::where('user_id', Auth::user()->id)->paginate(10);
+$totalTickets = Ticket::where('user_id', Auth::user()->id)->paginate(10)->where('drop_ticket', 0);
 $totalTickets = count($totalTickets);
 
-$totalComments = Comment::where('user_id', Auth::user()->id)->paginate(10);
+$totalComments = Comment::where('user_id', Auth::user()->id)->paginate(10)->where('drop_ticket', 0);
 $totalComments = count($totalComments);
 
 $moderators = User::all();

@@ -24,13 +24,13 @@ public function index()
 {
 
 if(Auth::user()->user_type === 2){
-    $tickets = Ticket::orderBy('id', 'desc')->whereNotIn('location', ['Benin', 'Kaduna'])->paginate(10);
+    $tickets = Ticket::orderBy('id', 'desc')->where('drop_ticket', 0)->whereNotIn('location', ['Benin', 'Kaduna'])->paginate(10);
     $categories = Category::all();
 
     return view('tickets.index', compact('tickets', 'categories'));
     
 }elseif(Auth::user()->user_type === 1){
-$tickets = Ticket::orderBy('id', 'desc')->where('location', Auth::user()->location)->paginate(10);
+$tickets = Ticket::orderBy('id', 'desc')->where('drop_ticket', 0)->where('location', Auth::user()->location)->paginate(10);
 $categories = Category::all();
 
     return view('tickets.index', compact('tickets', 'categories'));
@@ -202,7 +202,7 @@ return redirect()->back()->with("status", "Ticket with ID: $ticket->ticket_id ha
 
 public function userTickets()
 {
-$tickets = Ticket::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->paginate(10);
+$tickets = Ticket::where('user_id', Auth::user()->id)->where('drop_ticket', 0)->orderBy('created_at', 'desc')->paginate(10);
 $categories = Category::all();
 //$users = User::all()->where('location', Auth::user()->location);
 
@@ -234,17 +234,14 @@ return view('tickets.edit', compact('ticket', 'category', 'comments', 'categorie
 }
 
 //Method to detele Ticket
-public function delete($id)
+public function drop($id)
 {
 // Find Ticket by id
 $ticket = Ticket::where('id', $id)->firstOrFail();
-    if($ticket->picture != 'noiamge.jpg'){
-        // Delete Image
-        Storage::delete('public/picture/'.$ticket->picture);
-    }
-    $ticket->delete();
+    $ticket->drop_ticket = 1;
+    $ticket->save();
     // Redirect user back to Ticket listing
-    return redirect()->back()->with("status", "Ticket with ID: $ticket->ticket_id has been deleted!");
+    return redirect()->back()->with("status", "Ticket with ID: $ticket->ticket_id has been dropped!");
 }
 
 public function ticketVisibilityPublic(Log $log, $ticket_id)
