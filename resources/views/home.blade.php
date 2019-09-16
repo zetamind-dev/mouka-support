@@ -168,8 +168,8 @@
           </tbody>
         </table>
 
-        {{ $tickets->render() }}
       </div>
+
       @endif
 
     </div>

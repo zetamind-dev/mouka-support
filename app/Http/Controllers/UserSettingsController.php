@@ -44,7 +44,7 @@ public function updateTelephone(Request $request)
                 
         $user->save();
 
-        return redirect()->back()->with("status", "Your Details has been submitted.");
+        return redirect()->back()->with("update", "Your details has been updated successfully!");
     }
 
 }

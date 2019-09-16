@@ -2,6 +2,7 @@
 namespace ComplainDesk\Mailers;
 
 use ComplainDesk\Ticket;
+use ComplainDesk\User;
 use Illuminate\Contracts\Mail\Mailer;
 
 class AppMailer
@@ -14,6 +15,7 @@ class AppMailer
     protected $subject;
     protected $view;
     protected $data = [];
+
 
     public function __construct(Mailer $mailer)
     {

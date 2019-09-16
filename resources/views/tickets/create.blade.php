@@ -53,7 +53,8 @@
       <label for="copy_email2" class="col-md-4 control-label">Copy Moderator's Email</label>
 
       <div class="col-sm-6">
-        @if (Auth::user()->user_type < 1) @foreach ($moderators as $moderator) @if($moderator->user_type > 0)
+        @if (Auth::user()->user_type < 1) @foreach ($moderators as $moderator) @if($moderator->user_type
+          > 0)
           @if ((Auth::user()->location === "Lagos") && ($moderator->location === "Head Office"))
           <select id="copy_email2" type="" class="form-control" name="copy_email2" style="height: 35px;">
             <option value="{{$moderator->email}}"> {{$moderator->email}} </option>

@@ -15,14 +15,8 @@
                 <th> Category</th>
                 <th> Status</th>
                 <th> Last Updated</th>
-                @foreach ($tickets as $ticket)
-                @if ($ticket->status === 'Open')
                 <th> Update Ticket</th>
                 <th> Drop Ticket</th>
-                @else
-                <th> Action</th>
-                @endif
-                @endforeach
             </tr>
         </thead>
         <tbody>
@@ -51,24 +45,26 @@
                 @if ($ticket->status === 'Open')
                 <td>
                     <form action="{{ url('tickets/edit/'. $ticket->ticket_id) }}" method="GET">
-                        <button type="submit" class="btn btn-info btn-sm"
-                            style="color:white;font-weight:bold">Edit</button>
+                        <button type="submit" class="btn btn-info btn-sm" style="color:white;font-weight:bold">Edit
+                            Ticket</button>
                     </form>
                 </td>
                 <td>
                     <form action="{{ url('tickets/'. $ticket->id . '/drop') }}" method="POST">
                         @csrf
-                        <button type="submit" class="btn btn-danger btn-sm"
-                            style="color:white;font-weight:bold">Drop</button>
+                        <button type="submit" class="btn btn-danger btn-sm" style="color:white;font-weight:bold">Drop
+                            Ticket</button>
                     </form>
                 </td>
                 @else
                 <td>
-                    <form action="{{ url('tickets/'. $ticket->ticket_id) }}" method="GET">
-                        <button type="submit" class="btn btn-primary btn-sm"
-                            style="background:#2737A6;color:white;font-weight:bold">Comment</button>
-                    </form>
-
+                    <button type="submit" class="btn btn-info btn-sm" style="color:white;font-weight:bold"
+                        disabled>Ticket closed, can't edit</button>
+                </td>
+                <td>
+                    <button type="submit" class="btn btn-danger btn-sm" style="color:white;font-weight:bold"
+                        disabled>Ticket
+                        closed, can't drop</button>
                 </td>
                 @endif
             </tr>

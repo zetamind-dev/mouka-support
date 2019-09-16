@@ -8,3 +8,8 @@
     {{ session('invalid') }}
 </div>
 @endif
+@if (session('update'))
+<div class="alert alert-success alert-dismissible fade show">
+    {{ session('update') }}
+</div>
+@endif
