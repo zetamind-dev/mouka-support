@@ -8,7 +8,7 @@
 
 <body>
 <p>
-    A support ticket with ID #{{ $ticket->ticket_id }} has been Opened for Your Attension 
+    A support ticket with ID #{{ $ticket->ticket_id }} has been Opened for Your Attention 
 </p>
 </body>
 

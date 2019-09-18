@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Console\Commands;
+namespace ComplainDesk\Console\Commands;
 
 use Illuminate\Console\Command;
 use ZBateson\MailMimeParser\MailMimeParser;
 use ZBateson\MailMimeParser\Message;
 use GuzzleHttp\Psr7;
-use Laravel\Email;
+use ComplainDesk\Email;
 
 class EmailParserCommand extends Command
 {

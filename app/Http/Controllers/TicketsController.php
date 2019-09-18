@@ -136,9 +136,9 @@ $telephone = '+233' . $userTelephone;
 }*/
 
 
-
+$categories = new Category;
 $mailer->sendTicketInformation(Auth::user(), $ticket);
-$mailer->SendToCategory($ticket->category->email, $ticket);
+$mailer->SendToCategory($categories, $ticket, Auth::user());
 
 // Create link for rating IT department
 

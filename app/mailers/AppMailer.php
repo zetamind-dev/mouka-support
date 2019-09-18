@@ -3,6 +3,7 @@ namespace ComplainDesk\Mailers;
 
 use ComplainDesk\Ticket;
 use ComplainDesk\User;
+use ComplainDesk\Category;
 use Illuminate\Contracts\Mail\Mailer;
 
 class AppMailer
@@ -26,20 +27,22 @@ class AppMailer
     {
         $this->to = $user->email;
         //dd($user->email);
-        $this->cc = $ticket->copy_email;
+        $this->cc = $ticket->copy_email2;
         $this->subject = "[Ticket ID: $ticket->ticket_id] $ticket->title";
         $this->view = 'emails.ticket_info';
         $this->data = compact('user', 'ticket');
-    //dd($this->cc);
+        //dd($this->cc);
         return $this->deliver();
 
     }
 
-    public  function SendToCategory($categoryemail, Ticket $ticket){
-        $this->to = $categoryemail;
+    public  function SendToCategory(Category $categories, Ticket $ticket, $user){  
+        $category = $categories::find($ticket->category_id);
+        $this->category_email = $category->email;
+        $this->to = $this->category_email;
         $this->subject = "[Ticket ID: $ticket->ticket_id] $ticket->title";
         $this->view = 'emails.ticket_info3';
-        $this->data = compact('ticket');
+        $this->data = compact('ticket', 'user', 'category');
 
 
 
@@ -53,7 +56,7 @@ class AppMailer
 
     public function sendTicketComments($ticketOwner, $user, Ticket $ticket, $comment)
     {
-      // $this->to = $ticketOwner->email;
+       // $this->to = $ticketOwner->email;
         $this->to = $ticket->category->email;
         $this->subject = "RE: $ticket->title (Ticket ID: $ticket->ticket_id)";
         $this->view = 'emails.ticket_comments';
