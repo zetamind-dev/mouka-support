@@ -8,6 +8,8 @@ use ComplainDesk\Category;
 use ComplainDesk\Ticket;
 use ComplainDesk\User;
 use ComplainDesk\Comment;
+use ComplainDesk\Mailers\AppMailer;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
@@ -26,11 +28,13 @@ $this->middleware('auth');
  *
  * @return \Illuminate\Http\Response
  */
-public function index()
+public function index(AppMailer $mailer)
 {
+// Invoke escalationlevel method
+// $mailer->SendToEscalationLevel();
 /**
  *  This logic enables an admin user to handle tickets from two different location
- *  Based on request this logic can be remove later in the future 
+ *  Based on request, this logic can be remove later in the future 
  * 
  *  There are three access level based on the user_type value
  *  user_type 2: admin 
@@ -114,4 +118,6 @@ $moderators = User::all();
 
 return view('home', compact('tickets', 'categories', 'totalTicketsClosed', 'totalTicketsOpen', 'totalTickets','totalComments', 'moderators'));
 }
+
 }
+

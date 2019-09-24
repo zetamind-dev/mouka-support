@@ -9,7 +9,7 @@
 <body>
 
         <p>
-            A support ticket with ID {{ $ticket->ticket_id }} has been Opened by {{$user->name}} from @if ($ticket->location === 'Head Office')
+            A support ticket with id {{ $ticket->ticket_id }} has been Opened by {{$user->name}} from @if ($ticket->location === 'Head Office')
                 Head Office
             @else
                 {{$ticket->location}} Plant
@@ -27,6 +27,7 @@
         <p><b>Status: </b> {{ $ticket->status }}</p>
         <br>
         <p><b>Complaint: </b> {{ $ticket->message }}</p>
+        <br>
         <p><b>Ticket Moderator: </b> {{ $ticket->copy_email2 }}</p>
 </body>
 

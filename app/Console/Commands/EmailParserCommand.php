@@ -1,5 +1,6 @@
 <?php
 
+#!/usr/bin/php
 namespace ComplainDesk\Console\Commands;
 
 use Illuminate\Console\Command;

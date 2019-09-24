@@ -22,7 +22,7 @@ class CommentsController extends Controller
         $comment = Comment::create([
                 'ticket_id' => $request->input('ticket_id'),
                 'user_id'   => Auth::user()->id,
-                'comment'   => $request->input('comment'),
+                'comment'   => strip_tags($request->input('comment')),
             ]);
 
         $ticketId =  $request->input('ticket_id');
