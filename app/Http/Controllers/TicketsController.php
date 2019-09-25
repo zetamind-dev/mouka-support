@@ -136,9 +136,9 @@ $telephone = '+233' . $userTelephone;
 }*/
 
 
-
+$categories = new Category;
 $mailer->sendTicketInformation(Auth::user(), $ticket);
-$mailer->SendToCategory($ticket->category->email, $ticket);
+$mailer->SendToCategory($categories, $ticket, Auth::user());
 
 // Create link for rating IT department
 
@@ -241,7 +241,7 @@ $ticket = Ticket::where('id', $id)->firstOrFail();
     $ticket->drop_ticket = 1;
     $ticket->save();
     // Redirect user back to Ticket listing
-    return redirect()->back()->with("status", "Ticket with ID: $ticket->ticket_id has been dropped!");
+    return redirect()->back()->with("warning", "Ticket with ID: $ticket->ticket_id has been dropped!");
 }
 
 public function ticketVisibilityPublic(Log $log, $ticket_id)

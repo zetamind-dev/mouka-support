@@ -104,4 +104,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
     //Reout to view Report
     Route::get('reports','ReportController@getComplainList');
 
+    //Runs crons job on the server
+    //Route::get('/execute','CronJobController@index');
+
 });

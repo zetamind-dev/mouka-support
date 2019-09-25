@@ -13,3 +13,9 @@
     {{ session('update') }}
 </div>
 @endif
+
+@if (session('warning'))
+<div class="alert alert-warning alert-dismissible fade show">
+    {{ session('warning') }}
+</div>
+@endif
