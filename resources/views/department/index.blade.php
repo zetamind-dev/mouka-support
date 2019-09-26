@@ -4,7 +4,9 @@
 <body class="bg-light">
 
     <main role="main" class="container">
+          
         <div class="col-md-10" style="margin:auto">
+             @include('includes.flash')
             <div class="card">
                 <div class="card-header" style="background:#2737A6;color:white; font-size:17px; font-weight:bold;">Add New Department</div>
                 <div class="container">

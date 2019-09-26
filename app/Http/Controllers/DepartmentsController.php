@@ -56,7 +56,7 @@ public function delete(Log $log, $id)
 
     $log->store($action, $description, $userId);
 
-    return redirect()->back()->with("status", "Department Deleted.");
+    return redirect()->back()->with("warning", "Department Deleted.");
 }
 
 }
