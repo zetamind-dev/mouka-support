@@ -107,14 +107,18 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
     Route::get('logs', 'LogsController@index');
     //Reout to view Report
     Route::get('reports','ReportController@getComplainList');
+    
+    //Route to display the page to create escalation level
+    Route::get('/escalation', 'EscalationController@index');
+    //Route to display the page to create escalation level
+    Route::get('/escalation/{id}', 'EscalationController@edit');
+    //Route to create new escalation level
+    Route::post('/escalation', 'EscalationController@store');
+    //Route to display the page to create escalation level
+    Route::post('/escalation/{id}/update', 'EscalationController@update');
 
-    Route::get('/test', 'TestController@index');
-    Route::post('/test', 'TestController@store');
-
-    //Route to display page create escalation levels
-    Route::get('/est-level','EscalationController@index');
-    //Route to create escalation levels
-    Route::post('/est-level', 'EscalationController@create');
+    //Route to display the page to create escalation level
+    Route::post('/escalation/delete/{id}', 'EscalationController@delete');
 
     //Runs crons job on the server
     //Route::get('/execute','CronJobController@index');

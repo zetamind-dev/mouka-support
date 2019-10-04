@@ -45,7 +45,7 @@
                 <div class="container">
                     <div class="card-body">
                         @if ($departments->isEmpty())
-                        <p>You have not created any tickets.</p>
+                        <p>You have not created any department yet.</p>
                         @else
                         <div class="table-responsive-md">
                             <table class="table table-inverse table-hover">

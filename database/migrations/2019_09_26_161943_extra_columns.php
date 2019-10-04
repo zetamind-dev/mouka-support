@@ -13,7 +13,7 @@ class ExtraColumns extends Migration
      */
     public function up()
     {
-        Schema::table('tests', function($table){
+        Schema::table('escalations', function($table){
             $table->string('email');
             $table->integer('level');
             $table->string('location');
@@ -29,8 +29,12 @@ class ExtraColumns extends Migration
      */
     public function down()
     {
-        Schema::table('tests', function($table){
+        Schema::table('escalations', function($table){
             $table->dropColumn('email');
+            $table->dropColumn('level');
+            $table->dropColumn('location');
+            $table->dropColumn('format');
+            $table->dropColumn('duration');
         });
     }
 }

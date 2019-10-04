@@ -39,8 +39,7 @@
     <a class="nav-link {{ Request::is('admin/department*') ? 'active' : '' }}"
       href="{{ url( '/admin/department') }} ">Department</a>
     <a class="nav-link {{ Request::is('admin/logs*') ? 'active' : '' }}" href="{{ url( '/admin/logs') }} ">Logs</a>
-    <a class="nav-link {{ Request::is('admin/est-level*') ? 'active' : '' }}" href="{{ url( '/admin/est-level') }} ">Escalation</a>
-     <a class="nav-link {{ Request::is('admin/test*') ? 'active' : '' }}" href="{{ url( '/admin/test') }} ">Test</a>
+    <a class="nav-link {{ Request::is('admin/est-level*') ? 'active' : '' }}" href="{{ url( '/admin/escalation') }} ">Escalation</a>
     @endif
 
     @else

@@ -13,7 +13,7 @@
         </div>
         <div class="card-body">
           <div class="container">
-            <form method="POST" action="{{ url('admin/test') }}">
+            <form method="POST" action="{{ url('admin/escalation') }}">
               {!! csrf_field() !!}
               <div class="form-group row">
                 <div class="col-md-6">
@@ -56,16 +56,16 @@
 
               <div class="form-row">
                 <div class="col-md-4">
-                  <label for="format">Duration Format</label>
+                  <label for="format">Frequency Format</label>
                   <select id="format" type="format " class="form-control" name="format" style="height: 38px;" required>
                     <option value="">Choose Duration Format</option>
-                    <option value="hours">In Hours</option>
-                    <option value="days">In Days</option>
+                    <option value="hour">In Hours</option>
+                    <option value="day">In Days</option>
                   </select>
                 </div>
                 <div class="col-md-4">
-                  <label for="duration">Enter Duration</label>
-                  <input id="duration" type="text" class="form-control" name="duration" placeholder="e.g 2"
+                  <label for="duration">Enter Frequency</label>
+                  <input id="duration" type="number" min="0" class="form-control" name="duration" placeholder="e.g 2"
                     required>
                 </div>
               </div>
@@ -73,7 +73,7 @@
               <br>
               <div>
                 <button type="submit" class="btn btn-primary" style="color:white; font-weight:bold">
-                  Add Level
+                  Create Level
                 </button>
               </div>
             </form>
@@ -101,32 +101,34 @@
                   <th>Email</th>
                   <th>Location</th>
                   <th>Level</th>
-                  <th>Duration</th>
+                  <th>Frequency</th>
                   <th colspan="2" class="text-center">Action</th>
                 </tr>
               </thead>
+
+              @foreach ($escalations as $escalation)
               <tbody>
                 <tr>
-                  <td>1</td>
-                  <td>User Name</td>
-                  <td>Type</td>
-                  <td>Email</td>
-                  <td>Location</td>
-                  <td>Duration</td>
-                  <td>
-                    <form action="{{ url('admin/users/') }}" method="POST">
-                      @csrf
-                      <button type="submit" class="btn btn-info btn-sm">Edit</button>
-                    </form>
-                  </td>
-                  <td>
-                    <form action="{{ url('admin/users/') }}" method="POST">
-                      @csrf
-                      <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                    </form>
-                  </td>
+                  <td>{{$escalation->id}}</td>
+                  <td>{{$escalation->name}}</td>
+                  <td>{{$escalation->email}}</td>
+                  <td>{{$escalation->location}}</td>
+                   <td>{{$escalation->level}}</td>
+                  <td>{{$escalation->duration}} {{$escalation->format}}(s) interval</td>
+                <td>
+                  <form action="{{ url('admin/escalation/'. $escalation->id) }}" method="GET">
+                    <button type="submit" class="btn btn-info btn-sm" style="color:white;font-weight:bold">Edit</button>
+                  </form>
+                </td>
+                <td>
+                  <form action="{{ url('admin/escalation/delete/' . $escalation->id) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn btn-danger btn-sm" style="font-weight:bold">Delete</button>
+                  </form>
+                </td>
                 </tr>
               </tbody>
+              @endforeach
             </table>
           </div>
 

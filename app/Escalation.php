@@ -4,7 +4,7 @@ namespace ComplainDesk;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Test extends Model
+class Escalation extends Model
 {
             protected $fillable = [
         'name', 'email', 'level', 'location', 'format', 'duration'
