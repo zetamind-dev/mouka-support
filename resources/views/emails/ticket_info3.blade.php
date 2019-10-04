@@ -12,7 +12,7 @@
             A support ticket with id {{ $ticket->ticket_id }} has been Opened by {{$user->name}} from @if ($ticket->location === 'Head Office')
                 Head Office
             @else
-                {{$ticket->location}} Plant
+                {{$ticket->location}} Plant for your attention
             @endif
         </p>
         <br> 
@@ -27,8 +27,6 @@
         <p><b>Status: </b> {{ $ticket->status }}</p>
         <br>
         <p><b>Complaint: </b> {{ $ticket->message }}</p>
-        <br>
-        <p><b>Ticket Moderator: </b> {{ $ticket->copy_email2 }}</p>
 </body>
 
 </html>

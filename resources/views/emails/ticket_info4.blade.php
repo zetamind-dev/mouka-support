@@ -23,7 +23,7 @@
      <table class="table table-responsive-md table-hover">
        <thead style="background:#2737A6;color:white; font-size:17px; font-weight:bold;">
          <tr>
-           <th> <small>Ticket ID</small></th>
+           <th><small>Ticket ID</small></th>
            <th><small>Ticket Title</small></th>
            <th><small>Ticket Owner</small></th>
            <th><small>Ticket Moderator</small></th>

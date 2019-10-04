@@ -4,6 +4,7 @@ namespace ComplainDesk\Mailers;
 use ComplainDesk\Ticket;
 use ComplainDesk\User;
 use ComplainDesk\Category;
+use ComplainDesk\Escalation;
 use Illuminate\Contracts\Mail\Mailer;
 use Carbon\Carbon;
 
@@ -36,10 +37,10 @@ class AppMailer
 
     }
 
-    public  function SendToCategory(Category $categories, Ticket $ticket, $user){  
+    public  function SendToModerator(Category $categories, Ticket $ticket, $user){  
         $category = $categories::find($ticket->category_id);
-        $this->category_email = $category->email;
-        $this->to = $this->category_email;
+        $this->to = $ticket->copy_email2;
+        $this->cc = $category->email;
         $this->subject = "[Ticket ID: $ticket->ticket_id] $ticket->title";
         $this->view = 'emails.ticket_info3';
         $this->data = compact('ticket', 'user', 'category');
@@ -48,21 +49,21 @@ class AppMailer
 
        return $this->mailer->send($this->view, $this->data, function ($message) {
             $message->from($this->fromAddress, $this->fromName)
-                ->to($this->to)->subject($this->subject);
+                ->to($this->to)->cc($this->cc)->subject($this->subject);
 
 
         });
     }
 
-    public  function SendToEscalationLevel() {  
+    public  function SendToEscalationLevel(Escalation $escalation) {  
 
     // get the current time  - 2015-12-19 10:10:54
         $current = Carbon::now();
 
-        // Declare hours as days
-        $two_days = 48;
-        $four_days = 96;
-        $six_days = 144;
+        // // Declare hours as days
+        // $two_days = 48;
+        // $four_days = 96;
+        // $six_days = 144;
 
         // Retrieve tickets that has not been dropped by ticket owner and tickets that has not been resolved by ticket Moderators
         // from the Database 
@@ -70,32 +71,32 @@ class AppMailer
 
         // Retrieve Categories
         $categories = Category::all();
+        // Retrieve Escalations
+        $escalations = Escalation::all();
 
         // Ticket logs
         $tickets_log = [];
+        // escalation mail
+        $escalation_mail;
+        $escalation_level;
          
-        // Iterate over each ticket and check the difference in hours 
-        foreach($tickets as $ticket){
-        // Check if ticket duration is up to 48 hours
-        $duration = $ticket->created_at->diffInHours($current);
-          if($duration === $two_days){// If true then
-             // Set escalation level mail
-             $escalation_mail = 'a.emmanuel2@yahoo.com';
-             $tickets_log[] = $ticket;
+        // Iterate over tickets result set
+        foreach($tickets as $ticket) {
+            // Check if ticket location matches escalation level location
+            if($ticket->location === $escaltion->location) {
+                $tickets_log[] = $ticket->title;
+                $tickets_log[] = $ticket->id;
+                $tickets_log[] = $ticket->ticket_owner;
+                $tickets_log[] = $ticket->cpoy_email2;
+                $tickets_log[] = $ticket->location;
+                $tickets_log[] = $ticket->category;
+                $tickets_log[] = $ticket->priority;
+                $tickets_log[] = $current->diffInHours($ticket->created_at);
           }
-          elseif ($duration > $two_days || $duration < $six_days){
-             // Set escalation level mail
-             $escalation_mail = 'info@zetamindgroup.com';
-             $tickets_log[] = $ticket;
-          }elseif ($duration === $six_days  || $duration > $six_days) {
-             // Set escalation level mail
-             $escalation_mail = 'hello@mouka-support.com';
-             $tickets_log[] = $ticket;
-          }
-        }
+       }
 
 
-        $this->to  = $escalation_mail;
+        $this->to  = $escalation->email;
         $this->subject = "Escalated Tickets";
         $this->view = 'emails.ticket_info4';
         $this->data = compact('duration', 'tickets_log', 'categories');
@@ -112,8 +113,9 @@ class AppMailer
 
     public function sendTicketComments($ticketOwner, $user, Ticket $ticket, $comment)
     {
-       // $this->to = $ticketOwner->email;
+        //$this->to = $ticketOwner->email;
         $this->to = $ticket->category->email;
+        //$this->to = $ticket->copy_email2;
         $this->subject = "RE: $ticket->title (Ticket ID: $ticket->ticket_id)";
         $this->view = 'emails.ticket_comments';
         $this->data = compact('ticketOwner', 'user', 'ticket', 'comment');
@@ -129,6 +131,7 @@ class AppMailer
     {
        // dd($ticket->category);
         $this->to = $ticket->category->email;
+        //$this->to = $ticket->copy_email2;
         $this->subject = "RE: $ticket->title (Ticket ID: $ticket->ticket_id)";
         $this->view = 'emails.ticket_comments';
         $this->data = compact('ticketOwner', 'user', 'ticket', 'comment');
@@ -139,7 +142,7 @@ class AppMailer
     public function sendTicketStatusNotification($ticketOwner, Ticket $ticket)
     {
         $this->to = $ticketOwner->email;
-        $this->cc = $ticket->copy_email2;
+        //$this->cc = $ticket->copy_email2;
         $this->subject = "RE: $ticket->title (Ticket ID: $ticket->ticket_id)";
         $this->view = 'emails.ticket_status';
         $this->data = compact('ticketOwner', 'ticket');

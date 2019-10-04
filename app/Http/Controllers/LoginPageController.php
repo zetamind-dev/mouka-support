@@ -16,7 +16,6 @@ class LoginPageController extends Controller
 {
     //This return the login page view
     public function index(AppMailer $mailer) {
-        $mailer->SendToEscalationLevel();
         return view('auth.login');
     }
 }

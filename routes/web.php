@@ -60,7 +60,11 @@ Route::get('/assets', 'AssetsController@create');
 Route::post('/assets', 'AssetsController@store');
 Route::post('/assets/{id}', 'AssetsController@delete');
 
+
+
 //Admin routes( they should all be prefix with /admin in the Url)
+
+
 Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
     //Route to display all tickets
     Route::get('tickets', 'TicketsController@index');
@@ -103,6 +107,18 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
     Route::get('logs', 'LogsController@index');
     //Reout to view Report
     Route::get('reports','ReportController@getComplainList');
+    
+    //Route to display the page to create escalation level
+    Route::get('/escalation', 'EscalationController@index');
+    //Route to display the page to create escalation level
+    Route::get('/escalation/{id}', 'EscalationController@edit');
+    //Route to create new escalation level
+    Route::post('/escalation', 'EscalationController@store');
+    //Route to display the page to create escalation level
+    Route::post('/escalation/{id}/update', 'EscalationController@update');
+
+    //Route to display the page to create escalation level
+    Route::post('/escalation/delete/{id}', 'EscalationController@delete');
 
     //Runs crons job on the server
     //Route::get('/execute','CronJobController@index');

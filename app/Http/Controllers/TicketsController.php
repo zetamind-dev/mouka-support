@@ -82,13 +82,13 @@ $tickets = Ticket::all()->where('location', Auth::user()->location);
 $count = count($tickets);
 
 // Check if count is less than 10
-if($count < 10){// if true
+if($count < 9){// if true
 // increment count variable by 1 and assign the value to new_id variable
 $new_id = $count + 1;
-// concat ticket number with 000
+// concat ticket number with three zeros 
 $ticket_num = "000" . $new_id;
     
-}else{// ticket numbering should begin with zeros
+}else{// ticket numbering should begin with two zeros
 $new_id = $count + 1;
 // concat ticket number with 000
 $ticket_num = "00" . $new_id;
@@ -138,7 +138,7 @@ $telephone = '+233' . $userTelephone;
 
 $categories = new Category;
 $mailer->sendTicketInformation(Auth::user(), $ticket);
-$mailer->SendToCategory($categories, $ticket, Auth::user());
+$mailer->SendToModerator($categories, $ticket, Auth::user());
 
 // Create link for rating IT department
 
