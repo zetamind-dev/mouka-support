@@ -3,6 +3,9 @@
 namespace ComplainDesk\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Support\Facades\Schema;
+use ComplainDesk\Escalation;
+use ComplainDesk\Mailers\AppMailer;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
@@ -14,6 +17,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
        Commands\EmailParserCommand::class,
+       Commands\Escalations::class,
     ];
 
     /**
@@ -24,8 +28,20 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        //$schedule->command('inspire')
-         //          ->everyMinute();
+        if (Schema::hasTable('escalations')) {
+            // Get all escalations from the database
+            $escalations = Escalation::all();
+            // Go through each escalations to dynamically set them up.
+                foreach ($escalations as $escalation) {
+                    if ($escalation === "daily") {
+                            // Use the scheduler to add the task at its desired frequency
+                            $schedule->call(function() use ($escalation) {
+                              $escalations = Commands\Escalations::class;
+                              $escalations->handle($escalation);
+                            })->command('escalate:tickets')->dailyAt('13:00');
+                    }
+                }
+        }
     }
 
     /**

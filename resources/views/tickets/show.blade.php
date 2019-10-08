@@ -129,7 +129,7 @@
                 <textarea rows="5" id="article-ckeditor" class="form-control" name="comment"></textarea>
                 @if($errors->has('comment'))
                 <span class="help-block">
-                    <strong>{{ $errors->first('comment') }}</strong>
+                    <strong class="text-danger">{{ $errors->first('comment') }}</strong>
                 </span>
                 @endif
             </div>

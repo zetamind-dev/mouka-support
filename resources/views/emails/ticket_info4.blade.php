@@ -10,13 +10,6 @@
 
   <p>
    The Following Tickets has not been attended to  
-   @if ($duration === 48)
-    for the past two days 
-   @elseif ($duration > 48 || $duration < 144)
-    for more than Four days now
-    @elseif ($duration === 144  || $duration > 144) 
-    for more than a week now
-   @endif
   </p>
   <br>
    <div class="card-body col-lg-12">

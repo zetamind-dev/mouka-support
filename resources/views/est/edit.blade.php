@@ -71,20 +71,22 @@
               <div class="form-row">
                 <div class="col-md-4">
                   <label for="format">Frequency Format</label>
+                  @if ($escalation->format === "daily")
+                  <option value="{{$escalation->format}}">Daily</option>
+                  @elseif($escalation->format === "twiceDaily")
+                  <option value="{{$escalation->format}}">twiceDaily</option>
+                  @elseif($escalation->format === "weekly")
+                  <option value="{{$escalation->format}}">Weekly</option>
+                  @else
+                  <option value="{{$escalation->format}}">Monthly</option>
+                  @endif
                   <select id="format" type="format " class="form-control" name="format" style="height: 38px;" required>
-                    @if ($escalation->format === "day")
-                    <option value="{{$escalation->format}}">In Days</option>
-                    @else
-                    <option value="{{$escalation->format}}">In Hours</option>
-                    @endif
-                    <option value="hour">In Hours</option>
-                    <option value="day">In Days</option>
+                    <option value="">Choose Format</option>
+                    <option value="daily">Daily</option>
+                    <option value="twiceDaily">Twice Daily</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
                   </select>
-                </div>
-                <div class="col-md-4">
-                  <label for="duration">Enter Frequency</label>
-                  <input id="duration" type="number" min="0" class="form-control" name="duration" value="{{$escalation->duration}}" placeholder="e.g 2"
-                    required>
                 </div>
               </div>
               <br>

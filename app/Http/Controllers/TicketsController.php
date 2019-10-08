@@ -96,7 +96,7 @@ $ticket_num = "00" . $new_id;
 
 
 // Check to see if location is null
-$location = $request->input('location');
+$location = Auth::user()->location;
 // If Loggedin user location is not Head Office, make ticket_id from first two letters of user's loaction and a random integer number
 if($location != 'Head Office'){
 $ticket_id = strtoupper(mb_substr($location, 0, 2) . $ticket_num);
@@ -118,7 +118,7 @@ $ticket = new Ticket([
 'message'   => strip_tags($request->input('message')),
 'status'    => "Open",
 'picture'   => $fileNameToStore,
-'location' => $location,
+'location' => Auth::user()->location,
 'copy_email2' => $request->input('copy_email2'),
 'ticket_owner' => Auth::user()->email
 

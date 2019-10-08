@@ -16,103 +16,58 @@
     enctype="multipart/form-data">
     @csrf
 
-    <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
+    <div class="form-group">
       <label for="title" class="col-md-2 control-label">Title</label>
 
       <div class="col-md-12">
-        <input id="title" type="text" class="form-control" style="line-height: 40px;" name="title"
-          value="{{ old('title') }}" maxlength="30"> @if ($errors->has('title'))
-        <span class="help-block">
-          <strong>{{ $errors->first('title') }}</strong>
-        </span>
-        @endif
+        <input id="title" type="text" class="form-control" style="line-height: 40px;" name="title" maxlength="30" required>
       </div>
     </div>
 
 
-    <div class="form-group{{ $errors->has('category') ? ' has-error' : '' }}">
+    <div class="form-group">
       <label for="category" class="col-md-4 control-label">Category</label>
 
       <div class="col-md-12">
-        <select id="category" type="category" class="form-control" name="category" style="height: 55px;">
+        <select id="category" type="category" class="form-control" name="category" style="height: 55px;" required>
           <option value="">Select Category</option>
           @foreach ($categories as $category)
           <option value="{{ $category->id }}">{{ $category->name }}</option>
           @endforeach
         </select>
-
-        @if ($errors->has('category'))
-        <span class="help-block">
-          <strong>{{ $errors->first('category') }}</strong>
-        </span>
-        @endif
       </div>
     </div>
 
-    <div class="form-group{{ $errors->has('copy_email2') ? ' has-error' : '' }}">
-      <label for="copy_email2" class="col-md-4 control-label">Copy Moderator's Email</label>
-
-      <div class="col-sm-6">
-        @if (Auth::user()->user_type < 1) @foreach ($moderators as $moderator) @if($moderator->user_type
-          > 0)
-          @if ((Auth::user()->location === "Lagos") && ($moderator->location === "Head Office"))
-          <select id="copy_email2" type="" class="form-control" name="copy_email2" style="height: 35px;">
-            <option value="{{$moderator->email}}"> {{$moderator->email}} </option>
-          </select>
-          @elseif(Auth::user()->location === $moderator->location)
-          <select id="copy_email2" type="" class="form-control" name="copy_email2" style="height: 35px;">
-            <option value="{{$moderator->email}}"> {{$moderator->email}}</option>
-          </select>
-          @endif
-          @endif
-          @endforeach
-          @endif
-      </div>
+    <div class="form-group">
+      <label for="copy_email2" class="col-md-4 control-label">Copy Email</label>
+            <div class="col-md-4">
+              <input id="copy_email2" type="email" class="form-control" style="line-height: 40px;" name="copy_email2"
+                maxlength="30"
+                required>
+            </div>
     </div>
 
 
-    <div class="form-group{{ $errors->has('priority') ? ' has-error' : '' }}">
+    <div class="form-group">
       <label for="priority" class="col-md-4 control-label">Priority</label>
-
       <div class="col-md-12">
-        <select id="priority" type="" class="form-control" name="priority" style="height: 55px;">
+        <select id="priority" type="select" class="form-control" name="priority" style="height: 55px;" required>
           <option value="">Select Priority</option>
           <option value="low">Low</option>
           <option value="medium">Medium</option>
           <option value="high">High</option>
         </select>
-
-        @if ($errors->has('priority'))
-        <span class="help-block">
-          <strong>{{ $errors->first('priority') }}</strong>
-        </span>
-        @endif
       </div>
     </div>
-
-
-    <div class="form-group{{ $errors->has('location') ? ' has-error' : '' }}">
-      <label for="location" class="col-md-4 control-label">Ticket Location</label>
-
-      <div class="col-sm-4">
-        <select id="location" type="" class="form-control" name="location" style="height: 35px;">
-          <option value="{{Auth::user()->location}}"> {{Auth::user()->location}} </option>
-        </select>
-      </div>
-    </div>
-
 
     <div class="form-group{{ $errors->has('message') ? ' has-error' : '' }}">
-      <label for="message" class="col-md-4 control-label">Message</label>
-
-      <div class="col-md-12">
-        <textarea rows="5" id="article-ckeditor" class="form-control" name="message"></textarea>
-        @if($errors->has('message'))
-        <span class="help-block">
-          <strong>{{ $errors->first('message') }}</strong>
-        </span>
-        @endif
-      </div>
+       <label for="message" class="col-md-4 control-label">Message</label>
+      <textarea rows="5" id="" class="form-control" name="message" maxlength=250 required></textarea>
+      @if($errors->has('message'))
+      <span class="help-block">
+        <strong class="text-danger">{{ $errors->first('message') }}</strong>
+      </span>
+      @endif
     </div>
 
     <div class="form-group">
@@ -125,7 +80,7 @@
     <div class="form-group">
       <div class="col-md-12 col-md-offset-4">
         <button type="submit" class="btn btn-primary" style="font-weight:bold;background:#2737A6;color:white">
-          <i class="fa fa-btn fa-ticket"></i> Open Ticket
+          <i class="fa fa-btn fa-ticket"></i> Submit
         </button>
       </div>
     </div>

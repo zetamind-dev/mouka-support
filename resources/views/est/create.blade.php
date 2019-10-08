@@ -58,15 +58,12 @@
                 <div class="col-md-4">
                   <label for="format">Frequency Format</label>
                   <select id="format" type="format " class="form-control" name="format" style="height: 38px;" required>
-                    <option value="">Choose Duration Format</option>
-                    <option value="hour">In Hours</option>
-                    <option value="day">In Days</option>
+                    <option value="">Choose Format</option>
+                    <option value="daily">Daily</option>
+                    <option value="twiceDaily">Twice Daily</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
                   </select>
-                </div>
-                <div class="col-md-4">
-                  <label for="duration">Enter Frequency</label>
-                  <input id="duration" type="number" min="0" class="form-control" name="duration" placeholder="e.g 2"
-                    required>
                 </div>
               </div>
               <br>
@@ -114,7 +111,7 @@
                   <td>{{$escalation->email}}</td>
                   <td>{{$escalation->location}}</td>
                    <td>{{$escalation->level}}</td>
-                  <td>{{$escalation->duration}} {{$escalation->format}}(s) interval</td>
+                  <td>{{$escalation->format}}</td>
                 <td>
                   <form action="{{ url('admin/escalation/'. $escalation->id) }}" method="GET">
                     <button type="submit" class="btn btn-info btn-sm" style="color:white;font-weight:bold">Edit</button>
