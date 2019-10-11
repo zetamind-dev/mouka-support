@@ -5,10 +5,11 @@
 @section('content')
 
 <div class="col-md-8 col-lg-6" style="margin:auto">
+    @include('includes.flash')
+
     <div class="card">
 
-        @include('includes.flash')
-
+        
         <div class="card-header" style="background:#2737A6;color:white; font-size:17px; font-weight:bold;">Ticket ID :
             {{ $ticket->ticket_id }}</div>
         <div class="container">

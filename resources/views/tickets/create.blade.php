@@ -15,7 +15,30 @@
   <form class="form-horizontal col-md-12" role="form" method="POST" action="{{ url('/tickets') }}"
     enctype="multipart/form-data">
     @csrf
-
+    @if (Auth::user()->user_type > 0)
+       <div class="form-row">
+         
+         <div class="col-md-6">
+            <label for="user" class="control-label">Create a Ticket for</label>
+            <select id="userId" type="select" class="form-control" name="userId" style="height: 40px;" required>
+                  <option value="">Select User</option>
+                @foreach ($users as $user)
+                  <option value="{{ $user->id }}" >{{ $user->name }} &nbsp&nbsp </option>
+                @endforeach
+            </select>
+         </div>
+      
+          <div class="col-md-6">
+              <label for="status" class="control-label">Select Ticket Status</label>
+              <select id="status" type="select" class="form-control" name="status" style="height: 40px;" required>
+                <option value="">Select Status</option>
+                <option value="Open">Open</option>
+                <option value="Closed">Closed</option>
+              </select>
+          </div>
+       </div>
+    @endif
+    <br>
     <div class="form-group">
       <label for="title" class="col-md-2 control-label">Title</label>
 
@@ -37,15 +60,22 @@
         </select>
       </div>
     </div>
-
-    <div class="form-group">
-      <label for="copy_email2" class="col-md-4 control-label">Copy Email</label>
-            <div class="col-md-4">
-              <input id="copy_email2" type="email" class="form-control" style="line-height: 40px;" name="copy_email2"
-                maxlength="30"
-                required>
-            </div>
-    </div>
+    @if (Auth::user()->user_type > 0)
+        <div class="form-group">
+          <div class="col-md-4">
+          <input id="copy_email2" type="hidden" class="form-control" value="{{ Auth::user()->email }}" style="line-height: 40px;" name="copy_email2"
+              maxlength="30" required>
+          </div>
+        </div>
+    @else
+        <div class="form-group">
+          <label for="copy_email2" class="col-md-4 control-label">Copy Email</label>
+          <div class="col-md-4">
+            <input id="copy_email2" type="email" class="form-control" style="line-height: 40px;" name="copy_email2"
+              maxlength="30" required>
+          </div>
+        </div>
+    @endif
 
 
     <div class="form-group">
@@ -76,6 +106,7 @@
       </div>
     </div>
 
+    
 
     <div class="form-group">
       <div class="col-md-12 col-md-offset-4">

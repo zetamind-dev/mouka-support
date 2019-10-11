@@ -45,8 +45,7 @@
                 <div class="col-md-8">
                   <label for="department">Department</label>
 
-                  <select id="department" type="department" class="form-control" name="department" style="height: 55px;"
-                    required>
+                  <select id="department" type="department" class="form-control" name="department" required>
                     <option value="">Select Department</option>
                     @foreach ($departments as $department)
                     <option value="{{ $department->id }}">{{ $department->name }}</option>
@@ -110,7 +109,7 @@
                 </div>
               </div>
               <br>
-              @if(Auth::user()->user_type === 2)
+              @if(Auth::user()->user_type === 2 || 3)
               <div class="form-group{{ $errors->has('location') ? ' has-error' : '' }}">
                 <label for="location" class="col-md-4 control-label">Location</label>
                 <div class="col-md-6">
@@ -179,28 +178,58 @@
                 </tr>
               </thead>
               <tbody>
-                @foreach ($users as $user)
-                <tr>
-                  <td>{{ $user->name }}</td>
-                  @if ($user->user_type === 0)
-                  <td>User</td>
-                  @elseif ($user->user_type === 1)
-                  <td>Moderator</td>
-                  @else
-                  <td>Admin</td>
-                  @endif
+                @if (Auth::user()->user_type === 3)
+                 @foreach ($users as $user)
+                     @if ($user->user_type > 0)
+                         <tr>
+                           <td>{{ $user->name }}</td>
+                           @if ($user->user_type === 1)
+                           <td>Moderator</td>
+                           @elseif ($user->user_type === 2)
+                           <td>Admin</td>
+                           @else
+                           <td>Super User</td>
+                           @endif
 
-                  <td>{{ $user->email }}</td>
-                  <td>{{ $user->created_at->format('F d, Y H:i') }}</td>
-                  <td>{{ $user->location }}</td>
-                  <td>
-                    <form action="{{ url('admin/users/' . $user->id) }}" method="POST">
-                      @csrf
-                      <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
-                  </td>
-                </tr>
-                @endforeach
+                           <td>{{ $user->email }}</td>
+                           <td>{{ $user->created_at->format('F d, Y H:i') }}</td>
+                           <td>{{ $user->location }}</td>
+                           <td>
+                             <form action="{{ url('admin/users/' . $user->id) }}" method="POST">
+                               @csrf
+                               <button type="submit" class="btn btn-danger">Delete</button>
+                             </form>
+                           </td>
+                         </tr>
+                     @endif
+                 @endforeach
+                @elseif (Auth::user()->user_type === 1 || 2)
+                    @foreach ($users as $user)
+                         @if ($user->location === Auth::user()->location && $user->user_type < 3)
+                              <tr>
+                                <td>{{ $user->name }}</td>
+                                @if ($user->user_type === 0)
+                                <td>User</td>
+                                @elseif ($user->user_type === 1)
+                                <td>Moderator</td>
+                                @else
+                                <td>Admin</td>
+                                @endif
+
+                                <td>{{ $user->email }}</td>
+                                <td>{{ $user->created_at->format('F d, Y H:i') }}</td>
+                                <td>{{ $user->location }}</td>
+                                <td>
+                                  <form action="{{ url('admin/users/' . $user->id) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                  </form>
+                                </td>
+                              </tr>
+                         @endif
+                    @endforeach
+                   
+                @endif
               </tbody>
             </table>
           </div>

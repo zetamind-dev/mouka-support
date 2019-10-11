@@ -25,9 +25,9 @@ class AppMailer
         $this->mailer = $mailer;
     }
 
-    public function sendTicketInformation($user, Ticket $ticket)
+    public function sendTicketInformation(User $user, Ticket $ticket)
     {
-        $this->to = $user->email;
+        $this->to = $ticket->ticket_owner;
         //dd($user->email);
         $this->subject = "[Ticket ID: $ticket->ticket_id] $ticket->title";
         $this->view = 'emails.ticket_info';
@@ -37,9 +37,8 @@ class AppMailer
 
     }
 
-    public  function SendToModerator(Category $categories, Ticket $ticket, $user){  
+    public  function SendToModerator(Category $categories, Ticket $ticket, $moderator, $user){  
         $category = $categories::find($ticket->category_id);
-        $moderator = User::where('user_type', 2)->where('location', $user->location)->first();
         $this->to = $moderator->email;
         $this->cc = [$category->email, $ticket->copy_email2];
         $this->subject = "[Ticket ID: $ticket->ticket_id] $ticket->title";

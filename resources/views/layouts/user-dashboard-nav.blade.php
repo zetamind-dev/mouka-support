@@ -31,15 +31,15 @@
       Tickets</a>
     <a class="nav-link {{ Request::is('admin/users*') ? 'active' : '' }}" href="{{ url( '/admin/users') }} ">New
       Users</a>
+    <a class="nav-link {{ Request::is('tickets*') ? 'active' : '' }}" href="{{ url( '/tickets') }} ">Create Ticket</a>
     <a class="nav-link {{ Request::is('admin/reports*') ? 'active' : '' }}"
       href="{{ url( '/admin/reports') }} ">Reports</a>
-    @if (Auth::user()->user_type === 2)
+    @if (Auth::user()->user_type  > 1)
     <a class="nav-link {{ Request::is('admin/category*') ? 'active' : '' }}"
       href="{{ url( '/admin/category') }} ">Category</a>
     <a class="nav-link {{ Request::is('admin/department*') ? 'active' : '' }}"
       href="{{ url( '/admin/department') }} ">Department</a>
     <a class="nav-link {{ Request::is('admin/logs*') ? 'active' : '' }}" href="{{ url( '/admin/logs') }} ">Logs</a>
-    <a class="nav-link {{ Request::is('admin/est-level*') ? 'active' : '' }}" href="{{ url( '/admin/escalation') }} ">Escalation</a>
     @endif
 
     @else
