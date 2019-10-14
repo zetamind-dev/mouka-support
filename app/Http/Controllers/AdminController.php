@@ -83,12 +83,12 @@ public function store(Log $log, Request $request)
 
 public function create()
 {
-    if(Auth::user()->user_type > 0){
-        $users = User::all()->where('location', Auth::user()->location);
+    if(Auth::user()->user_type === 1 || 2){
+        $users = User::all();
         $departments = Department::all();
 
         return view('admin-users.index', ['users' => $users,'departments' => $departments]);
-    }
+    } 
 
     // return view('admin-users.index', compact('admins'));
     // return view('admin-users.index', compact('departments'));

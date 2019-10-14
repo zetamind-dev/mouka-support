@@ -128,6 +128,7 @@
           </thead>
           <tbody>
             @foreach ($tickets as $ticket)
+              
             <tr>
               <td>
                 <a href="{{ url('tickets/'. $ticket->ticket_id) }}">
@@ -137,10 +138,19 @@
               <td>
                 {{ $ticket->title }}
               </td>
-              @if (Auth::user()->user_type < 1) <td> {{ $ticket->copy_email2 }}</td>
-                @else
+               
+               @if (Auth::user()->user_type < 1)
+              <td>
+              @foreach ($moderators as $moderator)
+              @if ($moderator->user_type === 2)
+                 {{ $moderator->email }}
+              @endif
+              @endforeach</td>
+               @else
                 <td> {{ $ticket->ticket_owner }}</td>
-                @endif
+              @endif
+               
+
 
                 <td>
                   @foreach ($categories as $category) @if ($category->id === $ticket->category_id)
@@ -163,6 +173,7 @@
                   </form>
                 </td>
             </tr>
+           
             @endforeach
 
           </tbody>

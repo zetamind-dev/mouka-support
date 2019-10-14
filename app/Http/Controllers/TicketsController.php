@@ -22,8 +22,14 @@ $this->middleware('auth');
 
 public function index()
 {
+if(Auth::user()->user_type === 3){
+    $tickets = Ticket::orderBy('id', 'desc')->where('drop_ticket', 0)->paginate(10);
+    $categories = Category::all();
 
-if(Auth::user()->user_type === 2){
+    return view('tickets.index', compact('tickets', 'categories'));
+    
+}
+elseif(Auth::user()->user_type === 2){
     $tickets = Ticket::orderBy('id', 'desc')->where('drop_ticket', 0)->whereNotIn('location', ['Benin', 'Kaduna'])->paginate(10);
     $categories = Category::all();
 
@@ -40,11 +46,16 @@ $categories = Category::all();
 
 public function create()
 {
-$categories = Category::all();
-$moderators = User::all();
-
-return view('tickets.create', compact('categories', 'moderators'));
+    $categories = Category::all();
+    if (Auth::user()->location === "Head Office") {
+            $users = User::all()->whereIn('location', ["Head Office", "Lagos"])->where('user_type', 0);
+            return view('tickets.create', compact('categories', 'users'));
+        } else {
+            $users = User::all()->where('location', Auth::user()->location)->where('user_type', 0);
+            return view('tickets.create', compact('categories', 'users'));
+    }
 }
+
 
 public function store(Request $request, AppMailer $mailer, SMSController $sms)
 {
@@ -56,6 +67,7 @@ $this->validate($request, [
 'picture'   => 'image|nullable|max:1999'
 ]);
 
+// Hanlde incoming file
 if($request->hasFile('picture')){
 // get File Name with Extension
 $filenameWithExt = $request->file('picture')->getClientOriginalName();
@@ -75,8 +87,6 @@ $fileNameToStore = 'noimage.jpg';
 /**
  *  Format ticket_id string 
 */
-
-
 // Retrieve tickets from tickets table 
 $tickets = Ticket::all()->where('location', Auth::user()->location);
 $count = count($tickets);
@@ -95,35 +105,57 @@ $ticket_num = "00" . $new_id;
 }
 
 
-// Check to see if location is null
-$location = $request->input('location');
-// If Loggedin user location is not Head Office, make ticket_id from first two letters of user's loaction and a random integer number
+// Set user's location
+if (Auth::user()->user_type > 0) {// if true, 
+ //it means that ticket is being created by the moderator for the user
+   $id = $request->input('userId');
+ // find user by id
+   $user = User::find($id);
+ // set location
+   $location = $user->location;
+} else {// else
+   $location = Auth::user()->location;
+}
+// If Loggedin user location is not Head Office, make ticket_id from first two letters of user's location and a sequential integer number
 if($location != 'Head Office'){
-$ticket_id = strtoupper(mb_substr($location, 0, 2) . $ticket_num);
+   $ticket_id = strtoupper(mb_substr($location, 0, 2) . $ticket_num);
 }else{
-$ticket_id = 'HO' . strtoupper($ticket_num);
+   $ticket_id = 'HO' . strtoupper($ticket_num);
 }
 
-
-// Set Moderators Email
-
+// Set user_id and ticket_owner
+// Check Login user's access level
+if (Auth::user()->user_type > 0) {// if true
+    // then the LoggedIn user is a moderator
+    $user_id = $request->input('userId');
+    //retrieve regular user's data by Id
+    $user = User::find($user_id);
+    // set ticket_owner
+    $ticket_owner = $user->email;
+    // set status
+    $status = $request->input('status');
+} else {// the LoggedIn user is a regular user;
+    $user_id = Auth::user()->id;
+    $ticket_owner = Auth::user()->email;
+    $status = "Open";
+}
 
 //dd($request);
 $ticket = new Ticket([
-'title'     => $request->input('title'),
-'user_id'   => Auth::user()->id,
-'ticket_id' => $ticket_id,
+'title'        => $request->input('title'),
+'user_id'      => $user_id,
+'ticket_id'    => $ticket_id,
 'category_id'  => $request->input('category'),
-'priority'  => $request->input('priority'),
-'message'   => strip_tags($request->input('message')),
-'status'    => "Open",
-'picture'   => $fileNameToStore,
-'location' => $location,
-'copy_email2' => $request->input('copy_email2'),
-'ticket_owner' => Auth::user()->email
-
+'priority'     => $request->input('priority'),
+'message'      => strip_tags($request->input('message')),
+'status'       => $status,
+'picture'      => $fileNameToStore,
+'location'     => $location,
+'copy_email2'  => $request->input('copy_email2'),
+'ticket_owner' => $ticket_owner
 ]);
 
+// save ticket details
 $ticket->save();
 
 
@@ -136,14 +168,32 @@ $telephone = '+233' . $userTelephone;
 }*/
 
 
-$categories = new Category;
-$mailer->sendTicketInformation(Auth::user(), $ticket);
-$mailer->SendToModerator($categories, $ticket, Auth::user());
+// determine user's access level in order to set the mail handler method
+if (Auth::user()->user_type < 1) {// if true
+    // then the user is a regular user
+    $categories = new Category;
+    $mailer->sendTicketInformation(Auth::user(), $ticket);
+    // Check user's location to determine moderator
+    if (Auth::user()->location === "Head Office" || "Lagos") {// if true
+        //then send mail to the moderator at Head Office whose user_type is 2   
+        // Fetch moderator at head office
+        $moderator = User::all()->where('location', "Head Office")->where('user_type', 2)->first();
+        $mailer->SendToModerator($categories, $ticket, $moderator, Auth::user());
+    } else {
+        // fetch moderator at user's location whose location is not Lagos or Head Office
+        $moderator = User::all()->whereNotIn('location', ["Head Office", "Lagos"])->where('location', Auth::user()->location)->where('user_type', 1)->first();
+        $mailer->SendToModerator($categories, $ticket, $moderator, Auth::user());
+    }
+    return redirect()->back()->with("status", "A ticket with ID: $ticket->ticket_id has been opened.");
+} else {// the user is a moderator
+  // retrieve the user's id
+  $user = User::find($request->input('userId'));
+  $categories = new Category;
+  $mailer->sendTicketInformation($user, $ticket);
+  return redirect()->back()->with("status", "A ticket with ID: $ticket->ticket_id has been opened for $user->name");
+}
 
 // Create link for rating IT department
-
-
-return redirect()->back()->with("status", "A ticket with ID: $ticket->ticket_id has been opened.");
 
 /*$smsResponse = $sms->sendSMS($smsMessage, $telephone);
 

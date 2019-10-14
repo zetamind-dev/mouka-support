@@ -24,7 +24,6 @@ class EscalationController extends Controller
             'level' => 'required',
             'location' => 'required',
             'format' => 'required',
-            'duration' => 'required'
         ]);
 
         // Create and save user's input into the database
@@ -34,7 +33,6 @@ class EscalationController extends Controller
             'level' => $request->input('level'),
             'location' => $request->input('location'),
             'format' => $request->input('format'),
-            'duration' => $request->input('duration')
         ]);
 
         $escalation->save();
@@ -60,7 +58,6 @@ class EscalationController extends Controller
                 'level' => 'required',
                 'location' => 'required',
                 'format' => 'required',
-                'duration' => 'required'
             ]);
 
             // find escalation by id and save user's input into the database
@@ -71,7 +68,6 @@ class EscalationController extends Controller
             $escalation->level = $request->input('level');
             $escalation->location = $request->input('location');
             $escalation->format = $request->input('format');
-            $escalation->duration = $request->input('duration');
 
             $escalation->save();
 

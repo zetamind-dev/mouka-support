@@ -260,28 +260,59 @@
                                 <tr>
                                     <td>
                                         <!-- COPY -->
-                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                            <tr>
-                                                <td align="center" style="font-size: 25px; font-family: Helvetica, Arial, sans-serif; color: #333333; padding-top: 30px;"
-                                                    class="padding-copy">Thank you
-                                                    <b> {{ ucfirst($user->name) }} </b>for contacting our support team.</td>
-                                            </tr>
-                                            <tr>
-                                                <td align="center" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;"
-                                                    class="padding-copy">A ticket has been opened for you.
-                                                    <br>You will be notified when a response is made by email.
-                                                    <br>
-                                                    <br> The details of your ticket are as shown below:
-                                                    <br>
-                                                    <b>Title: </b> {{ $ticket->title }}
-                                                    <br>
-                                                    <b>Priority: </b> {{ $ticket->priority }}
-                                                    <br>
-                                                    <b>Status: </b> {{ $ticket->status }}
-                                                    <br>
-                                                </td>
-                                            </tr>
-                                        </table>
+                                        @if (Auth::user()->id === $user->id)
+                                           <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                               <tr>
+                                                   <td align="center"
+                                                       style="font-size: 25px; font-family: Helvetica, Arial, sans-serif; color: #333333; padding-top: 30px;"
+                                                       class="padding-copy">Thank you
+                                                       <b> {{ ucfirst($user->name) }} </b>for contacting our support
+                                                       team.</td>
+                                               </tr>
+                                               <tr>
+                                                   <td align="center"
+                                                       style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;"
+                                                       class="padding-copy">A ticket has been opened for you.
+                                                       <br>You will be notified when a response is made by email.
+                                                       <br>
+                                                       <br> The details of your ticket are as shown below:
+                                                       <br>
+                                                       <b>Title: </b> {{ $ticket->title }}
+                                                       <br>
+                                                       <b>Priority: </b> {{ $ticket->priority }}
+                                                       <br>
+                                                       <b>Status: </b> {{ $ticket->status }}
+                                                       <br>
+                                                   </td>
+                                               </tr>
+                                           </table>
+                                        @else
+                                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                <tr>
+                                                    <td align="center"
+                                                        style="font-size: 25px; font-family: Helvetica, Arial, sans-serif; color: #333333; padding-top: 30px;"
+                                                        class="padding-copy">Hello
+                                                        <b> {{ ucfirst($user->name) }},</td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="center"
+                                                        style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;"
+                                                        class="padding-copy">A ticket has been created for you by {{ Auth::user()->name }} from {{ Auth::user()->location }}.
+                                                        <br>
+                                                        <br> The details of your ticket are as shown below:
+                                                        <br>
+                                                        <b>Title: </b> {{ $ticket->title }}
+                                                        <br>
+                                                        <b>Priority: </b> {{ $ticket->priority }}
+                                                        <br>
+                                                        <b>Status: </b> {{ $ticket->status }}
+                                                        <br>
+                                                        <b>Status: </b> {{ $ticket->message }}
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        @endif
+                                        
                                     </td>
                                 </tr>
                                 <tr>

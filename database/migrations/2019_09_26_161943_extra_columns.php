@@ -18,7 +18,6 @@ class ExtraColumns extends Migration
             $table->integer('level');
             $table->string('location');
             $table->string('format');
-            $table->integer('duration');
         });
     }
 
@@ -34,7 +33,6 @@ class ExtraColumns extends Migration
             $table->dropColumn('level');
             $table->dropColumn('location');
             $table->dropColumn('format');
-            $table->dropColumn('duration');
         });
     }
 }

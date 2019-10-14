@@ -5,10 +5,11 @@
 @section('content')
 
 <div class="col-md-8 col-lg-6" style="margin:auto">
+    @include('includes.flash')
+
     <div class="card">
 
-        @include('includes.flash')
-
+        
         <div class="card-header" style="background:#2737A6;color:white; font-size:17px; font-weight:bold;">Ticket ID :
             {{ $ticket->ticket_id }}</div>
         <div class="container">
@@ -129,7 +130,7 @@
                 <textarea rows="5" id="article-ckeditor" class="form-control" name="comment"></textarea>
                 @if($errors->has('comment'))
                 <span class="help-block">
-                    <strong>{{ $errors->first('comment') }}</strong>
+                    <strong class="text-danger">{{ $errors->first('comment') }}</strong>
                 </span>
                 @endif
             </div>
