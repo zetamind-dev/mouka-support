@@ -7,6 +7,7 @@ use ComplainDesk\Category;
 use ComplainDesk\Escalation;
 use Illuminate\Contracts\Mail\Mailer;
 use Carbon\Carbon;
+use BeyondCode\Mailbox\InboundEmail;
 
 class AppMailer
 {
@@ -27,7 +28,7 @@ class AppMailer
 
     public function sendTicketInformation(User $user, Ticket $ticket)
     {
-        $this->to = $ticket->ticket_owner;
+        $this->to = $user->email;
         //dd($user->email);
         $this->subject = "[Ticket ID: $ticket->ticket_id] $ticket->title";
         $this->view = 'emails.ticket_info';
@@ -37,10 +38,32 @@ class AppMailer
 
     }
 
-    public  function SendToModerator(Category $categories, Ticket $ticket, $moderator, $user){  
+        public function sendTicketInformation2(User $user, Ticket $ticket)
+    {
+        $this->to = $user->email;
+        //dd($user->email);
+        $this->subject = "[Ticket ID: $ticket->ticket_id] $ticket->title";
+        $this->view = 'emails.ticket_info6';
+        $this->data = compact('user', 'ticket');
+        //dd($this->cc);
+       
+         return $this->mailer->send($this->view, $this->data, function ($message) {
+            $message->from($this->fromAddress, $this->fromName)
+                ->to($this->to)->subject($this->subject);
+        });
+
+    }
+
+    public  function SendToModerator(Category $categories, Ticket $ticket, $moderator, User $user){  
         $category = $categories::find($ticket->category_id);
         $this->to = $moderator->email;
-        $this->cc = [$category->email, $ticket->copy_email2];
+        // Check if copy_email2 is not null
+        if($ticket->copy_email2 != null){
+          $this->cc = [$category->email, $ticket->copy_email2];
+        } else {
+          $this->cc = $category->email;
+        }
+        
         $this->subject = "[Ticket ID: $ticket->ticket_id] $ticket->title";
         $this->view = 'emails.ticket_info3';
         $this->data = compact('ticket', 'user', 'category');
@@ -103,6 +126,38 @@ class AppMailer
             });
     }
 
+    public  function userNotFound(InboundEmail $email){  
+        $this->to = $email->from();
+        $this->subject = "No Match Found!";
+        $this->view = 'emails.ticket_info2';
+        $this->data = compact('email');
+
+
+
+       return $this->mailer->send($this->view, $this->data, function ($message) {
+            $message->from($this->fromAddress, $this->fromName)
+                ->to($this->to)->subject($this->subject);
+
+
+        });
+    }
+
+        public  function sendErrorInfo(InboundEmail $email){  
+        $this->to = $email->from();
+        $this->subject = "Request Interrupted!";
+        $this->view = 'emails.ticket_info5';
+        $this->data = compact('email');
+
+
+
+       return $this->mailer->send($this->view, $this->data, function ($message) {
+            $message->from($this->fromAddress, $this->fromName)
+                ->to($this->to)->subject($this->subject);
+
+
+        });
+    }
+
     public function sendTicketComments($ticketOwner, $user, Ticket $ticket, $comment)
     {
         //$this->to = $ticketOwner->email;
@@ -147,7 +202,7 @@ class AppMailer
         $this->mailer->send($this->view, $this->data, function ($message) {
             $message->from($this->fromAddress, $this->fromName)
                     ->to($this->to)->subject($this->subject)
-                    ->bcc([$this->cc]);
+                    ->cc($this->cc);
 
         });
     }
