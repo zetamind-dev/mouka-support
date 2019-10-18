@@ -36,8 +36,8 @@ elseif(Auth::user()->user_type === 2){
     return view('tickets.index', compact('tickets', 'categories'));
     
 }elseif(Auth::user()->user_type === 1){
-$tickets = Ticket::orderBy('id', 'desc')->where('drop_ticket', 0)->where('location', Auth::user()->location)->paginate(10);
-$categories = Category::all();
+    $tickets = Ticket::orderBy('id', 'desc')->where('drop_ticket', 0)->where('location', Auth::user()->location)->paginate(10);
+    $categories = Category::all();
 
     return view('tickets.index', compact('tickets', 'categories'));
 }

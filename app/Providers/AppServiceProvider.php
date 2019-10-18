@@ -5,6 +5,9 @@ namespace ComplainDesk\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\URL;
+use ComplainDesk\MailHandler;
+use ComplainDesk\Mailers\AppMailer;
+use BeyondCode\Mailbox\Facades\Mailbox;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,6 +33,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        Mailbox::to('support@inbound.mouka-support.com', MailHandler::class, AppMailer::class);
     }
 }

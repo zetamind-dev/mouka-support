@@ -60,22 +60,13 @@
         </select>
       </div>
     </div>
-    @if (Auth::user()->user_type > 0)
         <div class="form-group">
-          <div class="col-md-4">
-          <input id="copy_email2" type="hidden" class="form-control" value="{{ Auth::user()->email }}" style="line-height: 40px;" name="copy_email2"
-              maxlength="30" required>
-          </div>
-        </div>
-    @else
-        <div class="form-group">
-          <label for="copy_email2" class="col-md-4 control-label">Copy Email</label>
+          <label for="copy_email2" class="col-md-4 control-label">Copy Email (optional)</label>
           <div class="col-md-4">
             <input id="copy_email2" type="email" class="form-control" style="line-height: 40px;" name="copy_email2"
-              maxlength="30" required>
+              maxlength="30">
           </div>
         </div>
-    @endif
 
 
     <div class="form-group">
