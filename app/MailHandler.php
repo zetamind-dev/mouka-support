@@ -143,14 +143,14 @@ class MailHandler
                 // Set ticket title
                 $title = $email->subject();
 
-                // Check if counter array elements is greater than 1
-                if (count($counter) > 1 || count($email->cc()) < 1 || $title === null) { // If true
+                // Check if counter array elements is greater than 1 or less than
+                if (count($counter) > 1 || count($email->cc()) < 1 || $title === null || count($counter) < 1) { // If true
                     // That means sender copied multiple category emails or no cc was found
                     // Return an error message to the user by mail
                     // Call mailer and pass sender's email as arg
                     return $mailer->sendErrorInfo($email);
                 } else { // no multiple category email was found
-                    // Set category_id
+                    // Set category_id 
                     foreach ($counter as $counter_id) {
                         $category_id = $counter_id;
                     }
