@@ -21,7 +21,7 @@
             {{$faq->title}}
           </button>
           <span class="text-right text-light"><small>written by <i>{{$faq->author_name}}</i> on
-              {{ $faq->created_at->format('F d, Y, H:i') }}</small></span>
+              {{ $faq->created_at->format('F d, Y') }} from {{$faq->author_location}}</small></span>
         </h5>
       </div>
 

@@ -38,6 +38,8 @@
       href="{{ url( '/admin/category') }} ">Category</a>
     <a class="nav-link {{ Request::is('admin/department*') ? 'active' : '' }}"
       href="{{ url( '/admin/department') }} ">Department</a>
+    <a class="nav-link {{ Request::is('admin/escalation*') ? 'active' : '' }}"
+      href="{{ url( '/admin/escalation') }} ">Escalation</a>
     <a class="nav-link {{ Request::is('admin/logs*') ? 'active' : '' }}" href="{{ url( '/admin/logs') }} ">Logs</a>
     <a class="nav-link {{ Request::is('faq*') ? 'active' : '' }}" href="{{ url( '/admin/faq') }} ">Add FAQ</a>
 
