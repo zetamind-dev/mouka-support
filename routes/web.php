@@ -9,14 +9,14 @@
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/
+ */
 
 //Home Route
 /*
 Route::get('/', function () {
-    return view('welcome');
+return view('welcome');
 });
-*/
+ */
 //Route::view('/emails', 'emails.sample_email');
 
 //Route to display Login page as Homepage
@@ -60,10 +60,7 @@ Route::get('/assets', 'AssetsController@create');
 Route::post('/assets', 'AssetsController@store');
 Route::post('/assets/{id}', 'AssetsController@delete');
 
-
-
 //Admin routes( they should all be prefix with /admin in the Url)
-
 
 Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
     //Route to display all tickets
@@ -102,12 +99,12 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
     Route::post('/users', 'AdminController@store');
     //Rotue to delete new Admin User
     Route::post('/users/{id}', 'AdminController@delete');
-    
+
     //Route to view Audit Logs
     Route::get('logs', 'LogsController@index');
     //Reout to view Report
-    Route::get('reports','ReportController@getComplainList');
-    
+    Route::get('reports', 'ReportController@getComplainList');
+
     //Route to display the page to create escalation level
     Route::get('/escalation', 'EscalationController@index');
     //Route to display the page to create escalation level
@@ -119,6 +116,21 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 
     //Route to display the page to create escalation level
     Route::post('/escalation/delete/{id}', 'EscalationController@delete');
+
+    //Route to create FAQ
+    Route::get('/faq', 'FaqsController@create');
+
+    //Route to store newly created Frequently asked Questions
+    Route::post('/faq', 'FaqsController@store');
+
+    //Route to edit FAQ
+    Route::get('/faq/edit/{id}', 'FaqsController@edit');
+
+    //Route to update FAQ
+    Route::post('/faq/update/{id}', 'FaqsController@update');
+
+    //Route to update FAQ
+    Route::post('/faq/delete/{id}', 'FaqsController@destroy');
 
     //Runs crons job on the server
     //Route::get('/execute','CronJobController@index');

@@ -34,13 +34,12 @@
     <a class="nav-link {{ Request::is('tickets*') ? 'active' : '' }}" href="{{ url( '/tickets') }} ">Create Ticket</a>
     <a class="nav-link {{ Request::is('admin/reports*') ? 'active' : '' }}"
       href="{{ url( '/admin/reports') }} ">Reports</a>
-    @if (Auth::user()->user_type  > 1)
     <a class="nav-link {{ Request::is('admin/category*') ? 'active' : '' }}"
       href="{{ url( '/admin/category') }} ">Category</a>
     <a class="nav-link {{ Request::is('admin/department*') ? 'active' : '' }}"
       href="{{ url( '/admin/department') }} ">Department</a>
     <a class="nav-link {{ Request::is('admin/logs*') ? 'active' : '' }}" href="{{ url( '/admin/logs') }} ">Logs</a>
-    @endif
+    <a class="nav-link {{ Request::is('faq*') ? 'active' : '' }}" href="{{ url( '/admin/faq') }} ">Add FAQ</a>
 
     @else
     <a class="nav-link {{ Request::is('home*') ? 'active' : '' }}" href="{{ url( '/home') }} ">Dashboard</a>
