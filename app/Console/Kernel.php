@@ -26,8 +26,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('escalate:tickets')
-            ->hourly()
-            ->thenPing("https: //cronhub.io/ping/52ad06c0-fb1d-11e9-998a-5ba07b0ed6a0");
+            ->hourly();
 
     }
 
