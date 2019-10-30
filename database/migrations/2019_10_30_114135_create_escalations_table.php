@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class CreateTestsTable extends Migration
+class CreateEscalationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -16,6 +16,10 @@ class CreateTestsTable extends Migration
         Schema::create('escalations', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->string('email');
+            $table->integer('level');
+            $table->string('location');
+            $table->integer('format');
             $table->timestamps();
         });
     }

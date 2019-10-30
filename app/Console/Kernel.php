@@ -3,9 +3,6 @@
 namespace ComplainDesk\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Support\Facades\Schema;
-use ComplainDesk\Escalation;
-use ComplainDesk\Mailers\AppMailer;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
@@ -16,8 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-       Commands\EmailParserCommand::class,
-       Commands\Escalations::class,
+        Commands\EmailParserCommand::class,
+        Commands\Escalations::class,
     ];
 
     /**
@@ -28,20 +25,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        if (Schema::hasTable('escalations')) {
-            // Get all escalations from the database
-            $escalations = Escalation::all();
-            // Go through each escalations to dynamically set them up.
-                foreach ($escalations as $escalation) {
-                    if ($escalation === "daily") {
-                            // Use the scheduler to add the task at its desired frequency
-                            $schedule->call(function() use ($escalation) {
-                              $escalations = Commands\Escalations::class;
-                              $escalations->handle($escalation);
-                            })->command('escalate:tickets')->dailyAt('13:00');
-                    }
-                }
-        }
+        $schedule->command('escalate:tickets')
+            ->hourly()
+            ->thenPing("https: //cronhub.io/ping/52ad06c0-fb1d-11e9-998a-5ba07b0ed6a0");
+
     }
 
     /**
@@ -51,7 +38,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

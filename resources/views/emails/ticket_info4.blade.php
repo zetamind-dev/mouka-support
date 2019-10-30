@@ -9,7 +9,7 @@
 <body>
 
   <p>
-   The Following Tickets has not been attended to  
+   The Following Tickets has not been attended to for more than {{$duration_level}}
   </p>
   <br>
    <div class="card-body col-lg-12">

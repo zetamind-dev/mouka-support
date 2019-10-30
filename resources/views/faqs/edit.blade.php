@@ -10,7 +10,9 @@
 
 
   @include('includes.flash')
-
+  <form action="{{ url('admin/faq') }}" method="GET">
+    <button type="submit" class="btn btn-secondary" style="color:white;font-weight:bold">Go back</button>
+  </form>
   <!-- Begining of New Ticket Form -->
   <form class="form-horizontal col-md-12" role="form" method="POST" action="{{ url('admin/faq/update/' . $faq->id) }}"
     enctype="multipart/form-data">

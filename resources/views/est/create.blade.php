@@ -98,7 +98,7 @@
                   <th>Location</th>
                   <th>Level</th>
                   <th>Frequency</th>
-                  <th colspan="2" class="text-center">Action</th>
+                  <th colspan="2" class="text-center">Actions</th>
                 </tr>
               </thead>
 
@@ -110,7 +110,7 @@
                   <td>{{$escalation->email}}</td>
                   <td>{{$escalation->location}}</td>
                    <td>{{$escalation->level}}</td>
-                  <td>{{$escalation->format}}</td>
+                  <td>{{$escalation->format}} <small>hours</small></td>
                 <td>
                   <form action="{{ url('admin/escalation/'. $escalation->id) }}" method="GET">
                     <button type="submit" class="btn btn-info btn-sm" style="color:white;font-weight:bold">Edit</button>

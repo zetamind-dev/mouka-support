@@ -111,10 +111,10 @@ class TicketsController extends Controller
                 // BEGIN LOOP
                 foreach ($tickets as $ticket) {
                     // Check user's location against ticket location
-                    if ($ticket->location === $location) {// if it matched 
+                    if ($ticket->location === $location) { // if it matched
                         // exctract the first two letters of the ticket_id and convert the string to int
                         // check the value if it matches the tiket_num
-                        if ($ticket_num === intval(substr($ticket->ticket_id, 2))) {// if it matched 
+                        if ($ticket_num === intval(substr($ticket->ticket_id, 2))) { // if it matched
                             // Increment ticket_num by 1 as to avoid duplicate entry in the database
                             $ticket_num++;
                         }
@@ -152,17 +152,17 @@ class TicketsController extends Controller
                 // Compare the ticket_num with tickets from the ticket collection base on the user location
                 // BEGIN LOOP
                 foreach ($tickets as $ticket) {
-                    // Check user's location against ticket location 
-                    if ($ticket->location === Auth::user()->location) {// if it matched
+                    // Check user's location against ticket location
+                    if ($ticket->location === Auth::user()->location) { // if it matched
                         // exctract the first two letters of the ticket_id and convert the string to int
                         // check the value if it matches the tiket_num
-                        if ($ticket_num === intval(substr($ticket->ticket_id, 2))) {// if it matched
+                        if ($ticket_num === intval(substr($ticket->ticket_id, 2))) { // if it matched
                             // Increment ticket_num by 1 as to avoid Duplicate entrty in the database
                             $ticket_num++;
                         }
                     }
                 }
-               // END LOOP
+                // END LOOP
 
                 if ($ticket_num < 10) {
                     $new_id = '000' . $ticket_num;
@@ -260,8 +260,12 @@ class TicketsController extends Controller
             // retrieve the user's id
             $user = User::find($request->input('userId'));
             $categories = new Category;
-            $mailer->sendTicketInformation($user, $ticket);
-            return redirect()->back()->with("status", "A ticket with ID: $ticket->ticket_id has been opened for $user->name");
+            if ($user->id === 36) {// For Madam Regina 
+                return redirect()->back()->with("status", "A ticket with ID: $ticket->ticket_id has been opened for $user->name");
+            } else {
+                $mailer->sendTicketInformation($user, $ticket);
+                return redirect()->back()->with("status", "A ticket with ID: $ticket->ticket_id has been opened for $user->name");
+            }
         }
 
 // Create link for rating IT department
