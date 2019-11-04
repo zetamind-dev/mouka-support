@@ -326,6 +326,18 @@ class AppMailer
         });
     }
 
+    public function userNotFound(InboundEmail $email)
+    {
+        $this->to = $email->from();
+        $this->subject = "No Match Found!";
+        $this->view = 'emails.ticket_info2';
+        $this->data = compact('email');
+        return $this->mailer->send($this->view, $this->data, function ($message) {
+            $message->from($this->fromAddress, $this->fromName)
+                ->to($this->to)->subject($this->subject);
+        });
+    }
+
     public function sendTicketComments($ticketOwner, $user, Ticket $ticket, $comment)
     {
         //$this->to = $ticketOwner->email;
