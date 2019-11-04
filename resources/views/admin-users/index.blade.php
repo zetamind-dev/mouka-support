@@ -5,13 +5,14 @@
 <body class="bg-light">
 
   <main role="main" class="container col-lg-6">
+
     <div class="container">
       <div class="card">
+         @include('includes.flash')
         <div class="card-header" style="background:#2737A6;color:white; font-size:17px; font-weight:bold;">Add New User
         </div>
         <div class="card-body">
           <div class="container">
-            @include('includes.flash')
             <form method="POST" action="{{ url('/admin/users') }}">
               @csrf
 

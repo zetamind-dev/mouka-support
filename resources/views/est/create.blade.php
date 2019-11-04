@@ -59,10 +59,9 @@
                   <label for="format">Frequency Format</label>
                   <select id="format" type="format " class="form-control" name="format" style="height: 38px;" required>
                     <option value="">Choose Format</option>
-                    <option value="daily">Daily</option>
-                    <option value="twiceDaily">Twice Daily</option>
-                    <option value="weekly">Weekly</option>
-                    <option value="monthly">Monthly</option>
+                    <option value="12">12 hours</option>
+                    <option value="24">24 hours</option>
+                    <option value="48">48 hours</option>
                   </select>
                 </div>
               </div>
@@ -70,7 +69,7 @@
               <br>
               <div>
                 <button type="submit" class="btn btn-primary" style="color:white; font-weight:bold">
-                  Create Level
+                  Submit
                 </button>
               </div>
             </form>
@@ -99,7 +98,7 @@
                   <th>Location</th>
                   <th>Level</th>
                   <th>Frequency</th>
-                  <th colspan="2" class="text-center">Action</th>
+                  <th colspan="2" class="text-center">Actions</th>
                 </tr>
               </thead>
 
@@ -111,7 +110,7 @@
                   <td>{{$escalation->email}}</td>
                   <td>{{$escalation->location}}</td>
                    <td>{{$escalation->level}}</td>
-                  <td>{{$escalation->format}}</td>
+                  <td>{{$escalation->format}} <small>hours</small></td>
                 <td>
                   <form action="{{ url('admin/escalation/'. $escalation->id) }}" method="GET">
                     <button type="submit" class="btn btn-info btn-sm" style="color:white;font-weight:bold">Edit</button>

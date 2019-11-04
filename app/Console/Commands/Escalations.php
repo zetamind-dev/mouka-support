@@ -37,8 +37,10 @@ class Escalations extends Command
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(AppMailer $mailer)
     {
-      $tickets = Ticket::where('drop_ticket', 0)->where('status', 'Open')->get();
+      $mailer->SendToEscalationLevel1();
+      $mailer->SendToEscalationLevel2();
+      $mailer->SendToEscalationLevel3();
     }
 }

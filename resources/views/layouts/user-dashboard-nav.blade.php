@@ -31,6 +31,8 @@
       Tickets</a>
     <a class="nav-link {{ Request::is('admin/users*') ? 'active' : '' }}" href="{{ url( '/admin/users') }} ">New
       Users</a>
+    <a class="nav-link {{ Request::is('edit-user*') ? 'active' : '' }}" href="{{ url( '/admin/edit-user') }} ">Edit
+      Users</a>
     <a class="nav-link {{ Request::is('tickets*') ? 'active' : '' }}" href="{{ url( '/tickets') }} ">Create Ticket</a>
     <a class="nav-link {{ Request::is('admin/reports*') ? 'active' : '' }}"
       href="{{ url( '/admin/reports') }} ">Reports</a>
@@ -38,6 +40,8 @@
       href="{{ url( '/admin/category') }} ">Category</a>
     <a class="nav-link {{ Request::is('admin/department*') ? 'active' : '' }}"
       href="{{ url( '/admin/department') }} ">Department</a>
+    <a class="nav-link {{ Request::is('admin/escalation*') ? 'active' : '' }}"
+      href="{{ url( '/admin/escalation') }} ">Escalation</a>
     <a class="nav-link {{ Request::is('admin/logs*') ? 'active' : '' }}" href="{{ url( '/admin/logs') }} ">Logs</a>
     <a class="nav-link {{ Request::is('faq*') ? 'active' : '' }}" href="{{ url( '/admin/faq') }} ">Add FAQ</a>
 

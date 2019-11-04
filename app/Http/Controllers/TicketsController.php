@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class TicketsController extends Controller
 {
-//
+    //
     public function __construct()
     {
         $this->middleware('auth');
@@ -64,33 +64,33 @@ class TicketsController extends Controller
             'picture' => 'image|nullable|max:1999',
         ]);
 
-// Hanlde incoming file
+        // Hanlde incoming file
         if ($request->hasFile('picture')) {
-// get File Name with Extension
+            // get File Name with Extension
             $filenameWithExt = $request->file('picture')->getClientOriginalName();
-// Get just Filename
+            // Get just Filename
             $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-// Get just Ext
+            // Get just Ext
             $extension = $request->file('picture')->getClientOriginalExtension();
-// filename to store
+            // filename to store
             $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-//upload
+            //upload
             $path = $request->file('picture')->storeAs('public/picture', $fileNameToStore);
 
         } else {
             $fileNameToStore = 'noimage.jpg';
         }
 
-/**
- *  Format ticket_id string
- */
+        /**
+         *  Format ticket_id string
+         */
 
         if (Auth::user()->user_type > 0) {
             //it means that ticket is being created by the moderator for the user
             $id = $request->input('userId');
-// find user by id
+            // find user by id
             $user = User::find($id);
-// set location
+            // set location
             $location = $user->location;
 
             // Retrieve all tickets
@@ -111,10 +111,10 @@ class TicketsController extends Controller
                 // BEGIN LOOP
                 foreach ($tickets as $ticket) {
                     // Check user's location against ticket location
-                    if ($ticket->location === $location) {// if it matched 
+                    if ($ticket->location === $location) { // if it matched
                         // exctract the first two letters of the ticket_id and convert the string to int
                         // check the value if it matches the tiket_num
-                        if ($ticket_num === intval(substr($ticket->ticket_id, 2))) {// if it matched 
+                        if ($ticket_num === intval(substr($ticket->ticket_id, 2))) { // if it matched
                             // Increment ticket_num by 1 as to avoid duplicate entry in the database
                             $ticket_num++;
                         }
@@ -136,10 +136,10 @@ class TicketsController extends Controller
         } else {
             // Retrieve all tickets
             $tickets = Ticket::all();
-// Get total number of tickets
+            // Get total number of tickets
             $total_tickets = count($tickets);
 
-// Check if total number of tickets is above 0
+            // Check if total number of tickets is above 0
             if ($total_tickets < 1) {
                 // Set ticket_num to 1
                 $ticket_num = 1;
@@ -152,17 +152,17 @@ class TicketsController extends Controller
                 // Compare the ticket_num with tickets from the ticket collection base on the user location
                 // BEGIN LOOP
                 foreach ($tickets as $ticket) {
-                    // Check user's location against ticket location 
-                    if ($ticket->location === Auth::user()->location) {// if it matched
+                    // Check user's location against ticket location
+                    if ($ticket->location === Auth::user()->location) { // if it matched
                         // exctract the first two letters of the ticket_id and convert the string to int
                         // check the value if it matches the tiket_num
-                        if ($ticket_num === intval(substr($ticket->ticket_id, 2))) {// if it matched
+                        if ($ticket_num === intval(substr($ticket->ticket_id, 2))) { // if it matched
                             // Increment ticket_num by 1 as to avoid Duplicate entrty in the database
                             $ticket_num++;
                         }
                     }
                 }
-               // END LOOP
+                // END LOOP
 
                 if ($ticket_num < 10) {
                     $new_id = '000' . $ticket_num;
@@ -178,7 +178,7 @@ class TicketsController extends Controller
 
         }
 
-// Set user's location
+        // Set user's location
         if (Auth::user()->user_type > 0) { // if true,
             //it means that ticket is being created by the moderator for the user
             $id = $request->input('userId');
@@ -189,14 +189,14 @@ class TicketsController extends Controller
         } else { // else
             $location = Auth::user()->location;
         }
-// If Loggedin user location is not Head Office, make ticket_id from first two letters of user's location and a sequential integer number
+        // If Loggedin user location is not Head Office, make ticket_id from first two letters of user's location and a sequential integer number
         if ($location != 'Head Office') {
             $ticket_id = strtoupper(mb_substr($location, 0, 2) . $new_id);
         } else {
             $ticket_id = 'HO' . strtoupper($new_id);
         }
 
-// Set user_id and ticket_owner
+        // Set user_id and ticket_owner
         // Check Login user's access level
         if (Auth::user()->user_type > 0) { // if true
             // then the LoggedIn user is a moderator
@@ -213,7 +213,7 @@ class TicketsController extends Controller
             $status = "Open";
         }
 
-//dd($request);
+        //dd($request);
         $ticket = new Ticket([
             'title' => $request->input('title'),
             'user_id' => $user_id,
@@ -228,10 +228,10 @@ class TicketsController extends Controller
             'ticket_owner' => $ticket_owner,
         ]);
 
-// save ticket details
+        // save ticket details
         $ticket->save();
 
-//$smsMessage = "You just created a Ticket with an ID: $ticket->ticket_id";
+        //$smsMessage = "You just created a Ticket with an ID: $ticket->ticket_id";
         //$userTelephone = Auth::user()->telephone;
         /*
         if (substr($userTelephone, 0, 1) == '0') {
@@ -239,7 +239,7 @@ class TicketsController extends Controller
         $telephone = '+233' . $userTelephone;
         }*/
 
-// determine user's access level in order to set the mail handler method
+        // determine user's access level in order to set the mail handler method
         if (Auth::user()->user_type < 1) { // if true
             // then the user is a regular user
             $categories = new Category;
@@ -260,23 +260,27 @@ class TicketsController extends Controller
             // retrieve the user's id
             $user = User::find($request->input('userId'));
             $categories = new Category;
-            $mailer->sendTicketInformation($user, $ticket);
-            return redirect()->back()->with("status", "A ticket with ID: $ticket->ticket_id has been opened for $user->name");
+            if ($user->id === 36) { // For Madam Regina
+                return redirect()->back()->with("status", "A ticket with ID: $ticket->ticket_id has been opened for $user->name");
+            } else {
+                $mailer->sendTicketInformation($user, $ticket);
+                return redirect()->back()->with("status", "A ticket with ID: $ticket->ticket_id has been opened for $user->name");
+            }
         }
 
-// Create link for rating IT department
+        // Create link for rating IT department
 
-/*$smsResponse = $sms->sendSMS($smsMessage, $telephone);
+        /*$smsResponse = $sms->sendSMS($smsMessage, $telephone);
 
-if ($smsResponse == "200") {
-$mailer->sendTicketInformation(Auth::user(), $ticket);
+    if ($smsResponse == "200") {
+    $mailer->sendTicketInformation(Auth::user(), $ticket);
 
-return redirect()->back()->with("status", "A ticket with ID: #$ticket->ticket_id has been opened.");
-} else {
-$mailer->sendTicketInformation(Auth::user(), $ticket);
+    return redirect()->back()->with("status", "A ticket with ID: #$ticket->ticket_id has been opened.");
+    } else {
+    $mailer->sendTicketInformation(Auth::user(), $ticket);
 
-return redirect()->back()->with("status", "A ticket with ID: #$ticket->ticket_id has been opened. SMS Not Sent!");
-}*/
+    return redirect()->back()->with("status", "A ticket with ID: #$ticket->ticket_id has been opened. SMS Not Sent!");
+    }*/
     }
 
     public function update(Request $request, $id)
@@ -289,29 +293,29 @@ return redirect()->back()->with("status", "A ticket with ID: #$ticket->ticket_id
         ]);
 
         if ($request->hasFile('picture')) {
-// get File Name with Extension
+            // get File Name with Extension
             $filenameWithExt = $request->file('picture')->getClientOriginalName();
-// Get just Filename
+            // Get just Filename
             $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-// Get just Ext
+            // Get just Ext
             $extension = $request->file('picture')->getClientOriginalExtension();
-// filename to store
+            // filename to store
             $fileNameToStore = $filename . '_' . time() . '.' . $extension;
-//upload
+            //upload
             $path = $request->file('picture')->storeAs('public/picture', $fileNameToStore);
 
         } else {
             $fileNameToStore = 'noimage.jpg';
         }
 
-//dd($request);
+        //dd($request);
         $ticket = Ticket::find($id);
         $ticket->title = $request->input('title');
         $ticket->message = strip_tags($request->input('message'));
         $ticket->category_id = $request->input('category');
         $ticket->priority = $request->input('priority');
 
-// Check if user uploaded a new image
+        // Check if user uploaded a new image
         if ($request->hasFile('picture')) {
             $ticket->picture = $fileNameToStore;
         }
@@ -325,7 +329,7 @@ return redirect()->back()->with("status", "A ticket with ID: #$ticket->ticket_id
     {
         $tickets = Ticket::where('user_id', Auth::user()->id)->where('drop_ticket', 0)->orderBy('created_at', 'desc')->paginate(10);
         $categories = Category::all();
-//$users = User::all()->where('location', Auth::user()->location);
+        //$users = User::all()->where('location', Auth::user()->location);
 
         return view('tickets.user_tickets', compact('tickets', 'categories'));
     }
@@ -335,7 +339,7 @@ return redirect()->back()->with("status", "A ticket with ID: #$ticket->ticket_id
         $ticket = Ticket::where('ticket_id', $ticket_id)->firstOrFail();
         $comments = $ticket->comments;
         $category = $ticket->category;
-//$users = User::all()->where('location', Auth::user()->location);
+        //$users = User::all()->where('location', Auth::user()->location);
 
         return view('tickets.show', compact('ticket', 'category', 'comments'));
     }
@@ -346,15 +350,15 @@ return redirect()->back()->with("status", "A ticket with ID: #$ticket->ticket_id
         $comments = $ticket->comments;
         $category = $ticket->category;
         $categories = Category::all();
-//$users = User::all()->where('location', Auth::user()->location);
+        //$users = User::all()->where('location', Auth::user()->location);
 
         return view('tickets.edit', compact('ticket', 'category', 'comments', 'categories'));
     }
 
-//Method to detele Ticket
+    //Method to detele Ticket
     public function drop($id)
     {
-// Find Ticket by id
+        // Find Ticket by id
         $ticket = Ticket::where('id', $id)->firstOrFail();
         $ticket->drop_ticket = 1;
         $ticket->save();

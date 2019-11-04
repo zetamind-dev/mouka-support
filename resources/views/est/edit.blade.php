@@ -7,6 +7,9 @@
   <main role="main" class="container col-md-6">
     <div class="container">
       @include('includes.flash')
+      <form action="{{ url('admin/escalation') }}" method="GET">
+        <button type="submit" class="btn btn-secondary" style="color:white;font-weight:bold">Go back</button>
+      </form>
       <div class="card">
         <div class="card-header" style="background:#2737A6;color:white; font-size:17px; font-weight:bold;">Update
           Escalation Level
@@ -18,14 +21,14 @@
               <div class="form-group row">
                 <div class="col-md-6">
                   <label for="name">Full Name</label>
-                <input id="name" type="text" class="form-control" name="name" value="{{$escalation->name}}" placeholder="John Doe" required
-                    autofocus>
+                  <input id="name" type="text" class="form-control" name="name" value="{{$escalation->name}}"
+                    placeholder="John Doe" required autofocus>
                 </div>
 
                 <div class="col-md-6">
                   <label for="email">Email Address</label>
-                <input id="email" type="email" class="form-control" name="email" value="{{$escalation->email}}" placeholder="johndoe@test.com"
-                    required>
+                  <input id="email" type="email" class="form-control" name="email" value="{{$escalation->email}}"
+                    placeholder="johndoe@test.com" required>
                 </div>
               </div>
 
@@ -33,11 +36,11 @@
                 <div class="col-md-6">
                   <label for="level">Level</label>
                   <select id="level" type="level" class="form-control" name="level" style="height: 45px;" required>
-                    @if ($escalation->level === "first level")
+                    @if ($escalation->level === 1)
                     <option value="{{$escalation->level}}">first level</option>
-                    @elseif($escalation->level === "second level")
+                    @elseif($escalation->level === 2)
                     <option value="{{$escalation->level}}">second level</option>
-                    @else
+                    @elseif($escalation->level === 3)
                     <option value="{{$escalation->level}}">third level</option>
                     @endif
                     <option value="1">first level</option>
@@ -71,21 +74,17 @@
               <div class="form-row">
                 <div class="col-md-4">
                   <label for="format">Frequency Format</label>
-                  @if ($escalation->format === "daily")
-                  <option value="{{$escalation->format}}">Daily</option>
-                  @elseif($escalation->format === "twiceDaily")
-                  <option value="{{$escalation->format}}">twiceDaily</option>
-                  @elseif($escalation->format === "weekly")
-                  <option value="{{$escalation->format}}">Weekly</option>
-                  @else
-                  <option value="{{$escalation->format}}">Monthly</option>
-                  @endif
                   <select id="format" type="format " class="form-control" name="format" style="height: 38px;" required>
-                    <option value="">Choose Format</option>
-                    <option value="daily">Daily</option>
-                    <option value="twiceDaily">Twice Daily</option>
-                    <option value="weekly">Weekly</option>
-                    <option value="monthly">Monthly</option>
+                    @if ($escalation->format === 12)
+                    <option value="{{$escalation->format}}">12 hours</option>
+                    @elseif($escalation->format === 24)
+                    <option value="{{$escalation->format}}">24 hours</option>
+                    @else
+                    <option value="{{$escalation->format}}">48 hours</option>
+                    @endif
+                    <option value="12">12 hours</option>
+                    <option value="24">24 hours</option>
+                    <option value="48">48 hours</option>
                   </select>
                 </div>
               </div>
@@ -93,7 +92,7 @@
               <br>
               <div>
                 <button type="submit" class="btn btn-primary" style="color:white; font-weight:bold">
-                  Update Level
+                  Update
                 </button>
               </div>
             </form>
@@ -108,10 +107,10 @@
 
 
 
-   
 
-        </div>
-      </div>
+
+    </div>
+    </div>
   </main>
 </body>
 @endsection
