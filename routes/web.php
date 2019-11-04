@@ -132,6 +132,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
     //Route to update FAQ
     Route::post('/faq/delete/{id}', 'FaqsController@destroy');
 
+    //Route to edit user
+    Route::get('/edit-user', 'EditUserController@index');
+    //Route to edit user
+    Route::post('/edit-user', 'EditUserController@update');
+
     //Runs crons job on the server
     //Route::get('/execute','CronJobController@index');
 

@@ -33,6 +33,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        Mailbox::to('support@inbound.mouka-support.com', MailHandler::class, AppMailer::class);
+        Mailbox::to('it@inbound.mouka-support.com', MailHandler::class, AppMailer::class);
     }
 }

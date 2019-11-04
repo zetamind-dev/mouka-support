@@ -31,6 +31,8 @@
       Tickets</a>
     <a class="nav-link {{ Request::is('admin/users*') ? 'active' : '' }}" href="{{ url( '/admin/users') }} ">New
       Users</a>
+    <a class="nav-link {{ Request::is('edit-user*') ? 'active' : '' }}" href="{{ url( '/admin/edit-user') }} ">Edit
+      Users</a>
     <a class="nav-link {{ Request::is('tickets*') ? 'active' : '' }}" href="{{ url( '/tickets') }} ">Create Ticket</a>
     <a class="nav-link {{ Request::is('admin/reports*') ? 'active' : '' }}"
       href="{{ url( '/admin/reports') }} ">Reports</a>

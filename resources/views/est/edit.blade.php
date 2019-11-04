@@ -36,11 +36,11 @@
                 <div class="col-md-6">
                   <label for="level">Level</label>
                   <select id="level" type="level" class="form-control" name="level" style="height: 45px;" required>
-                    @if ($escalation->level === "first level")
+                    @if ($escalation->level === 1)
                     <option value="{{$escalation->level}}">first level</option>
-                    @elseif($escalation->level === "second level")
+                    @elseif($escalation->level === 2)
                     <option value="{{$escalation->level}}">second level</option>
-                    @else
+                    @elseif($escalation->level === 3)
                     <option value="{{$escalation->level}}">third level</option>
                     @endif
                     <option value="1">first level</option>

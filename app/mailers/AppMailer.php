@@ -82,7 +82,7 @@ class AppMailer
         $current = Carbon::now();
         // Retrieve tickets that has not been dropped by ticket owner and tickets that has not been resolved by ticket Moderators
         // from the Database
-        $tickets = Ticket::where('drop_ticket', 0)->where('status', 'Open')->get();
+        $tickets = Ticket::all()->where('drop_ticket', 0)->where('status', 'Open');
 
         // Retrieve escalations level 1 from the Database
         $escalations = Escalation::all()->where('level', 1);
@@ -90,43 +90,67 @@ class AppMailer
         $categories = Category::all();
 
         // Ticket logs
-        $tickets_log = [];
+        $tickets_log['tickets'] = array();
 
         // Duration
         $duration_level = "12 hours";
 
-        // Iterate over the escalations result set
-        foreach ($escalations as $escalation) {
-            // Iterate over tickets result set
-            foreach ($tickets as $ticket) {
-                // Check the ticket duration
-                $duration = $current->diffInHours($ticket->created_at);
-                if ($duration > 11 || $duration < 24) {
-                    // Check if ticket location matches escalation level location
-                    if ($ticket->location === $escalation->location) {
-                        $tickets_log[] = $ticket->title;
-                        $tickets_log[] = $ticket->id;
-                        $tickets_log[] = $ticket->ticket_owner;
-                        $tickets_log[] = $ticket->cpoy_email2;
-                        $tickets_log[] = $ticket->location;
-                        $tickets_log[] = $ticket->category;
-                        $tickets_log[] = $ticket->priority;
-                        $tickets_log[] = $duration;
-                        $escalation_mail = $escalation->email;
+        // Check if escalations exist
+        if (count($escalations) > 0) { // if true then
+            // iterate over the escalations result set
+            foreach ($escalations as $escalation) {
+                // Get moderator
+                if ($escalation->location === 'Lagos' || $escalation->location === 'Head Office') { // Moderator is Mr Gbenga
+                    $moderator = User::all()->where('location', "Head Office")->where('user_type', 2)->first();
+                } else {
+                    // fetch moderator at user's location whose location is not Lagos or Head Office
+                    $moderator = User::all()->whereNotIn('location', ["Head Office", "Lagos"])->where('location', $escalation->location)->where('user_type', 1)->first();
+                }
+
+                // Set counter
+                $counter = 0;
+                // Iterate over tickets result set
+                foreach ($tickets as $ticket) {
+                    // Check the ticket duration
+                    $duration = $current->diffInHours($ticket->created_at);
+                    if ($duration === 12) {
+                        // Check if ticket location matches escalation level location
+                        if ($ticket->location === $escalation->location) {
+                            $ticket_item = array(
+                                'ticket_id' => $ticket->ticket_id,
+                                'title' => $ticket->title,
+                                'ticket_owner' => $ticket->ticket_owner,
+                                'copy_email2' => $ticket->copy_email2,
+                                'location' => $ticket->location,
+                                'category_id' => $ticket->category_id,
+                                'priority' => $ticket->priority,
+                                'created_at' => $ticket->created_at,
+                            );
+
+                            // Push to tickets array
+                            array_push($tickets_log['tickets'], $ticket_item);
+                            // increment counter by 1
+                            $counter++;
+                        }
+
                     }
+                }
+                // Check if counter is greater than 0
+                if ($counter > 0) { // if true
+                    // then escalate
+                    $this->to = $escalation->email;
+                    $this->subject = "Escalated Tickets";
+                    $this->view = 'emails.ticket_info4';
+                    $this->data = compact('tickets_log', 'categories', 'duration_level', 'current', 'moderator');
+
+                    return $this->mailer->send($this->view, $this->data, function ($message) {
+                        $message->from($this->fromAddress, $this->fromName)
+                            ->to($this->to)->subject($this->subject);
+
+                    });
 
                 }
             }
-            $this->to = $escalation->email;
-            $this->subject = "Escalated Tickets";
-            $this->view = 'emails.ticket_info4';
-            $this->data = compact('tickets_log', 'categories', 'duration_level');
-
-            return $this->mailer->send($this->view, $this->data, function ($message) {
-                $message->from($this->fromAddress, $this->fromName)
-                    ->to($this->to)->subject($this->subject);
-
-            });
 
         }
     }
@@ -136,54 +160,77 @@ class AppMailer
         // get the current time  - 2015-12-19 10:10:54
         $current = Carbon::now();
         // Retrieve tickets that has not been dropped by ticket owner and tickets that has not been resolved by ticket Moderators
-        // from the Database
-        $tickets = Ticket::where('drop_ticket', 0)->where('status', 'Open')->get();
+        $tickets = Ticket::all()->where('drop_ticket', 0)->where('status', 'Open');
 
-        // Retrieve escalations level 1 from the Database
+        // Retrieve escalations level 2 from the Database
         $escalations = Escalation::all()->where('level', 2);
         // Retrieve Categories
         $categories = Category::all();
 
         // Ticket logs
-        $tickets_log = [];
+        $tickets_log['tickets'] = array();
 
         // Duration
         $duration_level = "24 hours";
 
-        // Iterate over the escalations result set
-        foreach ($escalations as $escalation) {
-            // Iterate over tickets result set
-            foreach ($tickets as $ticket) {
-                // Check the ticket duration
-                $duration = $current->diffInHours($ticket->created_at);
-                if ($duration > 24 || $duration < 48) {
-                    // Check if ticket location matches escalation level location
-                    if ($ticket->location === $escalation->location) {
-                        $tickets_log[] = $ticket->title;
-                        $tickets_log[] = $ticket->id;
-                        $tickets_log[] = $ticket->ticket_owner;
-                        $tickets_log[] = $ticket->cpoy_email2;
-                        $tickets_log[] = $ticket->location;
-                        $tickets_log[] = $ticket->category;
-                        $tickets_log[] = $ticket->priority;
-                        $tickets_log[] = $duration;
+        // Check if escalations exist
+        if (count($escalations) > 0) {
+            // Iterate over the escalations result set
+            foreach ($escalations as $escalation) {
+                if ($escalation->location === 'Lagos' || $escalation->location === 'Head Office') { // Moderator is Mr Gbenga
+                    $moderator = User::all()->where('location', "Head Office")->where('user_type', 2)->first();
+                } else {
+                    // fetch moderator at user's location whose location is not Lagos or Head Office
+                    $moderator = User::all()->whereNotIn('location', ["Head Office", "Lagos"])->where('location', $escalation->location)->where('user_type', 1)->first();
+                }
+
+                // Set counter varaiable
+                $counter = 0;
+                // Iterate over tickets result set
+                foreach ($tickets as $ticket) {
+                    // Check the ticket duration
+                    $duration = $current->diffInHours($ticket->created_at);
+                    if ($duration === 24) {
+                        // Check if ticket location matches escalation level location
+                        if ($ticket->location === $escalation->location) {
+                            $ticket_item = array(
+                                'ticket_id' => $ticket->ticket_id,
+                                'title' => $ticket->title,
+                                'ticket_owner' => $ticket->ticket_owner,
+                                'copy_email2' => $ticket->copy_email2,
+                                'location' => $ticket->location,
+                                'category_id' => $ticket->category_id,
+                                'priority' => $ticket->priority,
+                                'created_at' => $ticket->created_at,
+                            );
+
+                            // Push to tickets array
+                            array_push($tickets_log['tickets'], $ticket_item);
+                            // increment counter by 1
+                            $counter++;
+                        }
+
                     }
+                }
+                // Check if counter is greater than 0
+                if ($counter > 0) { // if true
+                    // then escalate
+                    $this->to = $escalation->email;
+                    $this->subject = "Escalated Tickets";
+                    $this->view = 'emails.ticket_info4';
+                    $this->data = compact('tickets_log', 'categories', 'duration_level', 'current', 'moderator');
+
+                    return $this->mailer->send($this->view, $this->data, function ($message) {
+                        $message->from($this->fromAddress, $this->fromName)
+                            ->to($this->to)->subject($this->subject);
+
+                    });
 
                 }
+
             }
-            $this->to = $escalation->email;
-            $this->subject = "Escalated Tickets";
-            $this->view = 'emails.ticket_info4';
-            $this->data = compact('tickets_log', 'categories', 'duration_level');
-
-            return $this->mailer->send($this->view, $this->data, function ($message) {
-                $message->from($this->fromAddress, $this->fromName)
-                    ->to($this->to)->subject($this->subject);
-
-            });
 
         }
-
     }
 
     public function SendToEscalationLevel3()
@@ -192,53 +239,77 @@ class AppMailer
         $current = Carbon::now();
         // Retrieve tickets that has not been dropped by ticket owner and tickets that has not been resolved by ticket Moderators
         // from the Database
-        $tickets = Ticket::where('drop_ticket', 0)->where('status', 'Open')->get();
+        $tickets = Ticket::all()->where('drop_ticket', 0)->where('status', 'Open');
 
-        // Retrieve escalations level 1 from the Database
+        // Retrieve escalations level 3 from the Database
         $escalations = Escalation::all()->where('level', 3);
         // Retrieve Categories
         $categories = Category::all();
-
         // Ticket logs
-        $tickets_log = [];
+        $tickets_log['tickets'] = array();
 
         // Duration
         $duration_level = "48 hours";
 
-        // Iterate over the escalations result set
-        foreach ($escalations as $escalation) {
-            // Iterate over tickets result set
-            foreach ($tickets as $ticket) {
-                // Check the ticket duration
-                $duration = $current->diffInHours($ticket->created_at);
-                if ($duration === 48 || $duration > 48) {
-                    // Check if ticket location matches escalation level location
-                    if ($ticket->location === $escalation->location) {
-                        $tickets_log[] = $ticket->title;
-                        $tickets_log[] = $ticket->id;
-                        $tickets_log[] = $ticket->ticket_owner;
-                        $tickets_log[] = $ticket->cpoy_email2;
-                        $tickets_log[] = $ticket->location;
-                        $tickets_log[] = $ticket->category;
-                        $tickets_log[] = $ticket->priority;
-                        $tickets_log[] = $duration;
+        // Check if escalations exists
+        if (count($escalations) > 0) {
+            // Iterate over the escalations result set
+            foreach ($escalations as $escalation) {
+                if ($escalation->location === 'Lagos' || $escalation->location === 'Head Office') { // Moderator is Mr Gbenga
+                    $moderator = User::all()->where('location', "Head Office")->where('user_type', 2)->first();
+                } else {
+                    // fetch moderator at user's location whose location is not Lagos or Head Office
+                    $moderator = User::all()->whereNotIn('location', ["Head Office", "Lagos"])->where('location', $escalation->location)->where('user_type', 1)->first();
+                }
+
+                // Set counter
+                $counter = 0;
+                // Iterate over tickets result set
+                foreach ($tickets as $ticket) {
+                    // Check the ticket duration
+                    $duration = $current->diffInHours($ticket->created_at);
+                    if ($duration === 48) {
+                        // Check if ticket location matches escalation level location
+                        if ($ticket->location === $escalation->location) {
+                            $ticket_item = array(
+                                'ticket_id' => $ticket->ticket_id,
+                                'title' => $ticket->title,
+                                'ticket_owner' => $ticket->ticket_owner,
+                                'copy_email2' => $ticket->copy_email2,
+                                'location' => $ticket->location,
+                                'category_id' => $ticket->category_id,
+                                'priority' => $ticket->priority,
+                                'created_at' => $ticket->created_at,
+                            );
+
+                            // Push to tickets array
+                            array_push($tickets_log['tickets'], $ticket_item);
+                            // increment counter by 1
+                            $counter++;
+                        }
+
                     }
+                }
+
+                // Check if counter is greater than 0
+                if ($counter > 0) { // if true
+                    // then escalate
+                    $this->to = $escalation->email;
+                    $this->subject = "Escalated Tickets";
+                    $this->view = 'emails.ticket_info4';
+                    $this->data = compact('tickets_log', 'categories', 'duration_level', 'current', 'moderator');
+
+                    return $this->mailer->send($this->view, $this->data, function ($message) {
+                        $message->from($this->fromAddress, $this->fromName)
+                            ->to($this->to)->subject($this->subject);
+
+                    });
 
                 }
+
             }
-            $this->to = $escalation->email;
-            $this->subject = "Escalated Tickets";
-            $this->view = 'emails.ticket_info4';
-            $this->data = compact('tickets_log', 'categories', 'duration_level');
-
-            return $this->mailer->send($this->view, $this->data, function ($message) {
-                $message->from($this->fromAddress, $this->fromName)
-                    ->to($this->to)->subject($this->subject);
-
-            });
 
         }
-
     }
 
     public function sendErrorInfo(InboundEmail $email)
@@ -268,7 +339,6 @@ class AppMailer
     }
 
     //sendTicketCommentsAdmin
-
     public function sendTicketCommentsAdmin($ticketOwner, $user, Ticket $ticket, $comment)
     {
         // dd($ticket->category);
