@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use ComplainDesk\Category;
 use ComplainDesk\Escalation;
 use ComplainDesk\Ticket;
+use ComplainDesk\TicketDuration;
 use ComplainDesk\User;
 use Illuminate\Contracts\Mail\Mailer;
 
@@ -80,9 +81,11 @@ class AppMailer
 
         // get the current time  - 2015-12-19 10:10:54
         $current = Carbon::now();
-        // Retrieve tickets that has not been dropped by ticket owner and tickets that has not been resolved by ticket Moderators
-        // from the Database
+        /**
+         * Retrieve tickets and tickets_duration that has not been dropped by ticket owner and tickets that has not been resolved by ticket Moderators from the Database
+         */
         $tickets = Ticket::all()->where('drop_ticket', 0)->where('status', 'Open');
+        $tickets_duration = TicketDuration::all();
 
         // Retrieve escalations level 1 from the Database
         $escalations = Escalation::all()->where('level', 1);
@@ -111,28 +114,32 @@ class AppMailer
                 $counter = 0;
                 // Iterate over tickets result set
                 foreach ($tickets as $ticket) {
-                    // Check the ticket duration
-                    $duration = $current->diffInHours($ticket->created_at);
-                    if ($duration === 12) {
-                        // Check if ticket location matches escalation level location
-                        if ($ticket->location === $escalation->location) {
-                            $ticket_item = array(
-                                'ticket_id' => $ticket->ticket_id,
-                                'title' => $ticket->title,
-                                'ticket_owner' => $ticket->ticket_owner,
-                                'copy_email2' => $ticket->copy_email2,
-                                'location' => $ticket->location,
-                                'category_id' => $ticket->category_id,
-                                'priority' => $ticket->priority,
-                                'created_at' => $ticket->created_at,
-                            );
+                    foreach ($tickets_duration as $ticket_duration) {
+                        // Check if the ticket id matches
+                        if ($ticket->id === $ticket_duration->ticket_id) {
+                            if ($ticket_duration->duration === 12) {
+                                // Check if ticket location matches escalation level location
+                                if ($ticket->location === $escalation->location) {
+                                    $ticket_item = array(
+                                        'ticket_id' => $ticket->ticket_id,
+                                        'title' => $ticket->title,
+                                        'ticket_owner' => $ticket->ticket_owner,
+                                        'copy_email2' => $ticket->copy_email2,
+                                        'location' => $ticket->location,
+                                        'category_id' => $ticket->category_id,
+                                        'priority' => $ticket->priority,
+                                        'created_at' => $ticket->created_at,
+                                    );
 
-                            // Push to tickets array
-                            array_push($tickets_log['tickets'], $ticket_item);
-                            // increment counter by 1
-                            $counter++;
+                                    // Push to tickets array
+                                    array_push($tickets_log['tickets'], $ticket_item);
+                                    // increment counter by 1
+                                    $counter++;
+                                }
+
+                            }
+
                         }
-
                     }
                 }
                 // Check if counter is greater than 0
@@ -159,8 +166,11 @@ class AppMailer
     {
         // get the current time  - 2015-12-19 10:10:54
         $current = Carbon::now();
-        // Retrieve tickets that has not been dropped by ticket owner and tickets that has not been resolved by ticket Moderators
+        /**
+         * Retrieve tickets and tickets_duration that has not been dropped by ticket owner and tickets that has not been resolved by ticket Moderators from the Database
+         */
         $tickets = Ticket::all()->where('drop_ticket', 0)->where('status', 'Open');
+        $tickets_duration = TicketDuration::all();
 
         // Retrieve escalations level 2 from the Database
         $escalations = Escalation::all()->where('level', 2);
@@ -188,30 +198,35 @@ class AppMailer
                 $counter = 0;
                 // Iterate over tickets result set
                 foreach ($tickets as $ticket) {
-                    // Check the ticket duration
-                    $duration = $current->diffInHours($ticket->created_at);
-                    if ($duration === 24) {
-                        // Check if ticket location matches escalation level location
-                        if ($ticket->location === $escalation->location) {
-                            $ticket_item = array(
-                                'ticket_id' => $ticket->ticket_id,
-                                'title' => $ticket->title,
-                                'ticket_owner' => $ticket->ticket_owner,
-                                'copy_email2' => $ticket->copy_email2,
-                                'location' => $ticket->location,
-                                'category_id' => $ticket->category_id,
-                                'priority' => $ticket->priority,
-                                'created_at' => $ticket->created_at,
-                            );
+                    foreach ($tickets_duration as $ticket_duration) {
+                        // Check if the ticket id matches
+                        if ($ticket->id === $ticket_duration->ticket_id) {
+                            if ($ticket_duration->duration === 24) {
+                                // Check if ticket location matches escalation level location
+                                if ($ticket->location === $escalation->location) {
+                                    $ticket_item = array(
+                                        'ticket_id' => $ticket->ticket_id,
+                                        'title' => $ticket->title,
+                                        'ticket_owner' => $ticket->ticket_owner,
+                                        'copy_email2' => $ticket->copy_email2,
+                                        'location' => $ticket->location,
+                                        'category_id' => $ticket->category_id,
+                                        'priority' => $ticket->priority,
+                                        'created_at' => $ticket->created_at,
+                                    );
 
-                            // Push to tickets array
-                            array_push($tickets_log['tickets'], $ticket_item);
-                            // increment counter by 1
-                            $counter++;
+                                    // Push to tickets array
+                                    array_push($tickets_log['tickets'], $ticket_item);
+                                    // increment counter by 1
+                                    $counter++;
+                                }
+
+                            }
+
                         }
-
                     }
                 }
+
                 // Check if counter is greater than 0
                 if ($counter > 0) { // if true
                     // then escalate
@@ -237,9 +252,11 @@ class AppMailer
     {
         // get the current time  - 2015-12-19 10:10:54
         $current = Carbon::now();
-        // Retrieve tickets that has not been dropped by ticket owner and tickets that has not been resolved by ticket Moderators
-        // from the Database
+        /**
+         * Retrieve tickets and tickets_duration that has not been dropped by ticket owner and tickets that has not been resolved by ticket Moderators from the Database
+         */
         $tickets = Ticket::all()->where('drop_ticket', 0)->where('status', 'Open');
+        $tickets_duration = TicketDuration::all();
 
         // Retrieve escalations level 3 from the Database
         $escalations = Escalation::all()->where('level', 3);
@@ -266,28 +283,32 @@ class AppMailer
                 $counter = 0;
                 // Iterate over tickets result set
                 foreach ($tickets as $ticket) {
-                    // Check the ticket duration
-                    $duration = $current->diffInHours($ticket->created_at);
-                    if ($duration === 48) {
-                        // Check if ticket location matches escalation level location
-                        if ($ticket->location === $escalation->location) {
-                            $ticket_item = array(
-                                'ticket_id' => $ticket->ticket_id,
-                                'title' => $ticket->title,
-                                'ticket_owner' => $ticket->ticket_owner,
-                                'copy_email2' => $ticket->copy_email2,
-                                'location' => $ticket->location,
-                                'category_id' => $ticket->category_id,
-                                'priority' => $ticket->priority,
-                                'created_at' => $ticket->created_at,
-                            );
+                    foreach ($tickets_duration as $ticket_duration) {
+                        // Check if the ticket id matches
+                        if ($ticket->id === $ticket_duration->ticket_id) {
+                            if ($ticket_duration->duration === 48) {
+                                // Check if ticket location matches escalation level location
+                                if ($ticket->location === $escalation->location) {
+                                    $ticket_item = array(
+                                        'ticket_id' => $ticket->ticket_id,
+                                        'title' => $ticket->title,
+                                        'ticket_owner' => $ticket->ticket_owner,
+                                        'copy_email2' => $ticket->copy_email2,
+                                        'location' => $ticket->location,
+                                        'category_id' => $ticket->category_id,
+                                        'priority' => $ticket->priority,
+                                        'created_at' => $ticket->created_at,
+                                    );
 
-                            // Push to tickets array
-                            array_push($tickets_log['tickets'], $ticket_item);
-                            // increment counter by 1
-                            $counter++;
+                                    // Push to tickets array
+                                    array_push($tickets_log['tickets'], $ticket_item);
+                                    // increment counter by 1
+                                    $counter++;
+                                }
+
+                            }
+
                         }
-
                     }
                 }
 

@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\EmailParserCommand::class,
         Commands\Escalations::class,
+        Commands\CountDown::class,
     ];
 
     /**
@@ -26,7 +27,15 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('escalate:tickets')
-            ->everyMinute();
+            ->everyMinute()
+            ->runInBackground();
+
+        // Run hourly from 8 AM to 5 PM on weekdays...
+        $schedule->command('countdown:start')
+            ->weekdays()
+            ->hourly()
+            ->between('8:00', '17:00')
+            ->runInBackground();
 
     }
 

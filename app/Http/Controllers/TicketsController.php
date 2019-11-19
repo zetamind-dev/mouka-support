@@ -8,6 +8,7 @@ use ComplainDesk\Http\Controllers\SMSController;
 use ComplainDesk\Mailers\AppMailer;
 use ComplainDesk\Ticket;
 use ComplainDesk\User;
+use ComplainDesk\TicketDuration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -236,6 +237,13 @@ class TicketsController extends Controller
 
         // save ticket details
         $ticket->save();
+
+        if($ticket->status === 'Open'){
+            $ticket_duration = new TicketDuration;
+            $ticket_duration->ticket_id = $ticket->id;
+
+            $ticket_duration->save();
+        }
 
         //$smsMessage = "You just created a Ticket with an ID: $ticket->ticket_id";
         //$userTelephone = Auth::user()->telephone;

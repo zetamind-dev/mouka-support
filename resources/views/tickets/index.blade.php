@@ -36,7 +36,7 @@
                                 {{ $category->name }} @endif @endforeach
                             </td>
                             <td>{{ $ticket->created_at->format('F d, Y H:i') }}</td>
-                            <td>{{ $ticket->updated_at->diffInHours($ticket->created_at) }} hour (s)</td>
+                            <td>{{ \Carbon\Carbon::parse($ticket->created_at)->diffForHumans() }}</td>
                             <td>
                                 @if ($ticket->status === 'Open')
                                 <span class="label label-success text-success">{{ $ticket->status }}</span>
