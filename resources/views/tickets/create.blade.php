@@ -23,7 +23,8 @@
             <select id="userId" type="select" class="form-control" name="userId" style="height: 40px;" required>
                   <option value="">Select User</option>
                 @foreach ($users as $user)
-                  <option value="{{ $user->id }}" >{{ $user->name }} &nbsp&nbsp </option>
+                  <option value="{{ $user->id }}">{{ $user->name }} &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp
+                    &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp &nbsp&nbsp{{$user->location}} </option>
                 @endforeach
             </select>
          </div>

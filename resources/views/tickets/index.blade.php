@@ -1,6 +1,7 @@
 @extends('layouts.app') @section('title', 'All Tickets') @section('external-css')
 <link href="{{ asset('css/userdashboard.css') }}" rel="stylesheet">
-<link href="{{ asset('css/create.css') }}" rel="stylesheet"> @endsection @include('layouts.user-dashboard-nav') @section('navigation') @endsection @section('content')
+<link href="{{ asset('css/create.css') }}" rel="stylesheet"> @endsection @include('layouts.user-dashboard-nav')
+@section('navigation') @endsection @section('content')
 <div class="container card">
     <div class="col-md-12 col-md-offset-1 card-body">
         <div class="panel panel-default">
@@ -31,8 +32,11 @@
                             </td>
                             <td>{{ $ticket->title }}</td>
                             <td>
-                                @foreach ($categories as $category) @if ($category->id === $ticket->category_id) {{ $category->name }} @endif @endforeach
+                                @foreach ($categories as $category) @if ($category->id === $ticket->category_id)
+                                {{ $category->name }} @endif @endforeach
                             </td>
+                            <td>{{ $ticket->created_at->format('F d, Y H:i') }}</td>
+                            <td>{{ $ticket->updated_at->diffInHours($ticket->created_at) }} hour (s)</td>
                             <td>
                                 @if ($ticket->status === 'Open')
                                 <span class="label label-success text-success">{{ $ticket->status }}</span>
@@ -40,15 +44,15 @@
                                 <span class="label label-danger text-danger">{{ $ticket->status }}</span>
                                 @endif
                             </td>
-                            <td>{{ $ticket->created_at->format('F d, Y H:i') }}</td>
-                            <td>{{ $ticket->created_at->diffInHours($ticket->updated_at) }} hour (s)</td>
                             <td>
-                                <a href="{{ url('tickets/' . $ticket->ticket_id) }}" class="btn btn-sm" style="background:#2737A6;color:white">Comment</a>
+                                <a href="{{ url('tickets/' . $ticket->ticket_id) }}" class="btn btn-sm"
+                                    style="background:#2737A6;color:white">Comment</a>
                             </td>
                             <td>
                                 <form action="{{ url('admin/close_ticket/' . $ticket->ticket_id) }}" method="POST">
                                     @csrf
-                                    <button type="submit" class="btn btn-danger btn-sm" style="font-weight:bold">Close</button>
+                                    <button type="submit" class="btn btn-danger btn-sm"
+                                        style="font-weight:bold">Close</button>
                                 </form>
                             </td>
                         </tr>

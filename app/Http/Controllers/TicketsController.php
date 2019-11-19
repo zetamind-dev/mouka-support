@@ -22,19 +22,19 @@ class TicketsController extends Controller
     public function index()
     {
         if (Auth::user()->user_type === 3) {
-            $tickets = Ticket::orderBy('id', 'desc')->where('drop_ticket', 0)->paginate(10);
+            $tickets = Ticket::orderBy('status', 'desc')->where('drop_ticket', 0)->paginate(10);
             $categories = Category::all();
 
             return view('tickets.index', compact('tickets', 'categories'));
 
         } elseif (Auth::user()->user_type === 2) {
-            $tickets = Ticket::orderBy('id', 'desc')->where('drop_ticket', 0)->whereNotIn('location', ['Benin', 'Kaduna'])->paginate(10);
+            $tickets = Ticket::orderBy('status', 'desc')->where('drop_ticket', 0)->whereNotIn('location', ['Benin', 'Kaduna'])->paginate(10);
             $categories = Category::all();
 
             return view('tickets.index', compact('tickets', 'categories'));
 
         } elseif (Auth::user()->user_type === 1) {
-            $tickets = Ticket::orderBy('id', 'desc')->where('drop_ticket', 0)->where('location', Auth::user()->location)->paginate(10);
+            $tickets = Ticket::orderBy('status', 'desc')->where('drop_ticket', 0)->where('location', Auth::user()->location)->paginate(10);
             $categories = Category::all();
 
             return view('tickets.index', compact('tickets', 'categories'));
@@ -49,6 +49,12 @@ class TicketsController extends Controller
             $users = User::all()->whereIn('location', ["Head Office", "Lagos"])->where('user_type', 0);
             return view('tickets.create', compact('categories', 'users'));
         } else {
+            foreach ($categories as $category) {
+                if ($category->name === 'NAV/QLIKVIEW' && $category->email === Auth::user()->email) {
+                    $users = User::all()->where('user_type', 0);
+                    return view('tickets.create', compact('categories', 'users'));
+                }
+            }
             $users = User::all()->where('location', Auth::user()->location)->where('user_type', 0);
             return view('tickets.create', compact('categories', 'users'));
         }
@@ -94,7 +100,7 @@ class TicketsController extends Controller
             $location = $user->location;
 
             // Retrieve all tickets
-            $tickets = Ticket::all();
+            $tickets = Ticket::all()->where('location', $location);
             // Get total number of tickets
             $total_tickets = count($tickets);
 
@@ -135,7 +141,7 @@ class TicketsController extends Controller
 
         } else {
             // Retrieve all tickets
-            $tickets = Ticket::all();
+            $tickets = Ticket::all()->where('location', Auth::user()->location);
             // Get total number of tickets
             $total_tickets = count($tickets);
 
