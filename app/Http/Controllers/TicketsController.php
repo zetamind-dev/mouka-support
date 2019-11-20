@@ -238,6 +238,8 @@ class TicketsController extends Controller
         // save ticket details
         $ticket->save();
 
+
+        // Set ticket_duration
         if($ticket->status === 'Open'){
             $ticket_duration = new TicketDuration;
             $ticket_duration->ticket_id = $ticket->id;

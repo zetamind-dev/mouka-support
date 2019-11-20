@@ -45,7 +45,7 @@ class CountDown extends Command
 
         // Official working hour 8am - 5pm (8:00 - 17:00)
         // Retrieve all tickets from the ticket_durations table
-        $tickets = new TicketDuration;
+        $tickets = TicketDuration::all();
 
         foreach ($tickets as $ticket) {
             // Check if the ticket was created during the official hour

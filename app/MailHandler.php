@@ -6,6 +6,7 @@ use BeyondCode\Mailbox\InboundEmail;
 use ComplainDesk\Category;
 use ComplainDesk\Mailers\AppMailer;
 use ComplainDesk\Ticket;
+use ComplainDesk\TicketDuration;
 use ComplainDesk\User;
 use Illuminate\Support\Facades\Mail;
 
@@ -59,7 +60,7 @@ class MailHandler
                 // Get total number of tickets
                 $total_tickets = count($tickets);
                 // Check if total number of tickets is less than 1
-                if ($total_tickets < 1) {// if true
+                if ($total_tickets < 1) { // if true
                     // Set ticket_num to 1
                     $ticket_num = 1;
                     $new_id = '000' . $ticket_num;
@@ -127,7 +128,7 @@ class MailHandler
                                 $counter[] = $category->id;
 
                             } else {
-                                // Then find category by Networks
+                                // Then find category by Computer & Networks
                                 $category = Category::all()->where('name', 'Computers, Networks & Others')->first();
                                 // Set category_id field
                                 $counter[] = $category->id;
@@ -150,7 +151,7 @@ class MailHandler
                     // Call mailer and pass sender's email as arg
                     return $mailer->sendErrorInfo($email);
                 } else { // no multiple category email was found
-                    // Set category_id 
+                    // Set category_id
                     foreach ($counter as $counter_id) {
                         $category_id = $counter_id;
                     }
@@ -188,6 +189,17 @@ class MailHandler
 
                     // save record to database
                     $ticket->save();
+
+                    // Set ticket_duration
+                    if ($ticket->status === 'Open') {
+
+                        $ticket_duration = new TicketDuration;
+
+                        $ticket_duration->ticket_id = $ticket->id;
+
+                        $ticket_duration->save();
+                    }
+
                     //Retrieve all categories
                     $categories = new Category;
                     // Check sender's location to determine moderator
