@@ -41,7 +41,7 @@
            </td>
             @endforeach
             <td><small>{{ $ticket['priority'] }}</small></td>
-            <td><small>{{ $current->diffInHours($ticket['created_at']) }} hours</small></td>
+            <td><small>{{ $ticket['duration'] }} hours</small></td>
          </tr>
        </tbody>
         @endforeach

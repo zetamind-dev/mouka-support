@@ -27,7 +27,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('escalate:tickets')
-            ->everyMinute()
+            ->hourly()
+            ->between('8:00', '17:00')
             ->runInBackground();
 
         // Run hourly from 8 AM to 5 PM on weekdays...

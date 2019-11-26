@@ -17,7 +17,12 @@ class EditUserController extends Controller
     public function index()
     {
 
-        if (Auth::user()->location === "Head Office") {
+        if (Auth::user()->user_type === 3) {// If true 
+            // A super user is logged in
+            // Retrieve users from all plants and Head Office
+            $users = User::all()->where('user_type', 0);
+            return view('admin-users.transfer', compact('users'));
+        } elseif (Auth::user()->location === "Head Office" && Auth::user()->user_type === 2) {
             // Retrieve users from Lagos Plant and Head Office only
             $users = User::all()->whereIn('location', ["Lagos", "Head Office"])->where('user_type', 0);
             return view('admin-users.transfer', compact('users'));

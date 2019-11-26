@@ -7,8 +7,8 @@ use ComplainDesk\Http\Controllers\LogsController as Log;
 use ComplainDesk\Http\Controllers\SMSController;
 use ComplainDesk\Mailers\AppMailer;
 use ComplainDesk\Ticket;
-use ComplainDesk\User;
 use ComplainDesk\TicketDuration;
+use ComplainDesk\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,22 +23,25 @@ class TicketsController extends Controller
     public function index()
     {
         if (Auth::user()->user_type === 3) {
-            $tickets = Ticket::orderBy('status', 'desc')->where('drop_ticket', 0)->paginate(10);
+            $tickets = Ticket::orderBy('status', 'desc')->orderBy('created_at', 'desc')->where('drop_ticket', 0)->paginate(10);
             $categories = Category::all();
+            $tickets_duration = TicketDuration::all();
 
-            return view('tickets.index', compact('tickets', 'categories'));
+            return view('tickets.index', compact('tickets', 'categories', 'tickets_duration'));
 
         } elseif (Auth::user()->user_type === 2) {
-            $tickets = Ticket::orderBy('status', 'desc')->where('drop_ticket', 0)->whereNotIn('location', ['Benin', 'Kaduna'])->paginate(10);
+            $tickets = Ticket::orderBy('status', 'desc')->orderBy('created_at', 'desc')->where('drop_ticket', 0)->whereNotIn('location', ['Benin', 'Kaduna'])->paginate(10);
             $categories = Category::all();
+            $tickets_duration = TicketDuration::all();
 
-            return view('tickets.index', compact('tickets', 'categories'));
+            return view('tickets.index', compact('tickets', 'categories', 'tickets_duration'));
 
         } elseif (Auth::user()->user_type === 1) {
-            $tickets = Ticket::orderBy('status', 'desc')->where('drop_ticket', 0)->where('location', Auth::user()->location)->paginate(10);
+            $tickets = Ticket::orderBy('status', 'desc')->orderBy('created_at', 'desc')->where('drop_ticket', 0)->where('location', Auth::user()->location)->paginate(10);
             $categories = Category::all();
+            $tickets_duration = TicketDuration::all();
 
-            return view('tickets.index', compact('tickets', 'categories'));
+            return view('tickets.index', compact('tickets', 'categories', 'tickets_duration'));
         }
 
     }
@@ -238,9 +241,8 @@ class TicketsController extends Controller
         // save ticket details
         $ticket->save();
 
-
         // Set ticket_duration
-        if($ticket->status === 'Open'){
+        if ($ticket->status === 'Open') {
             $ticket_duration = new TicketDuration;
             $ticket_duration->ticket_id = $ticket->id;
 
@@ -343,7 +345,7 @@ class TicketsController extends Controller
 
     public function userTickets()
     {
-        $tickets = Ticket::where('user_id', Auth::user()->id)->where('drop_ticket', 0)->orderBy('created_at', 'desc')->paginate(10);
+        $tickets = Ticket::where('user_id', Auth::user()->id)->where('drop_ticket', 0)->orderBy('status', 'desc')->orderBy('created_at', 'desc')->paginate(10);
         $categories = Category::all();
         //$users = User::all()->where('location', Auth::user()->location);
 

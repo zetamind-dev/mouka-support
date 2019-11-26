@@ -40,7 +40,7 @@ class CountDown extends Command
     public function handle()
     {
         /**
-         * Compute and Update ticket duartion
+         * Compute and Update ticket duration
          */
 
         // Official working hour 8am - 5pm (8:00 - 17:00)
@@ -48,7 +48,7 @@ class CountDown extends Command
         $tickets = TicketDuration::all();
 
         foreach ($tickets as $ticket) {
-            // Check if the ticket was created during the official hour
+            // Check if the ticket was created during the official working hour
             if ($ticket->created_at->format('H') > 7 || $ticket->created_at->format('H') < 18) { // If true
                 // Then check if the tickets has elaspsed a full day(new day)
                 // Get current time stamps
@@ -61,7 +61,7 @@ class CountDown extends Command
                      *   2. Update the duartion
                      */
 
-                    $ticket->duration = $ticket->duartion + 1;
+                    $ticket->duration = $ticket->duration + 1;
 
                     // Update
                     $ticket->save();

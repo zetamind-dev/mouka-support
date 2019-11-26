@@ -128,7 +128,7 @@ class AppMailer
                                         'location' => $ticket->location,
                                         'category_id' => $ticket->category_id,
                                         'priority' => $ticket->priority,
-                                        'created_at' => $ticket->created_at,
+                                        'duration' => $ticket_duration->duration,
                                     );
 
                                     // Push to tickets array
@@ -212,7 +212,7 @@ class AppMailer
                                         'location' => $ticket->location,
                                         'category_id' => $ticket->category_id,
                                         'priority' => $ticket->priority,
-                                        'created_at' => $ticket->created_at,
+                                        'duration' => $ticket_duration->duration,
                                     );
 
                                     // Push to tickets array
@@ -297,7 +297,7 @@ class AppMailer
                                         'location' => $ticket->location,
                                         'category_id' => $ticket->category_id,
                                         'priority' => $ticket->priority,
-                                        'created_at' => $ticket->created_at,
+                                        'duration' => $ticket_duration->duration,
                                     );
 
                                     // Push to tickets array

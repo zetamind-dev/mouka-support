@@ -46,7 +46,7 @@ class HomeController extends Controller
         if (Auth::user()->user_type > 0) {
             if (Auth::user()->user_type === 2 && Auth::user()->location === "Head Office") { // If logged in user has user_type of 2 user and location is Head Office
                 // Then select all tickets from the tickets table where location is not Benin and Kaduna
-                $tickets = Ticket::orderBy('status', 'desc')->where('drop_ticket', 0)
+                $tickets = Ticket::orderBy('status', 'desc')->orderBy('created_at', 'desc')->where('drop_ticket', 0)
                     ->whereNotIn('location', ['Benin', 'Kaduna'])
                     ->paginate(10);
                 // Retrieve all categories in the categories table
@@ -75,7 +75,7 @@ class HomeController extends Controller
 
                 return view('home', compact('tickets', 'categories', 'totalTicketsClosed', 'totalTicketsOpen', 'totalTickets', 'totalUsers', 'totalComments'));
             } elseif (Auth::user()->user_type > 2) {
-                $tickets = Ticket::orderBy('status', 'desc')->where('drop_ticket', 0)->paginate(10);
+                $tickets = Ticket::orderBy('status', 'desc')->orderBy('created_at', 'desc')->where('drop_ticket', 0)->paginate(10);
                 $categories = Category::all();
 
                 $totalTicketsClosed = Ticket::all()->where('status', 'Closed')->where('drop_ticket', 0);
@@ -96,7 +96,7 @@ class HomeController extends Controller
                 return view('home', compact('tickets', 'categories', 'totalTicketsClosed', 'totalTicketsOpen', 'totalTickets', 'totalUsers', 'totalComments', 'moderators'));
 
             } else {
-                $tickets = Ticket::orderBy('status', 'desc')->where('location', Auth::user()->location)->paginate(10)->where('drop_ticket', 0);
+                $tickets = Ticket::orderBy('status', 'desc')->orderBy('created_at', 'desc')->where('location', Auth::user()->location)->paginate(10)->where('drop_ticket', 0);
                 $categories = Category::all();
 
                 $totalTicketsClosed = Ticket::all()->where('status', 'Closed')->where('location', Auth::user()->location)->where('drop_ticket', 0);
@@ -118,7 +118,7 @@ class HomeController extends Controller
             }
 
         } else {
-            $tickets = Ticket::where('user_id', Auth::user()->id)->where('drop_ticket', 0)->orderBy('status', 'desc')->paginate(10);
+            $tickets = Ticket::where('user_id', Auth::user()->id)->where('drop_ticket', 0)->orderBy('status', 'desc')->orderBy('created_at', 'desc')->paginate(10);
             $categories = Category::all();
 
             $totalTicketsClosed = Ticket::all()->where('user_id', Auth::user()->id)->where('status', 'Closed')->where('drop_ticket', 0);
