@@ -104,6 +104,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
     Route::get('logs', 'LogsController@index');
     //Reout to view Report
     Route::get('reports', 'ReportController@getComplainList');
+    // Route to export report to excel
+    Route::get('reports/export', 'ReportController@export');
+
+    // Route to filter report
+    Route::post('reports/filter', 'ReportController@filter');
 
     //Route to display the page to create escalation level
     Route::get('/escalation', 'EscalationController@index');
@@ -136,7 +141,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
     Route::get('/edit-user', 'EditUserController@index');
     //Route to edit user
     Route::post('/edit-user', 'EditUserController@update');
-
     //Runs crons job on the server
     //Route::get('/execute','CronJobController@index');
 
