@@ -105,7 +105,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
     //Reout to view Report
     Route::get('reports', 'ReportController@getComplainList');
     // Route to export report to excel
-    Route::get('reports/export', 'ReportController@export');
+    Route::post('reports/export', 'ReportController@export');
 
     // Route to filter report
     Route::post('reports/filter', 'ReportController@filter');
