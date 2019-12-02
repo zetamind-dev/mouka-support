@@ -6,41 +6,50 @@
 
 <div class="container">
     <div class="card-body">
-        <h4>Filter Ticket by :</h4>
+        <h4>Filter Ticket:</h4>
     </div>
     <!-- Begining of New Ticket Form -->
     <form class="form-horizontal col-md-12" role="form" method="POST" action="{{ url('admin/reports/filter') }}"
         enctype="multipart/form-data">
         @csrf
+        <div class="form-row mb-4">
+            <div class="col-md-4">
+                <label for="date_from">From</label>
+                <input class="form-control" type="date" name="date_from" id="date_from" required>
+            </div>
+            <div class="col-md-4">
+                <label for="date_to">To</label>
+                <input class="form-control" type="date"  name="date_to" id="date_to" required>
+            </div>
+        </div>
         <div class="form-row">
             <div class="col-md-4">
                 <label for="category">Category</label>
                 <select id="category" type="select" class="form-control" name="category" style="height: 40px;">
-                    <option value="">Select Category</option>
-                   @foreach ($categories as $category)
-                <option value="{{$category->id}}">{{$category->name}}</option>
-                   @endforeach
+                    <option value="all">All Categories</option>
+                    @foreach ($categories as $category)
+                    <option value="{{$category->id}}">{{$category->name}}</option>
+                    @endforeach
                 </select>
             </div>
 
             <div class="col-md-4">
                 <label for="status">Status</label>
                 <select id="status" type="select" class="form-control" name="status" style="height: 40px;">
-                    <option value="">Select Status</option>
+                    <option value="all">All Status</option>
                     <option value="Open">Open</option>
                     <option value="Closed">Closed</option>
-                    </option>
                 </select>
             </div>
 
         </div>
         <br>
         <div class="form-row">
-            
+
             <div class="col-md-4">
                 <label for="Location">Location</label>
                 <select id="location" type="select" class="form-control" name="location" style="height: 40px;">
-                    <option value="">Select Location</option>
+                    <option value="all">All Locations</option>
                     <option value="Head Office">Head Office</option>
                     <option value="Lagos">Lagos</option>
                     <option value="Kaduna">Kaduna</option>

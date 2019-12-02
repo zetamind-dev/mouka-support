@@ -18,6 +18,8 @@
 <input type="hidden" id="status" name="status" value="{{$query_params['status']}}">
 <input type="hidden" id="category" name="category" value="{{$query_params['category']}}">
 <input type="hidden" id="location" name="location" value="{{$query_params['location']}}">
+<input type="hidden" id="date_from" name="date_from" value="{{$query_params['date_from']}}">
+<input type="hidden" id="date_to" name="date_to" value="{{$query_params['date_to']}}">
    <div class="col-md-4">
      <button type="submit" class="btn btn-success">
        <i class="fa fa-btn fa-book"></i> Export to excel
