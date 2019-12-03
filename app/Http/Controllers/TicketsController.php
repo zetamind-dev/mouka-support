@@ -7,8 +7,8 @@ use ComplainDesk\Http\Controllers\LogsController as Log;
 use ComplainDesk\Http\Controllers\SMSController;
 use ComplainDesk\Mailers\AppMailer;
 use ComplainDesk\Ticket;
-use ComplainDesk\TicketDuration;
 use ComplainDesk\User;
+use ComplainDesk\TicketDuration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
