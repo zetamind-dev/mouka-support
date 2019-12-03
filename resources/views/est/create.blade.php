@@ -105,7 +105,7 @@
               @foreach ($escalations as $escalation)
               <tbody>
                 <tr>
-                  <td>{{$escalation->id}}</td>
+                  <td>{{$loop->iteration}}</td>
                   <td>{{$escalation->name}}</td>
                   <td>{{$escalation->email}}</td>
                   <td>{{$escalation->location}}</td>
