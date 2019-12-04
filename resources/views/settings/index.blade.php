@@ -3,60 +3,62 @@
 @section('content')
 <div class="container col-md-6">
     <div class="col-md-10">
+        @include('includes.flash')
         <div class="card">
             <div class="card-header" style="background:#2737A6;color:white; font-size:17px; font-weight:bold;">Update
                 Details</div>
             <div class="card-body">
-                @include('includes.flash')
                 <form action="{{ url('/settings') }}" method="POST">
                     @csrf
-                    @if ($oldTelephone === "")
                     <div class="form-group">
                         <label for="new">Phone Number:</label>
-                        <input type="number" class="form-control" id="new" name="telephone" required>
+                        <input type="number" class="form-control" id="new" name="telephone">
                     </div>
-                    @else
-                    <div class="form-group">
-                        <label for="current">Current Phone Number</label>
-                        <input class="form-control" id="current" value="{{ $oldTelephone }}" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="new">New Phone Number:</label>
-                        <input type="number" class="form-control" id="new" name="telephone" required>
-                    </div>
-                    @endif
-                    @if ($oldEmployeeno === "")
+
                     <div class="form-group">
                         <label for="new">Employee No.:</label>
-                        <input type="text" class="form-control" id="new" name="employeeno" required>
+                        <input type="text" class="form-control" id="new" name="employeeno">
                     </div>
-                    @else
-                    <div class="form-group">
-                        <label for="current">Current Employee No</label>
-                        <input class="form-control" id="current" value="{{ $oldEmployeeno }}" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="new">Employee No.:</label>
-                        <input type="text" class="form-control" id="new" name="employeeno" required>
-                    </div>
-                    @endif
 
                     <div class="form-group">
                         <label for="new">New Password</label>
-                        <input type="password" class="form-control" id="new" name="new-password" required>
+                        <input type="password" class="form-control" id="new" name="new-password">
                     </div>
 
-                    <div class="form-group">
-                        <label for="new">Confirm New Password</label>
-                        <input type="password" class="form-control" id="new" name="Cpassword" required>
-                    </div>
-
-
-                    <button type="submit" class="btn" style="background:#2737A6;color:white;font-weight:bold">Update
+                    <button type="submit" class="btn btn-info">Update
                     </button>
                 </form>
             </div>
         </div>
     </div>
+    <br><br>
+   <div class="container-fluid">
+        <table class="table table-responsive table-striped">
+            <thead style="background:#2737A6;color:white; font-size:17px; font-weight:bold;">
+                <tr>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Employee Number</th>
+                    <th>Location</th>
+                </tr>
+            </thead>
+            <tbody>
+            <td>{{Auth::user()->name}}</td>
+            <td>{{Auth::user()->email}}</td>
+            <td>@if (Auth::user()->telephone === "" || Auth::user()->telephone === null)
+               NILL
+            @else
+              {{Auth::user()->telephone}}
+            @endif</td>
+            <td>@if (Auth::user()->employeeno === "" || Auth::user()->employeeno === null)
+                NILL
+                @else
+                {{Auth::user()->employeeno}}
+                @endif</td>
+            <td>{{Auth::user()->location}}</td>
+            </tbody>
+        </table>
+   </div>
 </div>
 @endsection

@@ -38,6 +38,10 @@ class Kernel extends ConsoleKernel
             ->between('8:00', '17:00')
             ->runInBackground();
 
+        $schedule->command('flush:tickets')
+        ->dailyAt('13:00')
+        ->runInBackground();
+
     }
 
     /**

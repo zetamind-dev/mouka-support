@@ -58,7 +58,7 @@ class CountDown extends Command
                     /**
                      * ----TODO's----
                      *   1. Increment ticket duration field value by 1
-                     *   2. Update the duartion
+                     *   2. Update the duration
                      */
 
                     $ticket->duration = $ticket->duration + 1;
