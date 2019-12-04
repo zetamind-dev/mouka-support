@@ -18,7 +18,8 @@
         "laravel/tinker": "~1.0",
         "maatwebsite/excel": "^3.1",
         "unisharp/laravel-ckeditor": "^4.7",
-        "zbateson/mail-mime-parser": "^1.1"
+        "zbateson/mail-mime-parser": "^1.1",
+        "symfony/translation": "4.3.8"
     },
     "require-dev": {
         "filp/whoops": "~2.0",

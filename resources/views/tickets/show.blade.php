@@ -9,7 +9,7 @@
 
     <div class="card">
 
-        
+
         <div class="card-header" style="background:#2737A6;color:white; font-size:17px; font-weight:bold;">Ticket ID :
             {{ $ticket->ticket_id }}</div>
         <div class="container">
@@ -41,7 +41,7 @@
                                 value="{{ $ticket->updated_at->format('F d, Y H:i') }}" readonly>
                         </div>
                         @endif
-                    </div>
+                    </div><br>
                     <div class="form-group">
                         <div class="form-group">
                             <label for="category">Ticket Duration</label>
@@ -50,7 +50,16 @@
                         </div>
                     </div>
 
-
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label for="picture">Image</label>
+                            @if ($ticket->picture === 'noimage.jpg')
+                            <p>No image for this ticket</p>
+                            @else
+                            <img style="width:100%; heigth:100%" src="/storage/picture/{{$ticket->picture}}">
+                            @endif
+                        </div>
+                    </div>
 
                     @if(Auth::user()->user_type > 0)
                     <div class="form-group">
@@ -65,17 +74,6 @@
                             <label for="category">Ticket Priority</label>
                             <input type="text" class="form-control" id="closed"
                                 value="{{ ucfirst($ticket->priority) }} " readonly>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="form-group">
-                            <label for="picture">Images</label>
-                            @if ($ticket->picture === 'noimage.jpg')
-                            <p>No image for this ticket</p>
-                            @else
-                            <img style="width: 100%" src="/storage/picture/{{ $ticket->picture }}">
-                            @endif
                         </div>
                     </div>
 

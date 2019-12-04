@@ -3,6 +3,8 @@
 namespace ComplainDesk\Console\Commands;
 
 use Illuminate\Console\Command;
+use Carbon\Carbon;
+use ComplainDesk\Ticket;
 
 class Flush extends Command
 {

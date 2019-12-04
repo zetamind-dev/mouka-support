@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md navbar-dark text-white" style="background-color:#2737A6">
   <a class="navbar-brand" href="{{ url('/home') }}">
-    <img class="img-responsive2" src="{{ asset('img/mouka-logo-new.png') }}" style="width:70px;">
+    <img class="img-responsive2" src="{{ url('img/mouka-logo-new.png') }}" style="width:70px;">
   </a>
   <span>{{ Auth::user()->location }}</span>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
