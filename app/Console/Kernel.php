@@ -39,7 +39,7 @@ class Kernel extends ConsoleKernel
             ->runInBackground();
 
         $schedule->command('flush:tickets')
-        ->dailyAt('13:00')
+        ->dailyAt('18:00')
         ->runInBackground();
 
     }
