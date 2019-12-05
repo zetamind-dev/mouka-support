@@ -39,7 +39,7 @@ class ReportController extends Controller
         $query_log['query'] = array();
 
         /**
-         * SET INCOMING DATE INPUT REQUETS
+         * SET INCOMING DATE INPUT REQUEsT
          */
         $format = 'Y-m-d';
         $date_from = Carbon::createFromFormat($format, $request->input('date_from'))->timezone('Africa/Lagos')->toDateTimeString();
@@ -115,8 +115,7 @@ class ReportController extends Controller
             ->whereIn('category_id', $category_query)
             ->whereIn('location', $location_query)
             ->whereBetween('created_at', [$date_from, $date_to])
-            ->where('drop_ticket', 0)
-            ->paginate(10);
+            ->where('drop_ticket', 0)->get();
 
         $users = User::all();
         return view('reports.filter-list', compact('tickets', 'users', 'categories', 'query_params'));

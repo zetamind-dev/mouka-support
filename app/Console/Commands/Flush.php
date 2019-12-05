@@ -47,7 +47,7 @@ class Flush extends Command
        // Loop over the tickets resut set 
        foreach ($tickets as $ticket) {
            // Check if the tickets has elaspsed 3 days
-           if($current->diffInDays($ticket->created_at) > 3){// if true 
+           if($current->diffInDays($ticket->created_at) > 9){// if true 
              // then delete th ticket from the database
              $ticket->delete();
            }

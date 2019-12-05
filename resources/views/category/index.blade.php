@@ -68,6 +68,7 @@
                 <thead style="background:#2737A6;color:white; font-size:17px; font-weight:bold;">
                   <tr>
                     <th>Name</th>
+                    <th>Email</th>
                     <th>Created on</th>
                     <th>Action</th>
                   </tr>
@@ -76,6 +77,7 @@
                   @foreach ($categories as $category)
                   <tr>
                     <td>{{ $category->name }}</td>
+                  <td>{{$category->email}}</td>
                     <td>{{ $category->created_at->format('F d, Y H:i') }}</td>
                     <td>
                       <form action="{{ url('admin/category/delete/' . $category->id) }}" method="POST">

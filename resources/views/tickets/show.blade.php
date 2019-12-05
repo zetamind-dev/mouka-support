@@ -52,11 +52,10 @@
 
                     <div class="form-group">
                         <div class="form-group">
-                            <label for="picture">Image</label>
                             @if ($ticket->picture === 'noimage.jpg')
                             <p>No image for this ticket</p>
                             @else
-                            <img style="width:100%; heigth:100%" src="/storage/picture/{{$ticket->picture}}">
+                            <img style="width:50%; heigth:50%" src="/storage/picture/{{$ticket->picture}}">
                             @endif
                         </div>
                     </div>

@@ -29,6 +29,7 @@
   </form>
   <br>
   @isset($tickets)
+          <p>Total Tickets Pulled: {{count($tickets)}} export to see all</p>
   @include('reports.query-param', compact('query_params'))
   @include('reports.filter-table', compact('tickets', 'users', 'categories'))
   @endisset
