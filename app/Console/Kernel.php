@@ -37,11 +37,9 @@ class Kernel extends ConsoleKernel
             ->hourly()
             ->between('8:00', '17:00')
             ->runInBackground();
-        // Run hourly from 4 PM to 6 PM on weekdays...
+        // Run at 6 PM on weekdays...
         $schedule->command('flush:tickets')
-            ->weekdays()
-            ->hourly()
-            ->between('16:00', '18:00')
+            ->cron('0 18 * * 1-5')
             ->runInBackground();
 
     }
