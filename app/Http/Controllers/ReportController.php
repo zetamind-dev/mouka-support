@@ -5,6 +5,7 @@ namespace ComplainDesk\Http\Controllers;
 use Carbon\Carbon;
 use ComplainDesk\Category;
 use ComplainDesk\Exports\TicketsViewExport;
+use ComplainDesk\Log;
 use ComplainDesk\Ticket;
 use ComplainDesk\User;
 use Illuminate\Http\Request;
@@ -45,7 +46,6 @@ class ReportController extends Controller
         $date_from = Carbon::createFromFormat($format, $request->input('date_from'))->timezone('Africa/Lagos')->toDateTimeString();
         $date_to = Carbon::createFromFormat($format, $request->input('date_to'))->timezone('Africa/Lagos')->toDateTimeString();
 
-        // Check if options are available
         $category_id = $request->input('category');
         $location = $request->input('location');
 
@@ -103,11 +103,35 @@ class ReportController extends Controller
             'category' => $request->input('category') !== null ? $request->input('category') : 'all',
             'location' => $request->input('location') !== null ? $request->input('location') : 'all',
             'date_from' => $date_from,
-            'date_to' => $date_to
+            'date_to' => $date_to,
         );
 
         // Push to query_log
         array_push($query_log['query'], $query_params);
+
+        // Retrieve events from logs table where action is 'Closed Ticket'
+        $logs = Log::all()->where('action', 'Closed Ticket');
+        // Declare empty array to hold ticket_id
+        $tickets_log['log'] = array();
+        // Loop over the result set
+        foreach ($logs as $log) {
+            // Split the log's description into array of words
+            $array_words = explode(' ', $log->description);
+            // Get the last index
+            $ticket_id = $array_words[4];
+            // dd($ticket_id);
+            // set tickets items as array
+            $ticket_item = array(
+                'id' => $ticket_id,
+                'closure_date' => $log->created_at,
+            );
+
+            // Push to tickets_log array
+            array_push($tickets_log['log'], $ticket_item);
+
+        }
+
+        // dd($tickets_log['log']);
 
         // Now query the tickets table
         $tickets = Ticket::orderBy('created_at', 'desc')
@@ -118,7 +142,7 @@ class ReportController extends Controller
             ->where('drop_ticket', 0)->get();
 
         $users = User::all();
-        return view('reports.filter-list', compact('tickets', 'users', 'categories', 'query_params'));
+        return view('reports.filter-list', compact('tickets', 'users', 'categories', 'query_params', 'tickets_log'));
 
     }
 

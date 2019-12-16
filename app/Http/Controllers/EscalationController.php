@@ -32,7 +32,7 @@ class EscalationController extends Controller
             'email'  => $request->input('email'),
             'level' => $request->input('level'),
             'location' => $request->input('location'),
-            'format' => $request->input('format'),
+            'format' => $request    ->input('format'),
         ]);
 
         $escalation->save();

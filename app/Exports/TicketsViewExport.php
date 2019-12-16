@@ -3,6 +3,7 @@
 namespace ComplainDesk\Exports;
 
 use ComplainDesk\Category;
+use ComplainDesk\Log;
 use ComplainDesk\Ticket;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\Exportable;
@@ -27,6 +28,26 @@ class TicketsViewExport implements FromView
      */
     public function view(): View
     {
+        // Retrieve events from logs table where action is 'Closed Ticket'
+        $logs = Log::all()->where('action', 'Closed Ticket');
+        // Declare empty array to hold ticket_id
+        $tickets_log['log'] = array();
+        // Loop over the result set
+        foreach ($logs as $log) {
+            // Split the log's description into array of words
+            $array_words = explode(' ', $log->description);
+            // Get the last index
+            $ticket_id = $array_words[4];
+            // dd($ticket_id);
+            // set tickets items as array
+            $ticket_item = array(
+                'id' => $ticket_id,
+                'closure_date' => $log->created_at,
+            );
+            // Push to tickets_log array
+            array_push($tickets_log['log'], $ticket_item);
+        }
+
         /**
          * SET STATUS QUERY PARAMS
          */
@@ -82,7 +103,7 @@ class TicketsViewExport implements FromView
                 ->whereBetween('created_at', [$this->date_from, $this->date_to])
                 ->where('drop_ticket', 0),
 
-            'categories' => Category::all(),
+            'categories' => Category::all(), 'tickets_log' => $tickets_log,
         ]);
     }
 }

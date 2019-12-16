@@ -10,6 +10,7 @@
         <th>Status</th>
         <th>Priority</th>
         <th>Date Opened</th>
+         <th>Closure Date</th>
       </tr>
     </thead>
 
@@ -32,7 +33,12 @@
           <span class="text-danger">{{$ticket->status}}</span>
           @endif</td>
         <td>{{$ticket->priority}}</td>
-        <td>{{$ticket->created_at}}</td>
+        <td>{{$ticket->created_at->format('F d, Y H:i')}}</td>
+        <td>@foreach ($tickets_log['log'] as $log)
+            @if ($ticket->ticket_id === $log['id']) 
+               {{$log['closure_date']->format('F d, Y H:i')}}
+            @endif
+        @endforeach</td>
       </tr>
       @endforeach
     </tbody>

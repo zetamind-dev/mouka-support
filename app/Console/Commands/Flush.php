@@ -65,7 +65,7 @@ class Flush extends Command
          * ----TODO's----
          *   1. Retrieve all tickets_duration from the tickets_duration table
          *   2. Loop over the result set
-         *   3. Delete tickets_duration if the duration is greater than 100
+         *   3. Delete tickets_duration if the duration is greater than 100 hours
          */
 
         // Retrieve all tickets_duration from ticket_duration table
