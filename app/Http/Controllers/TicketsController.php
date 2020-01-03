@@ -7,8 +7,8 @@ use ComplainDesk\Http\Controllers\LogsController as Log;
 use ComplainDesk\Http\Controllers\SMSController;
 use ComplainDesk\Mailers\AppMailer;
 use ComplainDesk\Ticket;
-use ComplainDesk\User;
 use ComplainDesk\TicketDuration;
+use ComplainDesk\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -49,19 +49,8 @@ class TicketsController extends Controller
     public function create()
     {
         $categories = Category::all();
-        if (Auth::user()->location === "Head Office") {
-            $users = User::all()->whereIn('location', ["Head Office", "Lagos"])->where('user_type', 0);
-            return view('tickets.create', compact('categories', 'users'));
-        } else {
-            foreach ($categories as $category) {
-                if ($category->name === 'NAV/QLIKVIEW' && $category->email === Auth::user()->email) {
-                    $users = User::all()->where('user_type', 0);
-                    return view('tickets.create', compact('categories', 'users'));
-                }
-            }
-            $users = User::all()->where('location', Auth::user()->location)->where('user_type', 0);
-            return view('tickets.create', compact('categories', 'users'));
-        }
+        $users = User::all()->where('user_type', 0);
+        return view('tickets.create', compact('categories', 'users'));
     }
 
     public function store(Request $request, AppMailer $mailer, SMSController $sms)
@@ -264,7 +253,7 @@ class TicketsController extends Controller
             $mailer->sendTicketInformation(Auth::user(), $ticket);
             // Check user's location to determine moderator
             if (Auth::user()->location === "Head Office" || "Lagos") { // if true
-                //then send mail to the moderator at Head Office whose user_type is 2
+                //then send mail to the moderator at Head Office
                 // Fetch moderator at head office
                 $moderator = User::all()->where('location', "Head Office")->where('user_type', 2)->first();
                 $mailer->SendToModerator($categories, $ticket, $moderator, Auth::user());
