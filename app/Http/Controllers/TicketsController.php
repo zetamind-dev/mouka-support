@@ -255,7 +255,7 @@ class TicketsController extends Controller
             if (Auth::user()->location === "Head Office" || "Lagos") { // if true
                 //then send mail to the moderator at Head Office
                 // Fetch moderator at head office
-                $moderator = User::all()->where('location', "Head Office")->where('user_type', 2)->first();
+                $moderator = User::all()->where('location', "Head Office")->where('user_type', 3)->first();
                 $mailer->SendToModerator($categories, $ticket, $moderator, Auth::user());
             } else {
                 // fetch moderator at user's location whose location is not Lagos or Head Office

@@ -234,27 +234,4 @@ class MailHandler
         return $mailer->userNotFound($email);
 
     }
-
-// MAIL_DRIVER=smtp
-    // MAIL_HOST=smtp.gmail.com
-    // MAIL_PORT=587
-    // MAIL_USERNAME=sundayemmanuelabraham@gmail.com
-    // MAIL_PASSWORD=wkhfdxheweskbzwl
-    // MAIL_ENCRYPTION=ssl
-
-// MAIL_DRIVER=mailgun
-    // MAIL_HOST=smtp.mailgun.org
-    // MAIL_PORT=587
-    // MAIL_USERNAME=postmaster@inbound.mouka-support.com
-    // MAIL_PASSWORD=6a43e1d7a73102341666723f7e9f0dd4-9c988ee3-beae2112
-    // MAIL_ENCRYPTION=tls
-    // MAILGUN_DOMAIN=inbound.mouka-support.com
-    // MAILGUN_SECRET=key-69f6d6aeb88c0b7948d53d4b5c621a42
-
-// MAILBOX_DRIVER=mailgun
-    // MAILBOX_MAILGUN_KEY=key-69f6d6aeb88c0b7948d53d4b5c621a42
-
-// MAILBOX_DRIVER=postmark
-    // MAILBOX_HTTP_USERNAME=laravel-mailbox
-    // MAILBOX_HTTP_PASSWORD=14e594cf599dd7b71c92e82767b282b41eb3490b162f3c54de41fda9c99fba1f
 }
