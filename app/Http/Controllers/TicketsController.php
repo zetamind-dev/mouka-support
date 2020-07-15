@@ -9,6 +9,7 @@ use ComplainDesk\Mailers\AppMailer;
 use ComplainDesk\Ticket;
 use ComplainDesk\TicketDuration;
 use ComplainDesk\User;
+use ComplainDesk\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -49,8 +50,9 @@ class TicketsController extends Controller
     public function create()
     {
         $categories = Category::all();
+        $departments = Department::all();
         $users = User::all()->where('user_type', 0);
-        return view('tickets.create', compact('categories', 'users'));
+        return view('tickets.create', compact('categories', 'users', 'departments'));
     }
 
     public function store(Request $request, AppMailer $mailer, SMSController $sms)
@@ -157,7 +159,7 @@ class TicketsController extends Controller
                         // check the value if it matches the tiket_num
                         if ($ticket_num === intval(substr($ticket->ticket_id, 2))) { // if it matched
                             // Increment ticket_num by 1 as to avoid Duplicate entrty in the database
-                            $ticket_num++;
+                            $ticket_num = $ticket_num + 1;
                         }
                     }
                 }

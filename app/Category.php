@@ -8,7 +8,7 @@ class Category extends Model
 {
     //
     protected $fillable = [
-        'name','email'
+        'name','email', 'dept_id'
     ];
 
     public function tickets()

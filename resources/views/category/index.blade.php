@@ -3,9 +3,9 @@
 @section('content')
 
 <body class="bg-light">
-
   <main role="main" class="container">
     <div class="col-md-10" style="margin:auto">
+      @include('includes.flash')
       <div class="card">
         <div class="card-header" style="background:#2737A6;color:white; font-size:17px; font-weight:bold;">Add New
           Category</div>
@@ -27,6 +27,17 @@
                 </div>
               </div>
 
+                       <div class="col-md-12">
+                         <label for="user" class="control-label">Select department</label>
+                         <select id="deptId" type="select" class="form-control" name="deptId" style="height: 40px;"
+                           required>
+                           <option value="">Select Department</option>
+                            @foreach ($departments as $department)
+                            <option value="{{ $department->id }}">{{ $department->name }} </option>
+                            @endforeach
+                         </select>
+                       </div>
+                       <br>
 
               <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                 <label for="email" class="col-md-4 control-label">Email</label>
@@ -68,6 +79,7 @@
                 <thead style="background:#2737A6;color:white; font-size:17px; font-weight:bold;">
                   <tr>
                     <th>Name</th>
+                    <th>Department</th>
                     <th>Email</th>
                     <th>Created on</th>
                     <th>Action</th>
@@ -77,6 +89,11 @@
                   @foreach ($categories as $category)
                   <tr>
                     <td>{{ $category->name }}</td>
+                    <td>@foreach ($departments as $department)
+                        @if($department->id === $category->dept_id)
+                            {{ $department->name }}
+                        @endif
+                    @endforeach</td>
                   <td>{{$category->email}}</td>
                     <td>{{ $category->created_at->format('F d, Y H:i') }}</td>
                     <td>
