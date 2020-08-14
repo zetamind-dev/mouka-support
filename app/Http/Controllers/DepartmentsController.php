@@ -2,10 +2,11 @@
 
 namespace ComplainDesk\Http\Controllers;
 
-use Illuminate\Http\Request;
-use ComplainDesk\Http\Controllers\LogsController as Log;
-use Illuminate\Support\Facades\Auth;
 use ComplainDesk\Department;
+use ComplainDesk\Category;
+use ComplainDesk\Http\Controllers\LogsController as Log;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DepartmentsController extends Controller
 {
@@ -21,22 +22,30 @@ class DepartmentsController extends Controller
         return view('department.index', compact('departments'));
     }
 
-    //Method to Store the Category Created
+    //Method to Store the department Created
     public function store(Log $log, Request $request)
     {
         $this->validate($request, [
-            'name'   => 'required'
+            'name' => 'required',
         ]);
 
         $department = new Department([
-            'name'     => $request->input('name'),
+            'name' => $request->input('name'),
         ]);
 
         $action = "Created New Department";
-        $description = "Department ". $department->name . " has been Created";
+        $description = "Department " . $department->name . " has been Created";
         $userId = Auth::user()->id;
 
         $department->save();
+
+        $category = new Category([
+            'name' => 'All',
+            'email' => 'no-reply@test.com',
+            'dept_id' => $department->id
+        ]);
+
+        $category->save();
 
         $log->store($action, $description, $userId);
 
@@ -44,19 +53,19 @@ class DepartmentsController extends Controller
     }
 
     //Method to detele Category
-public function delete(Log $log, $id)
-{
-    $department = Department::where('id', $id)->firstOrFail();
+    public function delete(Log $log, $id)
+    {
+        $department = Department::where('id', $id)->firstOrFail();
 
-    $action = "Deleted Department";
-    $description = "Category ". $department ->name . " has been Deleted";
-    $userId = Auth::user()->id;
+        $action = "Deleted Department";
+        $description = "Category " . $department->name . " has been Deleted";
+        $userId = Auth::user()->id;
 
-    $department->delete();
+        $department->delete();
 
-    $log->store($action, $description, $userId);
+        $log->store($action, $description, $userId);
 
-    return redirect()->back()->with("warning", "Department Deleted.");
-}
+        return redirect()->back()->with("warning", "Department Deleted.");
+    }
 
 }

@@ -19,19 +19,32 @@
             </div>
             <div class="col-md-4">
                 <label for="date_to">To</label>
-                <input class="form-control" type="date"  name="date_to" id="date_to" required>
+                <input class="form-control" type="date" name="date_to" id="date_to" required>
             </div>
         </div>
         <div class="form-row">
             <div class="col-md-4">
-                <label for="category">Category</label>
-                <select id="category" type="select" class="form-control" name="category" style="height: 40px;">
-                    <option value="all">All Categories</option>
-                    @foreach ($categories as $category)
-                    <option value="{{$category->id}}">{{$category->name}}</option>
+                <label for="user" class="control-label">Department</label>
+                <select id="deptReport" type="select" class="form-control" name="deptReport" style="height: 40px;"
+                    required>
+                    <option value="">Select Department</option>
+                    @foreach ($departments as $department)
+                    <option value="{{ $department->id }}">{{ $department->name }} </option>
                     @endforeach
                 </select>
             </div>
+
+            <div class="col-md-4">
+                <label for="category" class="col-md-4 control-label">Category</label>
+                <select id="report" type="select" class="form-control" name="report" style="height: 40px;"
+                    required>
+                    <option value=""> </option>
+                </select>
+                </select>
+            </div>
+        </div>
+        <br>
+        <div class="form-row">
 
             <div class="col-md-4">
                 <label for="status">Status</label>
@@ -41,10 +54,6 @@
                     <option value="Closed">Closed</option>
                 </select>
             </div>
-
-        </div>
-        <br>
-        <div class="form-row">
 
             <div class="col-md-4">
                 <label for="Location">Location</label>

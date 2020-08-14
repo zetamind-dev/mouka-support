@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Support\Facades\Input;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +28,33 @@ Route::get('/', 'LoginPageController@index');
 
 //Route for authentication Handling
 Auth::routes();
+
+// Route handles dynamic dependent category display
+Route::get('/ajax-category', function () {
+    $dept_id = Input::get('dept_id');
+
+    $categories = ComplainDesk\Category::where('dept_id', '=', $dept_id)->get();
+
+    return Response::json($categories);
+});
+
+// Route handles dynamic dependent category display
+Route::get('/ajax-moderator', function () {
+    $dept_id = Input::get('dept_id');
+
+    $users = ComplainDesk\User::where('department_id', '=', $dept_id)->where('user_type', '>', 0)->get();
+    return Response::json($users);
+});
+
+// Route handles dynamic dependent category display
+Route::get('/ajax-report', function () {
+    $dept_id = Input::get('dept_id');
+
+    $categories = ComplainDesk\Category::where('dept_id', '=', $dept_id)->get();
+
+    return Response::json($categories);
+
+});
 
 //Route to User's Dashboard
 Route::get('/home', 'HomeController@index');

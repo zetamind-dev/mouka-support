@@ -64,6 +64,17 @@
                     <option value="48">48 hours</option>
                   </select>
                 </div>
+
+                <div class="col-md-8">
+                  <label for="format">Department</label>
+                  <select id="format" type="format " class="form-control" name="department_id" style="height: 38px;"
+                    required>
+                    <option value="">select department</option>
+                    @foreach ($departments as $department)
+                    <option value="{{$department->id}}">{{$department->name}}</option>
+                    @endforeach
+                  </select>
+                </div>
               </div>
               <br>
               <br>
@@ -93,9 +104,9 @@
               <thead style="background:#2737A6;color:white; font-size:17px; font-weight:bold;">
                 <tr>
                   <th>#</th>
-                  <th>Name</th>
                   <th>Email</th>
                   <th>Location</th>
+                  <th>Department</th>
                   <th>Level</th>
                   <th>Frequency</th>
                   <th colspan="2" class="text-center">Actions</th>
@@ -106,22 +117,27 @@
               <tbody>
                 <tr>
                   <td>{{$loop->iteration}}</td>
-                  <td>{{$escalation->name}}</td>
                   <td>{{$escalation->email}}</td>
                   <td>{{$escalation->location}}</td>
-                   <td>{{$escalation->level}}</td>
+                  @foreach ($departments as $department)
+                  @if ($escalation->department_id === $department->id)
+                  <td>{{$department->name}}</td>
+                  @endif
+                  @endforeach
+                  <td>{{$escalation->level}}</td>
                   <td>{{$escalation->format}} <small>hours</small></td>
-                <td>
-                  <form action="{{ url('admin/escalation/'. $escalation->id) }}" method="GET">
-                    <button type="submit" class="btn btn-info btn-sm" style="color:white;font-weight:bold">Edit</button>
-                  </form>
-                </td>
-                <td>
-                  <form action="{{ url('admin/escalation/delete/' . $escalation->id) }}" method="POST">
-                    @csrf
-                    <button type="submit" class="btn btn-danger btn-sm" style="font-weight:bold">Delete</button>
-                  </form>
-                </td>
+                  <td>
+                    <form action="{{ url('admin/escalation/'. $escalation->id) }}" method="GET">
+                      <button type="submit" class="btn btn-info btn-sm"
+                        style="color:white;font-weight:bold">Edit</button>
+                    </form>
+                  </td>
+                  <td>
+                    <form action="{{ url('admin/escalation/delete/' . $escalation->id) }}" method="POST">
+                      @csrf
+                      <button type="submit" class="btn btn-danger btn-sm" style="font-weight:bold">Delete</button>
+                    </form>
+                  </td>
                 </tr>
               </tbody>
               @endforeach

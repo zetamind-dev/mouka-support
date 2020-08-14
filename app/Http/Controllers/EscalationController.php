@@ -2,24 +2,25 @@
 
 namespace ComplainDesk\Http\Controllers;
 
-use Illuminate\Http\Request;
+use ComplainDesk\Department;
 use ComplainDesk\Escalation;
+use Illuminate\Http\Request;
 
 class EscalationController extends Controller
 {
-    public function index() {
+    public function index()
+    {
 
-         //Retrieve escalations level form DB
-         $escalations = Escalation::all();
-
-         return view('est.create', compact('escalations'));
+        //Retrieve escalations level form DB
+        $escalations = Escalation::all();
+        $departments = Department::all();
+        return view('est.create', compact('escalations', 'departments'));
     }
 
-
-     public function store(Request $request)
+    public function store(Request $request)
     {
         $this->validate($request, [
-            'name'   => 'required',
+            'name' => 'required',
             'email' => 'required',
             'level' => 'required',
             'location' => 'required',
@@ -28,11 +29,12 @@ class EscalationController extends Controller
 
         // Create and save user's input into the database
         $escalation = Escalation::create([
-            'name'     => $request->input('name'),
-            'email'  => $request->input('email'),
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
             'level' => $request->input('level'),
             'location' => $request->input('location'),
-            'format' => $request    ->input('format'),
+            'format' => $request->input('format'),
+            'department_id' => $request->input('department_id'),
         ]);
 
         $escalation->save();
@@ -40,44 +42,46 @@ class EscalationController extends Controller
         return redirect()->back()->with("status", "A new level has been added successfully");
     }
 
+    public function edit($id)
+    {
 
-    public function edit($id) {
-        
         $escalation = Escalation::where('id', $id)->firstOrFail();
-        
-        return view('est.edit', compact('escalation'));
+        $departments = Department::all();
+
+        return view('est.edit', compact('escalation', 'departments'));
 
     }
 
+    public function update(Request $request, $id)
+    {
 
-    public function update(Request $request, $id) {
-    
-            $this->validate($request, [
-                'name'   => 'required',
-                'email' => 'required',
-                'level' => 'required',
-                'location' => 'required',
-                'format' => 'required',
-            ]);
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required',
+            'level' => 'required',
+            'location' => 'required',
+            'format' => 'required',
+        ]);
 
-            // find escalation by id and save user's input into the database
-            $escalation = Escalation::find($id);
+        // find escalation by id and save user's input into the database
+        $escalation = Escalation::find($id);
 
-            $escalation->name = $request->input('name');
-            $escalation->email = $request->input('email');
-            $escalation->level = $request->input('level');
-            $escalation->location = $request->input('location');
-            $escalation->format = $request->input('format');
+        $escalation->name = $request->input('name');
+        $escalation->email = $request->input('email');
+        $escalation->level = $request->input('level');
+        $escalation->location = $request->input('location');
+        $escalation->format = $request->input('format');
+        $escalation->department_id = $request->input('department_id');
 
-            $escalation->save();
+        $escalation->save();
 
-            return redirect()->back()->with("status", "Escalation level has been updated successfully");
+        return redirect()->back()->with("status", "Escalation level has been updated successfully");
     }
-
 
     //Method to detele Escalation
-    public function delete($id) {
-         //Find Ticket by id
+    public function delete($id)
+    {
+        //Find Ticket by id
         $escalation = Escalation::where('id', $id)->firstOrFail();
         //Delete from Database
         $escalation->delete();

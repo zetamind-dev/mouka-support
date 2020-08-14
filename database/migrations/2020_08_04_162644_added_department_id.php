@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\Schema;
 
-class AddCopyEmailColumnToTickets extends Migration
+class AddedDepartmentId extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class AddCopyEmailColumnToTickets extends Migration
     public function up()
     {
         Schema::table('tickets', function ($table) {
-            $table->string('copy_email2')->nullable();
+            $table->integer('department_id')->default(1);
         });
+
     }
 
     /**
@@ -25,7 +26,8 @@ class AddCopyEmailColumnToTickets extends Migration
     public function down()
     {
         Schema::table('tickets', function ($table) {
-            $table->dropColumn('copy_email2');
+            $table->dropColumn('department_id');
         });
+
     }
 }

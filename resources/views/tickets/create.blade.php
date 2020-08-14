@@ -10,15 +10,7 @@
 
 
   @include('includes.flash')
-  <div class="col-md-6">
-    <label for="user" class="control-label">Set department for this ticket</label>
-    <select id="deptId" type="select" class="form-control" name="deptId" style="height: 40px;" required>
-      <option value="">Select Department</option>
-      @foreach ($departments as $department)
-      <option value="{{ $department->id }}">{{ $department->name }} </option>
-      @endforeach
-    </select>
-  </div>
+
   <!-- Begining of New Ticket Form -->
   <form class="form-horizontal col-md-12" role="form" method="POST" action="{{ url('/tickets') }}"
     enctype="multipart/form-data">
@@ -57,16 +49,23 @@
       </div>
     </div>
 
+    <div class="form-group">
+      <div class="col-md-12">
+        <label for="user" class="control-label">Department</label>
+        <select id="deptCategory" type="select" class="form-control" name="deptCategory" style="height: 40px;" required>
+          <option value="">Select Department</option>
+          @foreach ($departments as $department)
+          <option value="{{ $department->id }}">{{ $department->name }} </option>
+          @endforeach
+        </select>
+      </div>
+    </div>
 
     <div class="form-group">
       <label for="category" class="col-md-4 control-label">Category</label>
-
       <div class="col-md-12">
         <select id="category" type="category" class="form-control" name="category" style="height: 55px;" required>
-          <option value="">Select Category</option>
-          @foreach ($categories as $category)
-          <option value="{{ $category->id }}">{{ $category->name }}</option>
-          @endforeach
+          <option value=""> </option>
         </select>
       </div>
     </div>

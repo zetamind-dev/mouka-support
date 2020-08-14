@@ -3,13 +3,13 @@
 namespace ComplainDesk\Http\Controllers;
 
 use ComplainDesk\Category;
+use ComplainDesk\Department;
 use ComplainDesk\Http\Controllers\LogsController as Log;
 use ComplainDesk\Http\Controllers\SMSController;
 use ComplainDesk\Mailers\AppMailer;
 use ComplainDesk\Ticket;
 use ComplainDesk\TicketDuration;
 use ComplainDesk\User;
-use ComplainDesk\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,11 +24,13 @@ class TicketsController extends Controller
     public function index()
     {
         if (Auth::user()->user_type === 3) {
-            $tickets = Ticket::orderBy('status', 'desc')->orderBy('created_at', 'desc')->where('drop_ticket', 0)->paginate(10);
+
+            // fetch categories by the current user's id
             $categories = Category::all();
             $tickets_duration = TicketDuration::all();
+            $tickets = Ticket::orderBy('status', 'desc')->orderBy('created_at', 'desc')->where('department_id', Auth::user()->department_id)->where('drop_ticket', 0)->paginate(10);
 
-            return view('tickets.index', compact('tickets', 'categories', 'tickets_duration'));
+            return view('tickets.index', compact('categories', 'tickets_duration', 'tickets'));
 
         } elseif (Auth::user()->user_type === 2) {
             $tickets = Ticket::orderBy('status', 'desc')->orderBy('created_at', 'desc')->where('drop_ticket', 0)->whereNotIn('location', ['Benin', 'Kaduna'])->paginate(10);
@@ -229,7 +231,10 @@ class TicketsController extends Controller
             'ticket_owner' => $ticket_owner,
         ]);
 
-        // save ticket details
+        //set ticket department_id
+        $category = Category::find($request->input('category'));
+        $ticket->department_id = $category->dept_id;
+        //save ticket details
         $ticket->save();
 
         // Set ticket_duration
@@ -254,14 +259,14 @@ class TicketsController extends Controller
             $categories = new Category;
             $mailer->sendTicketInformation(Auth::user(), $ticket);
             // Check user's location to determine moderator
-            if (Auth::user()->location === "Head Office" || "Lagos") { // if true
+            if (Auth::user()->location === "Head Office" || "Lagos" && Auth::user()->user_type === 3) { // if true
                 //then send mail to the moderator at Head Office
                 // Fetch moderator at head office
-                $moderator = User::all()->where('location', "Head Office")->where('user_type', 3)->first();
+                $moderator = User::all()->where('location', "Head Office")->where('user_type', 3)->where('department_id', Auth::user()->department_id)->first();
                 $mailer->SendToModerator($categories, $ticket, $moderator, Auth::user());
             } else {
-                // fetch moderator at user's location whose location is not Lagos or Head Office
-                $moderator = User::all()->whereNotIn('location', ["Head Office", "Lagos"])->where('location', Auth::user()->location)->where('user_type', 1)->first();
+                // fetch moderator at user's location whose role is not super admin
+                $moderator = User::all()->where('location', Auth::user()->location)->where('user_type', 1)->where('department_id', $ticket->department_id)->first();
                 $mailer->SendToModerator($categories, $ticket, $moderator, Auth::user());
             }
             return redirect()->back()->with("status", "A ticket with ID: $ticket->ticket_id has been opened.");

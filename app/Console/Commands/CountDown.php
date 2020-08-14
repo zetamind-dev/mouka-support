@@ -41,6 +41,7 @@ class CountDown extends Command
     {
         /**
          * Compute and Update ticket duration
+         * The command is only executed between 8am - 5pm through (MON -FRI)
          */
 
         // Official working hour 8am - 5pm (8:00 - 17:00)
@@ -70,7 +71,7 @@ class CountDown extends Command
                     
                     /**
                      * ----TODO's----
-                     *   1. Increment ticket duration field value by 1
+                     *   1. Increment ticket duration field value by difference in hours
                      *   2. Update the duartion
                      */
 

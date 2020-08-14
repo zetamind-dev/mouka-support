@@ -32,14 +32,17 @@
                             </td>
                             <td>{{ $ticket->title }}</td>
                             <td>
-                                @foreach ($categories as $category) @if ($category->id === $ticket->category_id)
-                                {{ $category->name }} @endif @endforeach
+                                @foreach ($categories as $category)
+                                    @if ($category->id === $ticket->category_id)
+                                         {{ $category->name }}
+                                    @endif
+                                @endforeach
                             </td>
-                            <td>{{ $ticket->created_at->format('F d, Y H:i') }}</td>
+                            <td>{{ $ticket['created_at']->format('F d, Y H:i') }}</td>
                             <td>{{ \Carbon\Carbon::parse($ticket->created_at)->diffForHumans() }}</td>
                             <td>
                                 @if ($ticket->status === 'Open')
-                                <span class="label label-success text-success">{{ $ticket->status }}</span>
+                                <span class="label label-success text-success">{{ $ticket->status}}</span>
                                 @else
                                 <span class="label label-danger text-danger">{{ $ticket->status }}</span>
                                 @endif

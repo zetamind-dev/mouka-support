@@ -7,6 +7,7 @@ use ComplainDesk\Department;
 use ComplainDesk\Http\Controllers\Controller;
 use ComplainDesk\Http\Controllers\LogsController as Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Auth;
 
 class CategoriesController extends Controller
@@ -28,15 +29,15 @@ class CategoriesController extends Controller
 //Method to Store the Category Created
     public function store(Log $log, Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'email' => 'required',
-        ]);
+        // $this->validate($request, [
+        //     'name' => 'required',
+        //     'email' => 'required',
+        // ]);
 
         $category = new Category([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'dept_id' => $request->input('deptId')
+            'name' => Input::get('name'),
+            'email' => Input::get('moderator'),
+            'dept_id' =>Input::get('deptModerator')
         ]);
 
         $action = "Created New Category";
@@ -47,9 +48,9 @@ class CategoriesController extends Controller
 
         $log->store($action, $description, $userId);
 
-        $department = Department::find($request->input('deptId'));
+        $department = Department::find(Input::get('deptModerator'));
 
-        return redirect()->back()->with("status", "$category->name Category has been created $department->name department");
+        return redirect()->back()->with("status", "$category->name Category has been created for $department->name department");
     }
 
 //Method to detele Category

@@ -87,6 +87,21 @@
                     <option value="48">48 hours</option>
                   </select>
                 </div>
+
+                <div class="col-md-8">
+                  <label for="format">Department</label>
+                  <select id="format" type="format " class="form-control" name="department_id" style="height: 38px;"
+                    required>
+                    @foreach ($departments as $department)
+                    @if ($escalation->department_id === $department->id)
+                    <option value="{{$escalation->department_id}}">{{$department->name}}</option>
+                    @endif
+                    @endforeach
+                    @foreach ($departments as $department)
+                    <option value="{{$department->id}}">{{$department->name}}</option>
+                    @endforeach
+                  </select>
+                </div>
               </div>
               <br>
               <br>

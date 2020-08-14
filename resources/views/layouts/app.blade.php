@@ -28,11 +28,81 @@
     </div>
 
     <!-- Scripts -->
+
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="/vendor/unisharp/laravel-ckeditor/ckeditor.js"></script>
     <script>
         CKEDITOR.replace('article-ckeditor');
     </script>
+    <script>
+        $('#deptCategory').on('change', function (e) {
+            console.log(e);
+
+            var dept_id = e.target.value;
+
+            //ajax
+            $.get('/ajax-category?dept_id=' + dept_id, function (data) {
+                //success
+                // console.log(data);
+                $('#category').empty();
+                $.each(data, function (index, categoryObj) {
+                    if (categoryObj.name != 'All') {
+                        $('#category').append('<option value="' + categoryObj.id + '">' +
+                            categoryObj.name + '</option>');
+
+                    }
+                });
+
+            });
+        });
+
+
+        $('#deptReport').on('change', function (e) {
+            console.log(e);
+
+            var dept_id = e.target.value;
+
+            //ajax
+            $.get('/ajax-category?dept_id=' + dept_id, function (data) {
+                //success
+                // console.log(data);
+                $('#report').empty();
+                $.each(data, function (index, categoryObj) {
+                    if (categoryObj.name === 'All') {
+                        var value = 'all';
+                        $('#report').append('<option value="' + value + '">' +
+                            categoryObj.name + '</option>');
+
+                    } else {
+                         $('#report').append('<option value="' + categoryObj.id + '">' +
+                             categoryObj.name + '</option>');
+                    }
+                });
+
+            });
+        });
+
+
+        $('#deptModerator').on('change', function (e) {
+            console.log(e);
+
+            var dept_id = e.target.value;
+
+            //ajax
+            $.get('/ajax-moderator?dept_id=' + dept_id, function (data) {
+                //success
+                // console.log(data);
+                $('#moderator').empty();
+                $.each(data, function (index, userObj) {
+                    $('#moderator').append('<option value="' + userObj.email + '">' +
+                        userObj.name + '</option>');
+
+                });
+
+            });
+        });
+    </script>
+
 </body>
 
 </html>

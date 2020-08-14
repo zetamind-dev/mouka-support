@@ -8,6 +8,7 @@ use ComplainDesk\Exports\TicketsViewExport;
 use ComplainDesk\Log;
 use ComplainDesk\Ticket;
 use ComplainDesk\User;
+use ComplainDesk\Department;
 use Illuminate\Http\Request;
 
 class ReportController extends Controller
@@ -20,7 +21,8 @@ class ReportController extends Controller
     {
         // $tickets = Ticket::all()->where('drop_ticket', 1)->where('location', Auth::user()->location);
         $categories = Category::all();
-        return view('reports.create-filter', compact('categories'));
+        $departments = Department::all();
+        return view('reports.create-filter', compact('categories', 'departments'));
     }
 
     public function filter(Request $request)
