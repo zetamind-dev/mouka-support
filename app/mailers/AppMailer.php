@@ -225,7 +225,6 @@ class AppMailer
                         $moderator = User::all()
                             ->where('department_id', $ticket->department_id)
                             ->where('location', $escalation->location)
-                            ->where('email', $category->email)
                             ->where('user_type', '>', 0)->first();
                     }
                     foreach ($tickets_duration as $ticket_duration) {

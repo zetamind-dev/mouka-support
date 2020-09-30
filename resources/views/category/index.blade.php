@@ -48,7 +48,7 @@ application/x-httpd-php index.blade.php ( HTML document, ASCII text, with CRLF l
                 <div class="col-md-12">
                   <select id="moderator" type="moderator" class="form-control" name="moderator" style="height: 40px;"
                     required>
-                    <option value=""> </option>
+                    <option value=""></option>
                   </select>
                 </div>
               </div>

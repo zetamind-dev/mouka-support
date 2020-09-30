@@ -48,7 +48,8 @@ class ReportController extends Controller
         $date_from = Carbon::createFromFormat($format, $request->input('date_from'))->timezone('Africa/Lagos')->toDateTimeString();
         $date_to = Carbon::createFromFormat($format, $request->input('date_to'))->timezone('Africa/Lagos')->toDateTimeString();
 
-        $category_id = $request->input('category');
+        $category_id = $request->input('report');
+       
         $location = $request->input('location');
 
         /**
