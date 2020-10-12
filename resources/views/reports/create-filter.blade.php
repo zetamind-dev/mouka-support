@@ -36,8 +36,7 @@
 
             <div class="col-md-4">
                 <label for="category" class="col-md-4 control-label">Category</label>
-                <select id="report" type="select" class="form-control" name="report" style="height: 40px;"
-                    required>
+                <select id="report" type="select" class="form-control" name="report" style="height: 40px;" required>
                     <option value=""> </option>
                 </select>
                 </select>
@@ -83,6 +82,6 @@
 @isset($tickets)
 @include('reports.query-param', compact('query_params'))
 @include('reports.filter-table', compact('tickets', 'users', 'categories'))
-@endisset)
+@endisset
 
 @endsection

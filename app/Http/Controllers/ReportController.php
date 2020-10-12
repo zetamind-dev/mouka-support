@@ -4,11 +4,11 @@ namespace ComplainDesk\Http\Controllers;
 
 use Carbon\Carbon;
 use ComplainDesk\Category;
+use ComplainDesk\Department;
 use ComplainDesk\Exports\TicketsViewExport;
 use ComplainDesk\Log;
 use ComplainDesk\Ticket;
 use ComplainDesk\User;
-use ComplainDesk\Department;
 use Illuminate\Http\Request;
 
 class ReportController extends Controller
@@ -20,7 +20,7 @@ class ReportController extends Controller
     public function getComplainList()
     {
         // $tickets = Ticket::all()->where('drop_ticket', 1)->where('location', Auth::user()->location);
-        $categories = Category::all();
+        $categories  = Category::all();
         $departments = Department::all();
         return view('reports.create-filter', compact('categories', 'departments'));
     }
@@ -36,20 +36,20 @@ class ReportController extends Controller
 
         $date_from; // This can't be null
         $date_to; // This can't be null
-        $status_query = []; // Optional
-        $category_query = []; // Optional
-        $location_query = []; // Optional
+        $status_query       = []; // Optional
+        $category_query     = []; // Optional
+        $location_query     = []; // Optional
         $query_log['query'] = array();
 
         /**
          * SET INCOMING DATE INPUT REQUEsT
          */
-        $format = 'Y-m-d';
+        $format    = 'Y-m-d';
         $date_from = Carbon::createFromFormat($format, $request->input('date_from'))->timezone('Africa/Lagos')->toDateTimeString();
-        $date_to = Carbon::createFromFormat($format, $request->input('date_to'))->timezone('Africa/Lagos')->toDateTimeString();
+        $date_to   = Carbon::createFromFormat($format, $request->input('date_to'))->timezone('Africa/Lagos')->toDateTimeString();
 
         $category_id = $request->input('report');
-       
+
         $location = $request->input('location');
 
         /**
@@ -62,9 +62,10 @@ class ReportController extends Controller
             $index = 0;
             // iterate over the categories result set
             foreach ($categories as $category) {
-                // set all categoru id to category_query array
+                // set all category id to category_query array
                 $category_query[$index] = $category->id;
                 $index++;
+
             }
         } else { // a category is selected by the user
             $category_query[0] = $category_id;
@@ -102,11 +103,11 @@ class ReportController extends Controller
          * SET QUERY PARAMS FROM INPUT REQUEST
          */
         $query_params = array(
-            'status' => $request->input('status') !== null ? $request->input('status') : 'all',
-            'category' => $request->input('category') !== null ? $request->input('category') : 'all',
-            'location' => $request->input('location') !== null ? $request->input('location') : 'all',
+            'status'    => $request->input('status') !== null ? $request->input('status') : 'all',
+            'category'  => $request->input('category') !== null ? $request->input('category') : 'all',
+            'location'  => $request->input('location') !== null ? $request->input('location') : 'all',
             'date_from' => $date_from,
-            'date_to' => $date_to,
+            'date_to'   => $date_to,
         );
 
         // Push to query_log
@@ -125,7 +126,7 @@ class ReportController extends Controller
             // dd($ticket_id);
             // set tickets items as array
             $ticket_item = array(
-                'id' => $ticket_id,
+                'id'           => $ticket_id,
                 'closure_date' => $log->created_at,
             );
 
@@ -142,6 +143,7 @@ class ReportController extends Controller
             ->whereIn('category_id', $category_query)
             ->whereIn('location', $location_query)
             ->whereBetween('created_at', [$date_from, $date_to])
+            ->where('department_id', $request->input('deptReport'))
             ->where('drop_ticket', 0)->get();
 
         $users = User::all();
